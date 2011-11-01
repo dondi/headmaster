@@ -33,4 +33,34 @@ public class UserServiceImpl implements UserService {
         return mockResult;
     }
 
+    @Override
+    public User getDon() {
+        User mock = new User();
+        mock.setId(2L);
+        mock.setLogin("don");
+        return mock;
+    }
+
+    @Override
+    public User getDon(int id) {
+        User mock = new User();
+        mock.setId((long)id);
+        mock.setLogin("don");
+        return mock;
+    }
+
+    @Override
+    public User getToal(int id) {
+        User mock = new User();
+        mock.setId((long)id);
+        mock.setLogin("toal");
+        return mock;
+    }
+    
+    @Override
+    public User getToal(User mock) {
+        mock.setEmail("touched");
+        return mock;
+    }
+
 }
