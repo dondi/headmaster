@@ -1,15 +1,18 @@
 package edu.lmu.cs.headmaster.ws.domain;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+
+import edu.lmu.cs.headmaster.ws.util.DateTimeXmlAdapter;
 
 @Entity
 @XmlRootElement
@@ -30,8 +33,8 @@ public class Student {
     private int expectedGraduationYear;
     private boolean transferStudent;
     private String degree;
-    private List<String> majors;
-    private List<String> minors;
+//    private List<String> majors;
+//    private List<String> minors;
     private boolean hasStudiedAbroad;
     private double highSchoolGpa;
     private double actScore;
@@ -72,6 +75,7 @@ public class Student {
         this.schoolId = schoolId;
     }
 
+    @Lob
     public String getLastName() {
         return lastName;
     }
@@ -80,6 +84,7 @@ public class Student {
         this.lastName = lastName;
     }
 
+    @Lob
     public String getFirstName() {
         return firstName;
     }
@@ -96,6 +101,7 @@ public class Student {
         this.middleInitial = middleInitial;
     }
 
+    @Lob
     public String getEmail() {
         return email;
     }
@@ -112,6 +118,7 @@ public class Student {
         this.campusBox = campusBox;
     }
 
+    @Lob
     public String getCollege() {
         return college;
     }
@@ -128,6 +135,7 @@ public class Student {
         this.inLivingLearningCommunity = inLivingLearningCommunity;
     }
 
+    @Lob
     public String getAdvisor() {
         return advisor;
     }
@@ -144,6 +152,8 @@ public class Student {
         this.entryYear = entryYear;
     }
 
+    @Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+    @XmlJavaTypeAdapter(value=DateTimeXmlAdapter.class)
     public DateTime getHonorsEntryDate() {
         return honorsEntryDate;
     }
@@ -168,6 +178,7 @@ public class Student {
         this.transferStudent = transferStudent;
     }
 
+    @Lob
     public String getDegree() {
         return degree;
     }
@@ -176,21 +187,22 @@ public class Student {
         this.degree = degree;
     }
 
-    public List<String> getMajors() {
-        return majors;
-    }
-
-    public void setMajors(List<String> majors) {
-        this.majors = majors;
-    }
-
-    public List<String> getMinors() {
-        return minors;
-    }
-
-    public void setMinors(List<String> minors) {
-        this.minors = minors;
-    }
+    // TODO This needs to be mapped.
+//    public List<String> getMajors() {
+//        return majors;
+//    }
+//
+//    public void setMajors(List<String> majors) {
+//        this.majors = majors;
+//    }
+//
+//    public List<String> getMinors() {
+//        return minors;
+//    }
+//
+//    public void setMinors(List<String> minors) {
+//        this.minors = minors;
+//    }
 
     public boolean isHasStudiedAbroad() {
         return hasStudiedAbroad;
@@ -240,6 +252,7 @@ public class Student {
         this.satWritingScore = satWritingScore;
     }
 
+    @Lob
     public String getAddress() {
         return address;
     }
@@ -248,6 +261,7 @@ public class Student {
         this.address = address;
     }
 
+    @Lob
     public String getCity() {
         return city;
     }
@@ -304,6 +318,7 @@ public class Student {
         this.thesisInMajor = thesisInMajor;
     }
 
+    @Lob
     public String getThesisAdvisor() {
         return thesisAdvisor;
     }
@@ -336,6 +351,7 @@ public class Student {
         this.thesisYear = thesisYear;
     }
 
+    @Lob
     public String getThesisTitle() {
         return thesisTitle;
     }

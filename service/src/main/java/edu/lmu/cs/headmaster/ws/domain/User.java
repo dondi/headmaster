@@ -4,11 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
+@Table(name="serviceuser")
 @XmlRootElement
 public class User {
 
@@ -29,6 +32,7 @@ public class User {
         this.id = id;
     }
 
+    @Lob
     public String getLogin() {
         return login;
     }
@@ -37,6 +41,7 @@ public class User {
         this.login = login;
     }
 
+    @Lob
     public String getEmail() {
         return email;
     }
@@ -45,6 +50,7 @@ public class User {
         this.email = email;
     }
 
+    @Lob
     @XmlTransient
     // The challenge should not go out the wire.
     public String getChallenge() {

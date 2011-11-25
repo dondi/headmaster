@@ -7,9 +7,14 @@ import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBContext;
 
-import edu.lmu.cs.headmaster.ws.domain.User;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.api.json.JSONJAXBContext;
+
+import edu.lmu.cs.headmaster.ws.domain.Event;
+import edu.lmu.cs.headmaster.ws.domain.GPA;
+import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.domain.Term;
+import edu.lmu.cs.headmaster.ws.domain.User;
 
 /**
  * A provider which ensures that JSON content is generated using the <em>natural</em> style,
@@ -23,7 +28,11 @@ public class NaturalJsonContextResolver implements ContextResolver<JAXBContext> 
     private final Class<?>[] types = {
 
         // Domain classes requiring JSON serialization
-        User.class
+        User.class,
+        Student.class,
+        Event.class,
+        GPA.class,
+        Term.class
     };
 
     private final List<Class<?>> typeList = Arrays.asList(types);
