@@ -61,4 +61,21 @@
         class="edu.lmu.cs.headmaster.ws.service.UserServiceImpl">
     </bean>
 
+    <bean id="studentDaoImpl"
+        class="edu.lmu.cs.headmaster.ws.dao.StudentDaoHibernateImpl"
+        autowire="byName"
+    />
+
+    <bean id="studentDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>edu.lmu.cs.headmaster.ws.dao.StudentDao</value>
+        </property>
+
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+                <value>studentDaoImpl</value>
+            </list>
+        </property>
+    </bean>
 </beans>
