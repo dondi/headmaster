@@ -1,5 +1,9 @@
 package edu.lmu.cs.headmaster.ws.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +13,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -33,8 +39,8 @@ public class Student {
     private int expectedGraduationYear;
     private boolean transferStudent;
     private String degree;
-//    private List<String> majors;
-//    private List<String> minors;
+    private List<String> majors = new ArrayList<String>();
+    private List<String> minors = new ArrayList<String>();
     private boolean hasStudiedAbroad;
     private double highSchoolGpa;
     private double actScore;
@@ -187,22 +193,27 @@ public class Student {
         this.degree = degree;
     }
 
-    // TODO This needs to be mapped.
-//    public List<String> getMajors() {
-//        return majors;
-//    }
-//
-//    public void setMajors(List<String> majors) {
-//        this.majors = majors;
-//    }
-//
-//    public List<String> getMinors() {
-//        return minors;
-//    }
-//
-//    public void setMinors(List<String> minors) {
-//        this.minors = minors;
-//    }
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @Lob
+    public List<String> getMajors() {
+        return majors;
+    }
+
+    public void setMajors(List<String> majors) {
+        this.majors = majors;
+    }
+
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @Lob
+    public List<String> getMinors() {
+        return minors;
+    }
+
+    public void setMinors(List<String> minors) {
+        this.minors = minors;
+    }
 
     public boolean isHasStudiedAbroad() {
         return hasStudiedAbroad;
