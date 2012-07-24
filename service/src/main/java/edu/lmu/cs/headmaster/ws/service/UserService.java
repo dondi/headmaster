@@ -5,11 +5,12 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.domain.User;
 
@@ -21,26 +22,29 @@ import edu.lmu.cs.headmaster.ws.domain.User;
 public interface UserService {
 
     /**
-     * Returns all known users.  Only users with the headmaster role
+     * Possible service error messages.
+     */
+    String USER_INCONSISTENT = "user.inconsistent";
+
+    /**
+     * Returns all known users.  Only users with the HEADMASTER role
      * should be allowed to call this URI.
      * @return the known users
      */
     @GET
     List<User> getUsers();
-    
-    @GET
-    @Path("don")
-    User getDon();
-    
-    @GET
-    @Path("don/{identifier}")
-    User getDon(@PathParam("identifier") int id);
 
-    @GET
-    @Path("toal")
-    User getToal(@QueryParam("identifier") int id);
-    
+    /**
+     * Creates a new user.
+     */
     @POST
-    @Path("toal")
-    User getToal(User mockUser);
+    Response createUser(User user);
+
+    /**
+     * Creates or updates a user using the given id.
+     */
+    @PUT
+    @Path("{id}")
+    Response createOrUpdateUser(@PathParam("id") Integer id, User user);
+
 }

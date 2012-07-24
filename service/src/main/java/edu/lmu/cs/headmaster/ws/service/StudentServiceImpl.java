@@ -7,6 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.dao.StudentDao;
+import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
 /**
@@ -20,7 +21,8 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
     /**
      * Creates a student service with the injected dao.
      */
-    public StudentServiceImpl(StudentDao studentDao) {
+    public StudentServiceImpl(UserDao userDao, StudentDao studentDao) {
+        super(userDao);
         this.studentDao = studentDao;
     }
 

@@ -23,6 +23,13 @@ import edu.lmu.cs.headmaster.ws.util.ServiceException;
 @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public interface StudentService {
+    
+    /**
+     * Possible service error messages.
+     */
+    String STUDENT_OVERSPECIFIED = "student.overspecified";
+    String STUDENT_INCONSISTENT = "student.inconsistent";
+    String STUDENT_NOT_FOUND = "student.not.found";
 
     /**
      * Returns students according to the search parameters

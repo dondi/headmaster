@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
+import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
@@ -32,10 +33,6 @@ public class AbstractService {
     protected static final String MALFORMED_ARGUMENT_DATE = "argument.date.malformed";
     protected static final String MISSING_ARGUMENT_DATE = "argument.date.missing";
     protected static final String UNSUPPORTED_ENCODING = "encoding.not.supported";
-    
-    protected static final String STUDENT_OVERSPECIFIED = "student.overspecified";
-    protected static final String STUDENT_INCONSISTENT = "student.inconsistent";
-    protected static final String STUDENT_NOT_FOUND = "student.not.found";
 
     protected Logger logger = Logger.getLogger(getClass());
 
@@ -48,14 +45,12 @@ public class AbstractService {
     protected SecurityContext securityContext;
 
     // A dao for security checking.
-    // TODO not yet ready
-//    protected UserDao userDao;
+    protected UserDao userDao;
 
     // Every service needs a user dao.
-    // TODO not yet ready
-//    protected AbstractService(UserDao userDao) {
-//        this.userDao = userDao;
-//    }
+    protected AbstractService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     /**
      * Checks that a condition is true and throws a <code>ServiceException</code> with the given
