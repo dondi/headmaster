@@ -1,0 +1,65 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/jee
+    http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="hibernateProperties" ref="hibernateProperties" />
+        <property name="annotatedClasses">
+            <list>
+                <value>edu.lmu.cs.headmaster.ws.domain.User</value>
+                <value>edu.lmu.cs.headmaster.ws.domain.Student</value>
+                <value>edu.lmu.cs.headmaster.ws.domain.Event</value>
+                <value>edu.lmu.cs.headmaster.ws.domain.GPA</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--sessionFactory will get autowired-->
+    <bean id="hibernateInterceptor"
+        class="org.springframework.orm.hibernate3.HibernateInterceptor"
+        autowire="byName" />
+
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <bean id="txManager"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="studentService"
+        class="edu.lmu.cs.headmaster.ws.service.StudentServiceImpl">
+        <constructor-arg ref="studentDao" />
+    </bean>
+
+    <bean id="userService"
+        class="edu.lmu.cs.headmaster.ws.service.UserServiceImpl">
+    </bean>
+
+    <bean id="studentDaoImpl"
+        class="edu.lmu.cs.headmaster.ws.dao.StudentDaoHibernateImpl"
+        autowire="byName"
+    />
+
+    <bean id="studentDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>edu.lmu.cs.headmaster.ws.dao.StudentDao</value>
+        </property>
+
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+                <value>studentDaoImpl</value>
+            </list>
+        </property>
+    </bean>
+</beans>
