@@ -29,6 +29,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     @Override
     public Response createUser(User user) {
+        validate(user.getId() == null, Response.Status.BAD_REQUEST, USER_OVERSPECIFIED);
         userDao.createUser(user);
         return Response.created(URI.create(Long.toString(user.getId()))).build();
     }

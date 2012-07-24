@@ -24,24 +24,44 @@ public interface UserService {
     /**
      * Possible service error messages.
      */
+    String USER_OVERSPECIFIED = "user.overspecified";
     String USER_INCONSISTENT = "user.inconsistent";
 
     /**
-     * Returns all known users.  Only users with the HEADMASTER role
-     * should be allowed to call this URI.
+     * Returns all known users. Only users with the HEADMASTER role should be
+     * allowed to call this URI.
+     * 
      * @return the known users
      */
     @GET
     List<User> getUsers();
 
     /**
-     * Creates a new user.
+     * Creates a user for which the server will generate the id.
+     * 
+     * @param user
+     *            the user object to create. The user must have a null id. The
+     *            initial password, if any, must be placed in the newPassword
+     *            property and not password.
+     * 
+     * @return A response with HTTP 201 on success, or a response with HTTP 400
+     *         and message <code>user.overspecified</code> if the user's
+     *         id is not null.
      */
     @POST
     Response createUser(User user);
 
     /**
-     * Creates or updates a user using the given id.
+     * Supposed to save the representation of the user with the given id.
+     * Inconsistent data should result in HTTP 400, while a successful PUT
+     * should return Response.noContent.
+     * 
+     * @param id
+     *            the id of the user to save.
+     * 
+     * @return A response with HTTP 204 no content on success, or a response
+     *         with HTTP 400 and message <code>user.inconsistent</code> if
+     *         checked data does not have the save id as requested in the URL.
      */
     @PUT
     @Path("{id}")

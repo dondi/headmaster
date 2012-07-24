@@ -27,12 +27,12 @@ public class AbstractService {
     // refrained from using a properties file (they're not key-value pairs), a separate enum
     // (we'd need long references or static imports), or injection (they're not variables,
     // but constants).
-    protected static final String SKIP_TOO_SMALL = "skip.too.small";
-    protected static final String MAX_TOO_LARGE = "max.too.large";
-    protected static final String QUERY_REQUIRED = "query.required";
-    protected static final String MALFORMED_ARGUMENT_DATE = "argument.date.malformed";
-    protected static final String MISSING_ARGUMENT_DATE = "argument.date.missing";
-    protected static final String UNSUPPORTED_ENCODING = "encoding.not.supported";
+    public static final String SKIP_TOO_SMALL = "skip.too.small";
+    public static final String MAX_TOO_LARGE = "max.too.large";
+    public static final String QUERY_REQUIRED = "query.required";
+    public static final String MALFORMED_ARGUMENT_DATE = "argument.date.malformed";
+    public static final String MISSING_ARGUMENT_DATE = "argument.date.missing";
+    public static final String UNSUPPORTED_ENCODING = "encoding.not.supported";
 
     protected Logger logger = Logger.getLogger(getClass());
 
@@ -76,24 +76,24 @@ public class AbstractService {
      * Utility method for checking a paginated request's parameters for validity.
      */
     protected void validatePagination(int skip, int max, int minimumSkip, int maximumSkip) {
-        validate(skip >= minimumSkip, 400, SKIP_TOO_SMALL);
-        validate(max <= maximumSkip, 400, MAX_TOO_LARGE);
+        validate(skip >= minimumSkip, Response.Status.BAD_REQUEST, SKIP_TOO_SMALL);
+        validate(max <= maximumSkip, Response.Status.BAD_REQUEST, MAX_TOO_LARGE);
     }
 
     /**
      * Utility method for checking an input interval's validity.
      */
     protected Interval validateInterval(String startDate, String endDate) {
-        validate(startDate != null, 400, MISSING_ARGUMENT_DATE);
-        validate(endDate != null, 400, MISSING_ARGUMENT_DATE);
+        validate(startDate != null, Response.Status.BAD_REQUEST, MISSING_ARGUMENT_DATE);
+        validate(endDate != null, Response.Status.BAD_REQUEST, MISSING_ARGUMENT_DATE);
 
         try {
             return new Interval(new DateTime(URLDecoder.decode(startDate, "UTF-8")),
                 new DateTime(URLDecoder.decode(endDate, "UTF-8")));
         } catch(IllegalArgumentException iae) {
-            throw new ServiceException(400, MALFORMED_ARGUMENT_DATE);
+            throw new ServiceException(Response.Status.BAD_REQUEST, MALFORMED_ARGUMENT_DATE);
         } catch(UnsupportedEncodingException uee) {
-            throw new ServiceException(500, UNSUPPORTED_ENCODING);
+            throw new ServiceException(Response.Status.INTERNAL_SERVER_ERROR, UNSUPPORTED_ENCODING);
         }
     }
 

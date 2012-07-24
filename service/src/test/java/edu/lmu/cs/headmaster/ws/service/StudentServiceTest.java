@@ -21,8 +21,10 @@ public class StudentServiceTest extends ServiceTest {
             // If we get here, the test has failed.
             Assert.fail("null query should have thrown an exception, but didn't");
         } catch (ServiceException serviceException) {
-            // We expect error 400.
+            // We expect error 400, QUERY_REQUIRED.
             Assert.assertEquals(400, serviceException.getResponse().getStatus());
+            Assert.assertEquals("400 " + AbstractService.QUERY_REQUIRED,
+                    serviceException.getResponse().getEntity().toString());
         }
     }
 }

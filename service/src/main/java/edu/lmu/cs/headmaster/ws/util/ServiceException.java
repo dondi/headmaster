@@ -16,4 +16,10 @@ public class ServiceException extends WebApplicationException {
                 .build());
     }
 
+    /**
+     * Convenience constructor so that we can use the Status enum.
+     */
+    public ServiceException(Response.Status status, String message) {
+        this(status.getStatusCode(), message);
+    }
 }

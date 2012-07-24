@@ -36,7 +36,7 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
     public Response createStudent(Student student) {
         logServiceCall();
         
-        validate(student.getId() == null, 400, STUDENT_OVERSPECIFIED);
+        validate(student.getId() == null, Response.Status.BAD_REQUEST, STUDENT_OVERSPECIFIED);
 
         // Dao problems will filter up as exceptions.
         studentDao.createStudent(student);
@@ -48,7 +48,7 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
         logServiceCall();
         
         // The student IDs should match.
-        validate(id.equals(student.getId()), 400, STUDENT_INCONSISTENT);
+        validate(id.equals(student.getId()), Response.Status.BAD_REQUEST, STUDENT_INCONSISTENT);
         
         // Dao problems will filter up as exceptions.
         studentDao.createOrUpdateStudent(student);
@@ -60,7 +60,7 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
         logServiceCall();
 
         Student student = studentDao.getStudentById(id);
-        validate(student != null, 404, STUDENT_NOT_FOUND);
+        validate(student != null, Response.Status.NOT_FOUND, STUDENT_NOT_FOUND);
         return student;
     }
     
