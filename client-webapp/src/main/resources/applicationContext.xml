@@ -1,0 +1,26 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:jee="http://www.springframework.org/schema/jee"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="
+                http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/jee
+                http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+    <bean id="serviceRoot" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="${service.root}" />
+    </bean>
+
+    <bean id="wicketDeployment" class="java.lang.Boolean">
+        <constructor-arg value="${wicket.deployment}" />
+    </bean>
+
+    <bean id="wicketApplication" class="edu.lmu.cs.headmaster.client.web.Headmaster">
+        <property name="serviceRoot" ref="serviceRoot" />
+        <property name="wicketDeployment" ref="wicketDeployment" />
+    </bean>
+
+</beans>

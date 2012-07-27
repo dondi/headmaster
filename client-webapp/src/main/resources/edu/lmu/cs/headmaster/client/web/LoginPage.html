@@ -1,0 +1,49 @@
+<!doctype html>
+
+<html>
+    <head>
+        <title>Welcome to Headmaster!</title>
+
+        <wicket:link>
+            <link rel="stylesheet" href="css/login.css" />
+        </wicket:link>
+    </head>
+    <body>
+        <div id="IEMessage">
+            Headmaster requires the Google Chrome Frame plugin to be compatible with Microsoft
+            Internet Explorer.  Please follow the instructions in the prompt below to install the
+            plugin before using Headmaster.
+        </div>
+        
+        <div id="loginSplash">
+            <br/>
+            
+            <div id="loginPanel" wicket:id="loginPanel">
+                <ul>
+                    <li>This is a test error message.</li>
+                </ul>
+                <table>
+                    <tbody><tr><td>(login form goes here)</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <wicket:link>
+            <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+            <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        </wicket:link>
+
+        <script>
+            // We check to make sure that if the user is using IE, they have the Google Chrome Frame plugin installed.
+            // If not, they will be prompted to install it.
+            $(document).ready(function () {
+                CFInstall.check({
+                    mode: "overlay",
+                    onmissing: function () {
+                        $("#IEMessage").fadeIn();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
