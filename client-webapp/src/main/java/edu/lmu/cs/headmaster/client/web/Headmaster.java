@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Page;
 import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
+import org.apache.wicket.javascript.DefaultJavascriptCompressor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
@@ -78,6 +79,29 @@ public class Headmaster extends AuthenticatedWebApplication {
      */
     public void setWicketDeployment(Boolean wicketDeployment) {
         this.wicketDeployment = wicketDeployment;
+    }
+
+    /**
+     * @see org.apache.wicket.authentication.AuthenticatedWebApplication#init()
+     */
+    @Override
+    protected void init() {
+        super.init();
+
+        addComponentInstantiationListener(createSpringComponentInjector());
+        
+        // Some settings depend on deployment type...
+        getDebugSettings().setDevelopmentUtilitiesEnabled(DEVELOPMENT.equals(getConfigurationType()));
+        if (DEPLOYMENT.equals(getConfigurationType())) {
+            getResourceSettings().setJavascriptCompressor(new DefaultJavascriptCompressor());
+        }
+
+        // ...while others are unconditional.
+        getMarkupSettings().setStripWicketTags(true);
+    
+        // URL customization.
+        mountBookmarkablePage("login", LoginPage.class);
+        mountBookmarkablePage("logout", LogoutPage.class);
     }
 
 }
