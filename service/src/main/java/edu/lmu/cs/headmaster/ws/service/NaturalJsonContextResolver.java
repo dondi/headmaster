@@ -27,7 +27,7 @@ public class NaturalJsonContextResolver implements ContextResolver<JAXBContext> 
 
     private final Class<?>[] types = {
 
-        // Domain classes requiring JSON serialization
+        // Domain classes requiring JSON serialization.
         User.class,
         Student.class,
         Event.class,
