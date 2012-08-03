@@ -8,13 +8,23 @@ import edu.lmu.cs.headmaster.ws.domain.User;
 public interface UserDao {
 
     /**
+     * Returns the user with the given login name (password not included).
+     */
+    User getUserByLogin(String login);
+
+    /**
+     * Returns the user with the given id.
+     */
+    User getUserById(Long id);
+
+    /**
      * Creates a new service user.
      */
-    public User createUser(User user);
+    User createUser(User user);
     
     /**
      * Creates a new service user or updates an existing one.
      */
-    public User createOrUpdateUser(User user);
+    User createOrUpdateUser(User user);
 
 }

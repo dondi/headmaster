@@ -104,7 +104,7 @@ public class AbstractService {
      */
     protected void logServiceCall() {
         // Sometimes there is no uriInfo, such as when the service call is
-        // invoked directly as a Java method (e.g., within a unit test).
+        // invoked directly as a Java method.
         if (logger.isDebugEnabled() && (uriInfo != null)) {
             logger.debug("Invoking " + uriInfo.getAbsolutePath());
         }

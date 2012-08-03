@@ -24,6 +24,7 @@ public interface UserService {
     /**
      * Possible service error messages.
      */
+    String USER_NOT_FOUND = "user.not.found";
     String USER_OVERSPECIFIED = "user.overspecified";
     String USER_INCONSISTENT = "user.inconsistent";
 
@@ -35,6 +36,15 @@ public interface UserService {
      */
     @GET
     List<User> getUsers();
+
+    /**
+     * Returns the user with the given login, if any.
+     * 
+     * @return The requested user, if any, or HTTP 404 otherwise.
+     */
+    @GET
+    @Path("login/{login}")
+    User getUserByLogin(@PathParam("login") String login);
 
     /**
      * Creates a user for which the server will generate the id.

@@ -28,6 +28,19 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
+    public User getUserByLogin(String login) {
+        // We only allow user object access if the currently logged-in user is
+        // asking about itself.
+        validate(securityContext.getUserPrincipal().getName().equals(login),
+                Response.Status.NOT_FOUND, USER_NOT_FOUND);
+
+        // If we get here, either the login names match or the user was an admin.
+        User user = userDao.getUserByLogin(login);
+        validate(user != null, Response.Status.NOT_FOUND, USER_NOT_FOUND);
+        return user;
+    }
+
+    @Override
     public Response createUser(User user) {
         validate(user.getId() == null, Response.Status.BAD_REQUEST, USER_OVERSPECIFIED);
         userDao.createUser(user);

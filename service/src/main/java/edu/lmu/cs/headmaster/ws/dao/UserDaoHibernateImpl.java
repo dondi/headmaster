@@ -1,5 +1,7 @@
 package edu.lmu.cs.headmaster.ws.dao;
 
+import java.util.List;
+
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import edu.lmu.cs.headmaster.ws.domain.User;
@@ -8,6 +10,20 @@ import edu.lmu.cs.headmaster.ws.domain.User;
  * Hibernate-based implementation of the user dao.
  */
 public class UserDaoHibernateImpl extends HibernateDaoSupport implements UserDao {
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public User getUserByLogin(String login) {
+        List<User> result = getHibernateTemplate().find(
+            "from User u left join fetch u.roles where u.login = ?", login
+        );
+        return ((result == null) || (result.size() == 0)) ? null : result.get(0);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return getHibernateTemplate().get(User.class, id);
+    }
 
     @Override
     public User createUser(User user) {
