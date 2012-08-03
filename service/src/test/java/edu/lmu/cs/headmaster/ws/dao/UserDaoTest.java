@@ -55,6 +55,15 @@ public class UserDaoTest extends DaoTest {
         Assert.assertEquals(user.getLogin(), createdUser.getLogin());
         Assert.assertEquals(user.getEmail(), createdUser.getEmail());
         Assert.assertEquals(2, createdUser.getRoles().size());
+
+        // We do not make assumptions on which role comes first.
+        if (createdUser.getRoles().get(0).getRole() == Role.FACULTY) {
+            Assert.assertEquals(Role.FACULTY, createdUser.getRoles().get(0).getRole());
+            Assert.assertEquals(Role.STAFF, createdUser.getRoles().get(1).getRole());
+        } else {
+            Assert.assertEquals(Role.STAFF, createdUser.getRoles().get(0).getRole());
+            Assert.assertEquals(Role.FACULTY, createdUser.getRoles().get(1).getRole());
+        }
     }
 
 }

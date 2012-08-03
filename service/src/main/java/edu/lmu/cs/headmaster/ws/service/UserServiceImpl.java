@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.User;
+import edu.lmu.cs.headmaster.ws.domain.UserRole;
 
 /**
  * The sole implementation of the user service.
@@ -43,6 +44,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     @Override
     public Response createUser(User user) {
         validate(user.getId() == null, Response.Status.BAD_REQUEST, USER_OVERSPECIFIED);
+        mapRolesToUser(user);
         userDao.createUser(user);
         return Response.created(URI.create(Long.toString(user.getId()))).build();
     }
@@ -50,8 +52,19 @@ public class UserServiceImpl extends AbstractService implements UserService {
     @Override
     public Response createOrUpdateUser(Integer id, User user) {
         validate(id.equals(user.getId()), Response.Status.BAD_REQUEST, USER_INCONSISTENT);
+        mapRolesToUser(user);
         userDao.createOrUpdateUser(user);
         return Response.noContent().build();
     }
-    
+
+    /**
+     * The reverse mapping of user roles to the user does not come through the
+     * service because it is marked XML-transient, so we set them manually here.
+     */
+    private void mapRolesToUser(User user) {
+        for (UserRole userRole: user.getRoles()) {
+            userRole.setUser(user);
+        }
+    }
+
 }

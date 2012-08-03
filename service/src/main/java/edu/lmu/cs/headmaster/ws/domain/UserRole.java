@@ -45,6 +45,7 @@ public class UserRole implements Serializable {
 
     // For compatibility with Tomcat's JDBCRealm, we store the role *name* and
     // not its ID.
+    @XmlTransient
     public String getRolename() {
         return role.name().toLowerCase();
     }

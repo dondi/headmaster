@@ -39,6 +39,35 @@ public class UserServiceTest extends ServiceTest {
     }
 
     @Test
+    public void testGetUserByLogin() {
+        // The test fixture does not contain the testuser, so we need to create
+        // it first (we assume here that creation works properly; verifying
+        // *that* is the job of other unit tests).
+        User user = DomainObjectUtils.createUserObject("testuser", "testuser@headmaster.test",
+                "testpassword", Role.STUDENT);
+        ws.path("users").post(user);
+
+        // Now we test.
+        User responseUser = ws.path("users/login/testuser")
+                .get(ClientResponse.class)
+                .getEntity(User.class);
+        Assert.assertEquals(user.getLogin(), responseUser.getLogin());
+        Assert.assertEquals(user.getEmail(), responseUser.getEmail());
+        Assert.assertEquals(user.isActive(), responseUser.isActive());
+        Assert.assertEquals(1, responseUser.getRoles().size());
+        Assert.assertEquals(
+            user.getRoles().get(0).getRole(),
+            responseUser.getRoles().get(0).getRole()
+        );
+
+        // Per our database fixture, we know the user ID to expect.
+        Assert.assertEquals(Long.valueOf(1L), responseUser.getId());
+
+        // The exception: challenge should not ride along.
+        Assert.assertNull(responseUser.getChallenge());
+    }
+
+    @Test
     public void testCreateUser() {
         // First, create the user.
         User user = DomainObjectUtils.createUserObject("teacher", "teacher@school.edu", "password",
