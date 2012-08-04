@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import edu.lmu.cs.headmaster.ws.domain.Role;
 import edu.lmu.cs.headmaster.ws.domain.User;
+import edu.lmu.cs.headmaster.ws.util.ApplicationContextTest;
 import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 
 public class UserDaoTest extends ApplicationContextTest {

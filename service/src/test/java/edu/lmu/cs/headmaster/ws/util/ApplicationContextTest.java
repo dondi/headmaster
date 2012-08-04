@@ -1,4 +1,4 @@
-package edu.lmu.cs.headmaster.ws.dao;
+package edu.lmu.cs.headmaster.ws.util;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
