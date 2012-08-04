@@ -45,4 +45,35 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
+    <!--
+        Allow access only to valid users.  We're not restricting access to services by roles here
+        in the web.xml.  Instead, we will be using authorization annotations within the service
+        classes.
+    -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Whole application access</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <!-- Set to NONE for HTTP, or CONFIDENTIAL for HTTPS -->
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <!--
+        Basic Auth is okay here because the web services are only being called by the various web
+        applications' servers and are not accessible by users (of the webapp).  Of course, this
+        could be changed to DIGEST or CLIENT_CERT later.
+    -->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
+
+    <security-role>
+        <role-name>*</role-name>
+    </security-role>
 </web-app>
