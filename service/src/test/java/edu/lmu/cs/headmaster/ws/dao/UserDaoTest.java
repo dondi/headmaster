@@ -7,7 +7,7 @@ import edu.lmu.cs.headmaster.ws.domain.Role;
 import edu.lmu.cs.headmaster.ws.domain.User;
 import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 
-public class UserDaoTest extends DaoTest {
+public class UserDaoTest extends ApplicationContextTest {
 
     private UserDao userDao = (UserDao)applicationContext.getBean("userDao");
 
