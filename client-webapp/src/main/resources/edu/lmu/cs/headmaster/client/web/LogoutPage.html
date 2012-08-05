@@ -20,19 +20,26 @@
     </head>
     <body>
         <div class="container">
-            <h2><wicket:message key="message.main">You have logged out of
-                Headmaster.</wicket:message></h2>
-    
-            <p><wicket:message key="message.instructions">For security purposes,
-                please close this window.</wicket:message></p>
-    
-            <wicket:link>
-                <p class="lead"><wicket:message key="message.relogin.prefix">Click</wicket:message>
-                    <b><a href="MainMenuPage.html" alt="Headmaster Home"><wicket:message
-                            key="message.relogin.link">here</wicket:message></a></b>
-                    <wicket:message key="message.relogin.suffix">to login
-                        again.</wicket:message></p>
-            </wicket:link>
+            <div class="row">
+                <div class="span6 offset1">
+                    <h2><wicket:message key="message.main">You have logged out of
+                        Headmaster.</wicket:message></h2>
+            
+                    <p><wicket:message key="message.instructions">For security purposes,
+                        please close this window.</wicket:message></p>
+            
+                    <wicket:link>
+                        <p class="lead">
+                            <wicket:message key="message.relogin.prefix">Click</wicket:message>
+                            <strong><a href="MainMenuPage.html" alt="Headmaster Home">
+                                <wicket:message key="message.relogin.link">here</wicket:message>
+                            </a></strong>
+                            <wicket:message key="message.relogin.suffix">to login
+                                again.</wicket:message>
+                        </p>
+                    </wicket:link>
+                </div>
+            </div>
         </div>
     </body>
 </html>
