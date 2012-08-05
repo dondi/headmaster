@@ -2,21 +2,37 @@
 
 <html>
     <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title><wicket:message key="title">Headmaster Logout</wicket:message></title>
-    </head>
-    <body>
-        <h3><wicket:message key="message.main">You have logged out of
-                Headmaster.</wicket:message></h3>
 
-        <p><wicket:message key="message.instructions">For security purposes, please close this
-                window.</wicket:message></p>
+        <link rel="stylesheet"
+                href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css"/>
 
         <wicket:link>
-            <p><wicket:message key="message.relogin.prefix">Click</wicket:message>
-                <b><a href="MainMenuPage.html"
-                        alt="Headmaster Home"><wicket:message
-                                key="message.relogin.link">here</wicket:message></a></b>
-                <wicket:message key="message.relogin.suffix">to login again.</wicket:message></p>
+            <link rel="stylesheet" href="css/login.css" />
         </wicket:link>
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="container">
+            <h2><wicket:message key="message.main">You have logged out of
+                Headmaster.</wicket:message></h2>
+    
+            <p><wicket:message key="message.instructions">For security purposes,
+                please close this window.</wicket:message></p>
+    
+            <wicket:link>
+                <p class="lead"><wicket:message key="message.relogin.prefix">Click</wicket:message>
+                    <b><a href="MainMenuPage.html" alt="Headmaster Home"><wicket:message
+                            key="message.relogin.link">here</wicket:message></a></b>
+                    <wicket:message key="message.relogin.suffix">to login
+                        again.</wicket:message></p>
+            </wicket:link>
+        </div>
     </body>
 </html>

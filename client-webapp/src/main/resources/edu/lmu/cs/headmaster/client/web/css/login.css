@@ -11,3 +11,13 @@ body {
 #IEMessage {
     display: none;
 }
+
+/* Error messages. */
+#loginPanel ul {
+    color: rgb(168, 46, 53);
+    font-size: 120%;
+    font-weight: bold;
+    list-style-type: none;
+    margin: 0 0 1em 0;
+    padding: 0;
+}
