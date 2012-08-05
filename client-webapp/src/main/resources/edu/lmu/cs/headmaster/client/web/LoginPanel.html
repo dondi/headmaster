@@ -6,21 +6,23 @@
 <html xmlns:wicket>
 <body>
     <wicket:panel>
-        <span wicket:id="feedback"/>
-        <form wicket:id="signInForm" class="loginPanel">
-            <div><span><label for="username"><wicket:message key="prompt.username"/>:</label></span>
-                <span><input wicket:id="username" id="username" type="text"
-                        value="foo@goo.moo" size="30"/></span></div>
-            <div><span><label for="password"><wicket:message key="prompt.password"/>:</label></span>
-                <span><input wicket:id="password" id="password" type="password"
-                        value="password" size="30"/></span></div>
-            <div wicket:id="rememberMeRow"><span></span>
-                <span><input wicket:id="rememberMe" id="rememberMe" type="checkbox"/>
-                    <label for="rememberMe"><wicket:message
-                            key="prompt.rememberMe"/></label></span></div>
-            <div><span></span>
-                <span><input type="submit" name="submit" value="Login"/>
-                    <input type="reset" value="Reset"/></span></div>
+        <div wicket:id="feedback"/>
+
+        <form wicket:id="signInForm">
+            <label for="username"><h3><wicket:message key="prompt.username"/></h3></label>
+            <input wicket:id="username" id="username" type="text"/>
+
+            <label for="password"><h3><wicket:message key="prompt.password"/></h3></label>
+            <input wicket:id="password" id="password" type="password"/>
+
+            <label class="checkbox" wicket:id="rememberMeRow">
+                <input wicket:id="rememberMe" id="rememberMe" type="checkbox"/>
+                <wicket:message key="prompt.rememberMe"/>
+            </label>
+
+            <button type="submit" class="btn btn-primary btn-large">
+                <wicket:message key="button.login"/>
+            </button>
         </form>
     </wicket:panel>
 </body>

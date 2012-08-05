@@ -2,36 +2,57 @@
 
 <html>
     <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Welcome to Headmaster!</title>
+
+        <link rel="stylesheet"
+                href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css"/>
 
         <wicket:link>
             <link rel="stylesheet" href="css/login.css" />
         </wicket:link>
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
     </head>
     <body>
-        <div id="IEMessage">
-            Headmaster requires the Google Chrome Frame plugin to be compatible with Microsoft
-            Internet Explorer.  Please follow the instructions in the prompt below to install the
-            plugin before using Headmaster.
-        </div>
-        
-        <div id="loginSplash">
-            <br/>
-            
-            <div id="loginPanel" wicket:id="loginPanel">
-                <ul>
-                    <li>This is a test error message.</li>
-                </ul>
-                <table>
-                    <tbody><tr><td>(login form goes here)</td></tr></tbody>
-                </table>
+        <div class="container">
+            <h1>Welcome to Headmaster!</h1>
+
+            <p id="IEMessage">Headmaster requires the Google Chrome
+                Frame plugin to be compatible with Microsoft Internet
+                Explorer. Please follow the instructions in the prompt below
+                to install the plugin before using Headmaster.</p>
+
+            <div class="row" id="loginContainer">
+                <div class="span6 offset1" id="loginPanel" wicket:id="loginPanel">
+                    <ul>
+                        <li>This is a test error message.</li>
+                    </ul>
+                    <table>
+                        <tbody><tr><td>(login form goes here)</td></tr></tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <wicket:link>
-            <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-            <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-        </wicket:link>
+        <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-transition.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-alert.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-modal.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-dropdown.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-scrollspy.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-tab.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-tooltip.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-popover.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-button.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-collapse.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-carousel.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-typeahead.js"></script>
 
         <script>
             // We check to make sure that if the user is using IE, they have the Google Chrome Frame plugin installed.
