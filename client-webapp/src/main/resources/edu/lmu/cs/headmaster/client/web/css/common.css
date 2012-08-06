@@ -1,3 +1,7 @@
 @charset "UTF-8";
 
-/* Nothing here for now, but it's good to have the spot available. */
+/* Bootstrap tweak for proper spacing of "selected" navbar dropdown items. */
+.dropdown-menu span > em {
+    display: block;
+    padding: 3px 15px;
+}
