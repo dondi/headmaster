@@ -1,5 +1,9 @@
 @import url("common.css");
 
+body {
+    padding-top: 60px;
+}
+
 #loginContainer {
     margin-top: 30px;
 }
