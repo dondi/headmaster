@@ -17,6 +17,10 @@
         <!--[if lt IE 9]>
           <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+
+        <!-- We are forced to at least have jQuery in the head so that child pages may load up
+             JavaScript that can be run after the document has been fully loaded. -->
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     </head>
     <body>
         <wicket:link>
@@ -95,7 +99,6 @@
 
         <wicket:child/>
 
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-transition.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-alert.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-modal.js"></script>

@@ -1,0 +1,72 @@
+<!doctype html>
+
+<!-- Note: Content outside wicket:extend is for local, file-based development and design only, and
+     will be replaced by ClientPage content when deployed. -->
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Headmaster: New Event</title>
+
+        <link rel="stylesheet"
+                href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css"/>
+
+        <link rel="stylesheet" href="css/client.css" />
+
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    </head>
+    <body>
+        <wicket:extend>
+            <div class="container">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <legend>New Event</legend>
+                        <div class="control-group">
+                            <label class="control-label" for="event-title">
+                                <wicket:message key="prompt.title">Event Title</wicket:message>
+                            </label>
+                            <div class="controls">
+                                <input class="input-xlarge" type="text" id="event-title"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="event-description">
+                                <wicket:message key="prompt.description">Event Description</wicket:message>
+                            </label>
+                            <div class="controls">
+                                <textarea class="input-xlarge" id="event-description" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="pull-right">
+                                <button class="btn" id="event-cancel">
+                                    <wicket:message key="button.cancel">Cancel</wicket:message>
+                                </button>
+                                <button class="btn btn-primary" id="event-save">
+                                    <wicket:message key="button.save">Save</wicket:message>
+                                </button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <wicket:link>
+                <script src="js/event-creation.js"></script>
+            </wicket:link>
+        </wicket:extend>
+
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-transition.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-alert.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-modal.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-dropdown.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-scrollspy.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-tab.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-tooltip.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-popover.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-button.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-collapse.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-carousel.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-typeahead.js"></script>
+    </body>
+</html>
