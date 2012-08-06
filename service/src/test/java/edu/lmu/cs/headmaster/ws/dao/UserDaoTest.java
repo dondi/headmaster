@@ -43,18 +43,18 @@ public class UserDaoTest extends ApplicationContextTest {
     @Test
     public void testCreateUser() {
         // First, create the user.
-        User user = DomainObjectUtils.createUserObject("teacher", "teacher@school.edu", "password",
-                    Role.FACULTY, Role.STAFF);
+        User userToCreate = DomainObjectUtils.createUserObject("teacher", "teacher@school.edu",
+                "password", Role.FACULTY, Role.STAFF);
 
         // Now, save it.
-        userDao.createUser(user);
+        userDao.createUser(userToCreate);
 
         // Reload the user that was just created. Because we know what is in the
         // test fixture, we know what ID to expect.
         User createdUser = userDao.getUserById(1L);
         Assert.assertEquals(Long.valueOf(1L), createdUser.getId());
-        Assert.assertEquals(user.getLogin(), createdUser.getLogin());
-        Assert.assertEquals(user.getEmail(), createdUser.getEmail());
+        Assert.assertEquals(userToCreate.getLogin(), createdUser.getLogin());
+        Assert.assertEquals(userToCreate.getEmail(), createdUser.getEmail());
         Assert.assertEquals(2, createdUser.getRoles().size());
 
         // We do not make assumptions on which role comes first.

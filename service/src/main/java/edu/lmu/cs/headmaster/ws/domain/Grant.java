@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -27,6 +28,7 @@ import edu.lmu.cs.headmaster.ws.util.DateTimeXmlAdapter;
  * institution.
  */
 @Entity
+@Table(name="researchgrant")
 @XmlRootElement
 public class Grant {
 

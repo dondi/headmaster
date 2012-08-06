@@ -3,6 +3,9 @@ package edu.lmu.cs.headmaster.ws.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
+import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Role;
 import edu.lmu.cs.headmaster.ws.domain.User;
 import edu.lmu.cs.headmaster.ws.domain.UserRole;
@@ -31,6 +34,17 @@ public class DomainObjectUtils {
         
         user.setRoles(userRoles);
         return user;
+    }
+
+    /**
+     * Helper factory method for creating new event objects.
+     */
+    public static Event createEventObject(String title, String description, DateTime dateTime) {
+        Event event = new Event();
+        event.setTitle(title);
+        event.setDescription(description);
+        event.setDateTime(dateTime);
+        return event;
     }
 
 }

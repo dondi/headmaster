@@ -39,33 +39,33 @@ public class Student {
     private String email;
     private String campusBox;
     private String college;
-    private boolean inLivingLearningCommunity;
+    private Boolean inLivingLearningCommunity;
     private String advisor;
-    private int entryYear;
+    private Integer entryYear;
     private DateTime honorsEntryDate;
-    private int expectedGraduationYear;
-    private boolean transferStudent;
+    private Integer expectedGraduationYear;
+    private Boolean transferStudent;
     private String degree;
     private List<String> majors = new ArrayList<String>();
     private List<String> minors = new ArrayList<String>();
-    private boolean hasStudiedAbroad;
-    private double highSchoolGpa;
-    private double actScore;
-    private int satVerbalScore;
-    private int satMathScore;
-    private int satWritingScore;
+    private Boolean hasStudiedAbroad;
+    private Double highSchoolGpa;
+    private Double actScore;
+    private Integer satVerbalScore;
+    private Integer satMathScore;
+    private Integer satWritingScore;
     private String address;
     private String city;
     private String state;
     private String zip;
     private String mainPhone;
     private String cellPhone;
-    private double cumulativeGpa;
-    private boolean thesisInMajor;
+    private Double cumulativeGpa;
+    private Boolean thesisInMajor;
     private String thesisAdvisor;
     private String thesisCourse;
     private Term thesisTerm;
-    private int thesisYear;
+    private Integer thesisYear;
     private String thesisTitle;
     private String academicStatus;
     private List<GPA> grades = new ArrayList<GPA>();
@@ -143,11 +143,11 @@ public class Student {
         this.college = college;
     }
 
-    public boolean isInLivingLearningCommunity() {
+    public Boolean isInLivingLearningCommunity() {
         return inLivingLearningCommunity;
     }
 
-    public void setInLivingLearningCommunity(boolean inLivingLearningCommunity) {
+    public void setInLivingLearningCommunity(Boolean inLivingLearningCommunity) {
         this.inLivingLearningCommunity = inLivingLearningCommunity;
     }
 
@@ -160,11 +160,11 @@ public class Student {
         this.advisor = advisor;
     }
 
-    public int getEntryYear() {
+    public Integer getEntryYear() {
         return entryYear;
     }
 
-    public void setEntryYear(int entryYear) {
+    public void setEntryYear(Integer entryYear) {
         this.entryYear = entryYear;
     }
 
@@ -178,19 +178,19 @@ public class Student {
         this.honorsEntryDate = honorsEntryDate;
     }
 
-    public int getExpectedGraduationYear() {
+    public Integer getExpectedGraduationYear() {
         return expectedGraduationYear;
     }
 
-    public void setExpectedGraduationYear(int expectedGraduationYear) {
+    public void setExpectedGraduationYear(Integer expectedGraduationYear) {
         this.expectedGraduationYear = expectedGraduationYear;
     }
 
-    public boolean isTransferStudent() {
+    public Boolean isTransferStudent() {
         return transferStudent;
     }
 
-    public void setTransferStudent(boolean transferStudent) {
+    public void setTransferStudent(Boolean transferStudent) {
         this.transferStudent = transferStudent;
     }
 
@@ -227,51 +227,51 @@ public class Student {
         this.minors = minors;
     }
 
-    public boolean isHasStudiedAbroad() {
+    public Boolean isHasStudiedAbroad() {
         return hasStudiedAbroad;
     }
 
-    public void setHasStudiedAbroad(boolean hasStudiedAbroad) {
+    public void setHasStudiedAbroad(Boolean hasStudiedAbroad) {
         this.hasStudiedAbroad = hasStudiedAbroad;
     }
 
-    public double getHighSchoolGpa() {
+    public Double getHighSchoolGpa() {
         return highSchoolGpa;
     }
 
-    public void setHighSchoolGpa(double highSchoolGpa) {
+    public void setHighSchoolGpa(Double highSchoolGpa) {
         this.highSchoolGpa = highSchoolGpa;
     }
 
-    public double getActScore() {
+    public Double getActScore() {
         return actScore;
     }
 
-    public void setActScore(double actScore) {
+    public void setActScore(Double actScore) {
         this.actScore = actScore;
     }
 
-    public int getSatVerbalScore() {
+    public Integer getSatVerbalScore() {
         return satVerbalScore;
     }
 
-    public void setSatVerbalScore(int satVerbalScore) {
+    public void setSatVerbalScore(Integer satVerbalScore) {
         this.satVerbalScore = satVerbalScore;
     }
 
-    public int getSatMathScore() {
+    public Integer getSatMathScore() {
         return satMathScore;
     }
 
-    public void setSatMathScore(int satMathScore) {
+    public void setSatMathScore(Integer satMathScore) {
         this.satMathScore = satMathScore;
     }
 
-    public int getSatWritingScore() {
+    public Integer getSatWritingScore() {
         return satWritingScore;
     }
 
-    public void setSatWritingScore(int satWritingScore) {
+    public void setSatWritingScore(Integer satWritingScore) {
         this.satWritingScore = satWritingScore;
     }
 
@@ -325,19 +325,19 @@ public class Student {
         this.cellPhone = cellPhone;
     }
 
-    public double getCumulativeGpa() {
+    public Double getCumulativeGpa() {
         return cumulativeGpa;
     }
 
-    public void setCumulativeGpa(double cumulativeGpa) {
+    public void setCumulativeGpa(Double cumulativeGpa) {
         this.cumulativeGpa = cumulativeGpa;
     }
 
-    public boolean isThesisInMajor() {
+    public Boolean isThesisInMajor() {
         return thesisInMajor;
     }
 
-    public void setThesisInMajor(boolean thesisInMajor) {
+    public void setThesisInMajor(Boolean thesisInMajor) {
         this.thesisInMajor = thesisInMajor;
     }
 
@@ -366,11 +366,11 @@ public class Student {
         this.thesisTerm = thesisTerm;
     }
 
-    public int getThesisYear() {
+    public Integer getThesisYear() {
         return thesisYear;
     }
 
-    public void setThesisYear(int thesisYear) {
+    public void setThesisYear(Integer thesisYear) {
         this.thesisYear = thesisYear;
     }
 
@@ -401,7 +401,6 @@ public class Student {
     }
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "attendees")
-    @OrderColumn
     public List<Event> getAttendance() {
         return attendance;
     }
