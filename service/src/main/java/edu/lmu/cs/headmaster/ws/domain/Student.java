@@ -3,12 +3,16 @@ package edu.lmu.cs.headmaster.ws.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -20,6 +24,9 @@ import org.joda.time.DateTime;
 
 import edu.lmu.cs.headmaster.ws.util.DateTimeXmlAdapter;
 
+/**
+ * A Student is someone who is studying at a particular institution.
+ */
 @Entity
 @XmlRootElement
 public class Student {
@@ -61,6 +68,9 @@ public class Student {
     private int thesisYear;
     private String thesisTitle;
     private String academicStatus;
+    private List<GPA> grades = new ArrayList<GPA>();
+    private List<Event> attendance = new ArrayList<Event>();
+    private List<Grant> grants = new ArrayList<Grant>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -196,6 +206,7 @@ public class Student {
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @Lob
+    @OrderColumn
     public List<String> getMajors() {
         return majors;
     }
@@ -207,6 +218,7 @@ public class Student {
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @Lob
+    @OrderColumn
     public List<String> getMinors() {
         return minors;
     }
@@ -377,6 +389,34 @@ public class Student {
 
     public void setAcademicStatus(String academicStatus) {
         this.academicStatus = academicStatus;
+    }
+
+    @OneToMany
+    public List<GPA> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<GPA> grades) {
+        this.grades = grades;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "attendees")
+    @OrderColumn
+    public List<Event> getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(List<Event> attendance) {
+        this.attendance = attendance;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "students")
+    public List<Grant> getGrants() {
+        return grants;
+    }
+
+    public void setGrants(List<Grant> grants) {
+        this.grants = grants;
     }
 
 }

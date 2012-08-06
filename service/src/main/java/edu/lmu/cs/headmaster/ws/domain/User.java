@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -20,6 +21,9 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+/**
+ * A user is an entity who may interact with Headmaster.
+ */
 @Entity
 @Table(name="serviceuser")
 @XmlRootElement
@@ -32,6 +36,7 @@ public class User implements Serializable {
     private Boolean active;
     private String challengeRequest;
     private List<UserRole> roles;
+    private Student student;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -102,6 +107,19 @@ public class User implements Serializable {
 
     public void setRoles(List<UserRole> roles) {
         this.roles = roles;
+    }
+
+    /**
+     * A user *may* be associated with a student. Coupled with a STUDENT role,
+     * this facilitates a student-centric view of the application.
+     */
+    @OneToOne(cascade = CascadeType.ALL)
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
 }
