@@ -1,8 +1,4 @@
-@charset "UTF-8";
-
-body {
-    padding-top: 60px;
-}
+@import url("common.css")
 
 #loginContainer {
     margin-top: 30px;
