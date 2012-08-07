@@ -36,7 +36,7 @@ public class EventDaoTest extends ApplicationContextTest {
     }
 
     @Test
-    public void testGetEventByDates() {
+    public void testGetEventsByDate() {
         // Supply a date range that encloses the known event(s) in the fixture.
         List<Event> events = eventDao.getEventsByDate(
             new DateTime(2012, 6, 1, 0, 0, 0, 0),

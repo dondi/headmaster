@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
@@ -86,6 +87,40 @@ public class EventServiceTest extends ServiceTest {
             "400 " + EventService.EVENT_QUERY_PARAMETERS_BAD,
             response.getEntity(String.class)
         );
+    }
+
+    @Test
+    public void testGetEventsByDate() {
+        // Supply a date range that encloses the known event(s) in the fixture.
+        List<Event> events = ws.path("events")
+                .queryParam("from", "2012-06-01")
+                .queryParam("to", "2012-07-31 23:59:59")
+                .get(ClientResponse.class)
+                .getEntity(new GenericType<List<Event>>(){});
+
+        // There should only be one event there.  We'll check just the ID.
+        Assert.assertEquals(1, events.size());
+        Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
+
+        // Now supply a date range that is entirely before the fixture event(s);
+        events = ws.path("events")
+                .queryParam("from", "2012-01-01")
+                .queryParam("to", "2012-06-30 23:59:59")
+                .get(ClientResponse.class)
+                .getEntity(new GenericType<List<Event>>(){});
+
+        // Now there should be nothing.
+        Assert.assertEquals(0, events.size());
+
+        // Finally, we go entirely after the fixture event(s).
+        events = ws.path("events")
+                .queryParam("from", "2012-08-01 13:00:00")
+                .queryParam("to", "2012-09-30 23:59:59")
+                .get(ClientResponse.class)
+                .getEntity(new GenericType<List<Event>>(){});
+
+        // Now there should be nothing.
+        Assert.assertEquals(0, events.size());
     }
 
     @Test
