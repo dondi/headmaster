@@ -36,6 +36,40 @@ public class EventDaoTest extends ApplicationContextTest {
     }
 
     @Test
+    public void testGetEventByDates() {
+        // Supply a date range that encloses the known event(s) in the fixture.
+        List<Event> events = eventDao.getEventsByDate(
+            new DateTime(2012, 6, 1, 0, 0, 0, 0),
+            new DateTime(2012, 7, 31, 23, 59, 59, 999),
+            0, 10
+        );
+
+        // There should only be one event there.  We'll check just the ID.
+        Assert.assertEquals(1, events.size());
+        Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
+
+        // Now supply a date range that is entirely before the fixture event(s);
+        events = eventDao.getEventsByDate(
+            new DateTime(2012, 1, 1, 0, 0, 0, 0),
+            new DateTime(2012, 6, 30, 23, 59, 59, 999),
+            0, 10
+        );
+
+        // Now there should be nothing.
+        Assert.assertEquals(0, events.size());
+
+        // Finally, we go entirely after the fixture event(s).
+        events = eventDao.getEventsByDate(
+            new DateTime(2012, 8, 1, 0, 0, 0, 0),
+            new DateTime(2012, 9, 30, 23, 59, 59, 999),
+            0, 10
+        );
+
+        // Now there should be nothing.
+        Assert.assertEquals(0, events.size());
+    }
+
+    @Test
     public void testCreateEventWithoutStudents() {
         // Create an id-less event.
         Event eventToCreate = DomainObjectUtils.createEventObject(

@@ -2,6 +2,8 @@ package edu.lmu.cs.headmaster.ws.dao;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import edu.lmu.cs.headmaster.ws.domain.Event;
 
 /**
@@ -20,6 +22,13 @@ public interface EventDao {
      * <code>max</code> results.
      */
     List<Event> getEvents(String query, int skip, int max);
+
+    /**
+     * Returns a paginated set of events within the given date range, skipping
+     * the first <code>skip</code> results and returning at most
+     * <code>max</code> results.
+     */
+    List<Event> getEventsByDate(DateTime startDate, DateTime stopDate, int skip, int max);
 
     /**
      * Saves the given event, which should have a null id.

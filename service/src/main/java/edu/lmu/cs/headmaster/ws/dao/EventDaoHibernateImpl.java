@@ -2,6 +2,7 @@ package edu.lmu.cs.headmaster.ws.dao;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
@@ -18,6 +19,12 @@ public class EventDaoHibernateImpl extends HibernateDaoSupport implements EventD
 
     @Override
     public List<Event> getEvents(String query, int skip, int max) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<Event> getEventsByDate(DateTime startDate, DateTime stopDate, int skip, int max) {
         // TODO
         throw new UnsupportedOperationException();
     }
