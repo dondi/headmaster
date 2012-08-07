@@ -12,11 +12,17 @@
                 href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css"/>
 
         <link rel="stylesheet" href="lib/bootstrap-datepicker/datepicker.css"/>
-        <link rel="stylesheet" href="css/client.css" />
+        <link rel="stylesheet" href="css/client.css"/>
     </head>
     <body>
         <wicket:extend>
             <div class="container">
+                <div class="alert alert-success hide fade in" id="event-success">
+                    <h4 class="alert-heading">
+                        <wicket:message key="success.title">Event Created</wicket:message>
+                    </h4>
+                    <wicket:message key="success.message">The event has been saved.</wicket:message>
+                </div>
                 <form class="form-horizontal">
                     <fieldset>
                         <legend><wicket:message key="title">New Event</wicket:message></legend>

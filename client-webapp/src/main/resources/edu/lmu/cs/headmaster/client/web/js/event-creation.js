@@ -27,7 +27,15 @@ $(function () {
             url: Headmaster.serviceUri("events"),
             data: JSON.stringify(eventData),
             success: function () {
-                // TODO
+                $("#event-success").fadeIn();
+
+                // Clear the form in case more events are to be created.
+                $("form input, form textarea").val("");
+
+                // Dismiss the alert if the user doesn't do it first.
+                setTimeout(function () {
+                    $("#event-success").fadeOut();
+                }, 5000);
             },
             contentType: "application/json",
             dataType: "json"
