@@ -53,8 +53,8 @@ public class EventServiceTest extends ServiceTest {
         // The free-text and date range queries are (currently) mutually exclusive.
         ClientResponse response = ws.path("events")
                 .queryParam("q", "whatever")
-                .queryParam("startDate", "2012-06-01")
-                .queryParam("stopDate", "2012-12-01")
+                .queryParam("from", "2012-06-01")
+                .queryParam("to", "2012-12-01")
                 .get(ClientResponse.class);
 
         // We expect error 400, EVENT_QUERY_PARAMETERS_BAD.
@@ -66,7 +66,7 @@ public class EventServiceTest extends ServiceTest {
 
         // Another combination: null q but incomplete dates.
         response = ws.path("events")
-                .queryParam("stopDate", "2012-12-01")
+                .queryParam("to", "2012-12-01")
                 .get(ClientResponse.class);
 
         // We expect error 400, EVENT_QUERY_PARAMETERS_BAD.
