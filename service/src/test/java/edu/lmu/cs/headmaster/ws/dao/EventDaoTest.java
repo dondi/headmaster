@@ -7,9 +7,6 @@ import junit.framework.Assert;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
-
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.util.ApplicationContextTest;

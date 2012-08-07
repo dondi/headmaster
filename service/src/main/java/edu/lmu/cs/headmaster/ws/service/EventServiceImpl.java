@@ -38,9 +38,9 @@ public class EventServiceImpl extends AbstractService implements EventService {
         boolean dateQuery = (query == null) && (startDate != null) && (stopDate != null); 
         validate(textQuery || dateQuery, Response.Status.BAD_REQUEST, EVENT_QUERY_PARAMETERS_BAD);
 
-        // We'll do the queries next.
+        // Issue the query according to the determined type.
         if (textQuery) {
-            throw new UnsupportedOperationException();
+            return eventDao.getEvents(query, skip, max);
         } else { // Sure to be dateQuery at this point.
             Interval interval = validateInterval(startDate, stopDate);
             return eventDao.getEventsByDate(interval.getStart(), interval.getEnd(), skip, max);

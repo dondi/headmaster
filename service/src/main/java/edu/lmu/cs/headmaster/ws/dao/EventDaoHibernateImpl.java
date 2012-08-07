@@ -18,9 +18,14 @@ public class EventDaoHibernateImpl extends HibernateDaoSupport implements EventD
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Event> getEvents(String query, int skip, int max) {
-        // TODO
-        throw new UnsupportedOperationException();
+        return (List<Event>)getSession().createQuery(
+            "from Event event where event.title like :term or event.description like :term order by event.dateTime")
+                .setParameter("term", "%" + query + "%")
+                .setFirstResult(skip)
+                .setMaxResults(max)
+                .list();
     }
 
     @Override
