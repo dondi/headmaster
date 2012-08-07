@@ -9,7 +9,30 @@ $(function () {
     });
 
     $("#event-save").click(function (event) {
-        console.log("save");
+        // Grab the data from the web page.
+        var eventData = {
+            dateTime: Date.parse($("#event-date").val()),
+            title: $("#event-title").val(),
+            description: $("#event-description").val()
+        };
+
+        // Convert the date into a string that the service will parse correctly.
+        if (eventData.dateTime) {
+            eventData.dateTime = eventData.dateTime.toString("yyyy-MM-dd");
+        }
+
+        // Ajax call.
+        $.ajax({
+            type: "POST",
+            url: Headmaster.serviceUri("events"),
+            data: JSON.stringify(eventData),
+            success: function () {
+                // TODO
+            },
+            contentType: "application/json",
+            dataType: "json"
+        });
+
         event.preventDefault();
     });
 

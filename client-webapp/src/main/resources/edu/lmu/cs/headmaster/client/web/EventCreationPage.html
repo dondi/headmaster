@@ -13,8 +13,6 @@
 
         <link rel="stylesheet" href="lib/bootstrap-datepicker/datepicker.css"/>
         <link rel="stylesheet" href="css/client.css" />
-
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     </head>
     <body>
         <wicket:extend>
@@ -28,7 +26,8 @@
                             </label>
                             <div class="controls">
                                 <input class="input-xlarge" type="text" id="event-date"
-                                        data-date-format="m/d/yyyy"/>
+                                        data-date-format="m/d/yyyy"
+                                        placeholder="m/d/yyyy"/>
                             </div>
                         </div>
                         <div class="control-group">
@@ -67,6 +66,8 @@
             </wicket:link>
         </wicket:extend>
 
+        <script src="js/headmaster-offline.js"></script>
+
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-transition.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-alert.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-modal.js"></script>
@@ -79,6 +80,7 @@
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-collapse.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-carousel.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-typeahead.js"></script>
+        <script src="lib/date.js"></script>
         <script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
     </body>
 </html>

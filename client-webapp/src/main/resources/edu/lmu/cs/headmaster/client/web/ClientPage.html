@@ -104,6 +104,34 @@
              JavaScript can then be read.  The following libraries can then come in after.
              (suggested jQuery CDN URL: http://code.jquery.com/jquery-latest.min.js) -->
 
+        <script>
+            /*
+             * Local module for universally-used client functions.
+             *
+             * This code only gets included when pages are rendered by Wicket.  To allow for
+             * both test-by-file and test-by-server setups, do the following:
+             * 
+             * 1) Copy the SAMPLE-headmaster-offline.js file to
+             *    src/main/resources/edu/lmu/cs/headmaster/client/web/js
+             *    as headmaster-offline.js
+             * 
+             * 2) Edit that file to reflect the root of the web service (in the sample, it is
+             *    http://localhost:8080/headmaster)
+             * 
+             * 3) Include a script element linking to js/headmaster-offline.js in any HTML file
+             *    that might need it and with which you would like to work locally.  This script
+             *    element must be located *outside* the <wicket:head> and <wicket:extend> elements.
+             *
+             * Note that jQuery is assumed to be available.
+             */
+             window.Headmaster = $.extend(window.Headmaster || {}, {
+                 serviceUri: function (serviceCall) {
+                    // Encode the service call tail because it gets passed as a parameter.
+                     return "/headmaster-client/relay?s=" + encodeURIComponent(serviceCall);
+                 }
+             });
+        </script>
+
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-transition.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-alert.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-modal.js"></script>
@@ -117,6 +145,7 @@
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-carousel.js"></script>
         <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-typeahead.js"></script>
         <wicket:link>
+            <script src="lib/date.js"></script>
             <script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
         </wicket:link>
     </body>
