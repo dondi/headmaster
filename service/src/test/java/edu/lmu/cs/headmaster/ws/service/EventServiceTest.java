@@ -119,6 +119,38 @@ public class EventServiceTest extends ServiceTest {
                 .get(ClientResponse.class)
                 .getEntity(new GenericType<List<Event>>(){});
 
+        // Again, there should be nothing.
+        Assert.assertEquals(0, events.size());
+    }
+
+    @Test
+    public void testGetEventsByTerm() {
+        // Use a text query that can be found in the event title.
+        List<Event> events = ws.path("events")
+                .queryParam("q", "mmit")
+                .get(ClientResponse.class)
+                .getEntity(new GenericType<List<Event>>(){});
+
+        // There should only be one event there.  We'll check just the ID.
+        Assert.assertEquals(1, events.size());
+        Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
+
+        // Do another one with a term in the description.
+        events = ws.path("events")
+                .queryParam("q", "The big")
+                .get(ClientResponse.class)
+                .getEntity(new GenericType<List<Event>>(){});
+
+        // We should get the same event back.
+        Assert.assertEquals(1, events.size());
+        Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
+
+        // Finally, we go with a term that should not match anything.
+        events = ws.path("events")
+                .queryParam("q", "blarg")
+                .get(ClientResponse.class)
+                .getEntity(new GenericType<List<Event>>(){});
+
         // Now there should be nothing.
         Assert.assertEquals(0, events.size());
     }

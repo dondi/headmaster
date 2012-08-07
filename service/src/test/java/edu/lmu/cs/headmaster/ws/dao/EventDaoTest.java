@@ -7,6 +7,9 @@ import junit.framework.Assert;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
+
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.util.ApplicationContextTest;
@@ -64,6 +67,29 @@ public class EventDaoTest extends ApplicationContextTest {
             new DateTime(2012, 9, 30, 23, 59, 59, 999),
             0, 10
         );
+
+        // Now there should be nothing.
+        Assert.assertEquals(0, events.size());
+    }
+
+    @Test
+    public void testGetEventsByTerm() {
+        // Use a text query that can be found in the event title.
+        List<Event> events = eventDao.getEvents("mmit", 0, 10);
+
+        // There should only be one event there.  We'll check just the ID.
+        Assert.assertEquals(1, events.size());
+        Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
+
+        // Do another one with a term in the description.
+        events = eventDao.getEvents("The big", 0, 10);
+
+        // We should get the same event back.
+        Assert.assertEquals(1, events.size());
+        Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
+
+        // Finally, we go with a term that should not match anything.
+        events = eventDao.getEvents("blarg", 0, 10);
 
         // Now there should be nothing.
         Assert.assertEquals(0, events.size());
