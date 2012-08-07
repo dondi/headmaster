@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.hibernate.annotations.LazyCollection;
@@ -392,6 +393,7 @@ public class Student {
     }
 
     @OneToMany
+    @XmlTransient
     public List<GPA> getGrades() {
         return grades;
     }
@@ -401,6 +403,7 @@ public class Student {
     }
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "attendees")
+    @XmlTransient
     public List<Event> getAttendance() {
         return attendance;
     }
@@ -410,6 +413,7 @@ public class Student {
     }
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "students")
+    @XmlTransient
     public List<Grant> getGrants() {
         return grants;
     }

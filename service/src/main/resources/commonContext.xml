@@ -49,6 +49,12 @@
         <constructor-arg ref="studentDao"/>
     </bean>
 
+    <bean id="eventService"
+        class="edu.lmu.cs.headmaster.ws.service.EventServiceImpl">
+        <constructor-arg ref="userDao"/>
+        <constructor-arg ref="eventDao"/>
+    </bean>
+
     <bean id="userDaoImpl"
         class="edu.lmu.cs.headmaster.ws.dao.UserDaoHibernateImpl"
         autowire="byName"
