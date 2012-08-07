@@ -102,6 +102,7 @@ public class Headmaster extends AuthenticatedWebApplication {
         // URL customization.
         mountBookmarkablePage("login", LoginPage.class);
         mountBookmarkablePage("logout", LogoutPage.class);
+        mountBookmarkablePage("relay", ServiceRelayPage.class);
     }
 
 }

@@ -33,7 +33,7 @@ public class HeadmasterSession extends AuthenticatedWebSession {
         DefaultHttpClient httpClient = new DefaultHttpClient();
 
         String serviceUri = ((Headmaster)getApplication()).getServiceRoot() +
-            "users/login/" + username;
+                "users/login/" + username;
         getLogger().info("Authenticating with serviceUri: [" + serviceUri + "]");
 
         // Supply credentials.
@@ -52,10 +52,7 @@ public class HeadmasterSession extends AuthenticatedWebSession {
             String response = httpClient.execute(httpGet, responseHandler);
             
             // The response is JSON; parse it.
-            getLogger().debug("got response " + response);
             ServiceUser serviceUser = new ObjectMapper().readValue(response, ServiceUser.class);
-            getLogger().debug("found user " + serviceUser.login);
-            getLogger().debug("has roles " + serviceUser.roles);
             currentRoles = new Roles();
 
             // Include a catch-all for anyone with credentials.
@@ -65,7 +62,10 @@ public class HeadmasterSession extends AuthenticatedWebSession {
                 getLogger().debug("User [" + username + "] has role: [" + role + "]");
             }
 
-            // Authentication worked.
+            // Authentication worked. Save the values that will be needed for
+            // later service requests.
+            currentUsername = username;
+            currentPassword = password;
             return true;
         } catch(ClientProtocolException cpexc) {
             getLogger().error(cpexc.getMessage(), cpexc);
@@ -93,6 +93,22 @@ public class HeadmasterSession extends AuthenticatedWebSession {
     public void signOut() {
         super.signOut();
         clearUserData();
+    }
+
+    /**
+     * Returns the current username if the session is signed in.
+     */
+    public String getCurrentUsername() {
+        return isSignedIn() ? currentUsername : "";
+    }
+
+    /**
+     * Returns the current password if the session is signed in. Yes, this holds
+     * the user's password in memory somewhere. Ideally, some kind of token is
+     * kept, but not in a form as transparent as a password.
+     */
+    public String getCurrentPassword() {
+        return isSignedIn() ? currentPassword : "";
     }
 
     /**
@@ -127,6 +143,8 @@ public class HeadmasterSession extends AuthenticatedWebSession {
         public String role;
     }
 
+    private String currentUsername;
+    private String currentPassword;
     private Roles currentRoles;
 
 }

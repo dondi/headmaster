@@ -18,6 +18,14 @@ public abstract class ClientPage extends WebPage {
     }
 
     /**
+     * Relay call to the application. Mainly a shortcut, so wedon't have to code
+     * out ((Headmaster)getApplication()).getServiceRoot() all the time.
+     */
+    protected String getServiceRoot() {
+        return ((Headmaster)getApplication()).getServiceRoot();
+    }
+
+    /**
      * Convenience method for grabbing the logger.  This is not stored as an
      * instance variable because Wicket serializes web page classes and this
      * logger is not serializable.

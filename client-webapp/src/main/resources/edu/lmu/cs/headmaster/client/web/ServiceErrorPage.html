@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title><wicket:message key="title">Web Service Error</wicket:message></title>
+
+        <link rel="stylesheet"
+                href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css"/>
+
+        <style>body { padding-top: 60px; }</style>
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="container">
+            <div class="alert alert-error">
+                <h2><wicket:message key="message.main">Sorry, but Headmaster has encountered a
+                        problem.</wicket:message></h2>
+        
+                <p class="lead"><wicket:message key="message.details">The underlying Headmaster web
+                        service did not respond as expected.</wicket:message></p>
+        
+                <p><wicket:message key="message.instructions">Please examine the web service logs
+                        to determine what went wrong.</wicket:message></p>
+            </div>
+        </div>
+    </body>
+</html>
