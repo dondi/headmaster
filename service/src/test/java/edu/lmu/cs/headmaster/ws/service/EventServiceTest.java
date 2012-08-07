@@ -36,6 +36,19 @@ public class EventServiceTest extends ServiceTest {
     }
 
     @Test
+    public void testNonExistentEventById() {
+        // The fixture should not have this event.
+        ClientResponse response = ws.path("events/999999").get(ClientResponse.class);
+
+        // We expect error 404, EVENT_NOT_FOUND.
+        Assert.assertEquals(404, response.getStatus());
+        Assert.assertEquals(
+            "404 " + EventService.EVENT_NOT_FOUND,
+            response.getEntity(String.class)
+        );
+    }
+
+    @Test
     public void testCreateEvent() {
         // Create an id-less event.
         Event eventToCreate = DomainObjectUtils.createEventObject(
