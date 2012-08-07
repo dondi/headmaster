@@ -27,10 +27,20 @@ public class EventServiceImpl extends AbstractService implements EventService {
     }
 
     @Override
-    public List<Event> getEvents(String query, int skip, int max) {
-        // TODO
+    public List<Event> getEvents(String query, String startDate, String stopDate, int skip,
+            int max) {
         logServiceCall();
         throw new UnsupportedOperationException();
+
+//        // First, check the parameters for the right query.
+//        boolean textQuery = (query != null) && (startDate == null) && (stopDate == null);
+//        boolean dateQuery = (query == null) && (startDate != null) && (stopDate != null); 
+//        validate(textQuery || dateQuery, Response.Status.BAD_REQUEST, EVENT_QUERY_PARAMETERS_BAD);
+//
+//        if (textQuery) {
+//            throw new UnsupportedOperationException();
+//        } else {
+//        }
     }
 
     @Override

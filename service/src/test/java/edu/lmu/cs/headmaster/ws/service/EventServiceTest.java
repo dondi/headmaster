@@ -49,6 +49,46 @@ public class EventServiceTest extends ServiceTest {
     }
 
     @Test
+    public void testGetEventsBadQuery() {
+        // The free-text and date range queries are (currently) mutually exclusive.
+        ClientResponse response = ws.path("events")
+                .queryParam("q", "whatever")
+                .queryParam("startDate", "2012-06-01")
+                .queryParam("stopDate", "2012-12-01")
+                .get(ClientResponse.class);
+
+        // We expect error 400, EVENT_QUERY_PARAMETERS_BAD.
+        Assert.assertEquals(400, response.getStatus());
+        Assert.assertEquals(
+            "400 " + EventService.EVENT_QUERY_PARAMETERS_BAD,
+            response.getEntity(String.class)
+        );
+
+        // Another combination: null q but incomplete dates.
+        response = ws.path("events")
+                .queryParam("stopDate", "2012-12-01")
+                .get(ClientResponse.class);
+
+        // We expect error 400, EVENT_QUERY_PARAMETERS_BAD.
+        Assert.assertEquals(400, response.getStatus());
+        Assert.assertEquals(
+            "400 " + EventService.EVENT_QUERY_PARAMETERS_BAD,
+            response.getEntity(String.class)
+        );
+
+        // One more: no parameters.
+        response = ws.path("events")
+                .get(ClientResponse.class);
+
+        // We expect error 400, EVENT_QUERY_PARAMETERS_BAD.
+        Assert.assertEquals(400, response.getStatus());
+        Assert.assertEquals(
+            "400 " + EventService.EVENT_QUERY_PARAMETERS_BAD,
+            response.getEntity(String.class)
+        );
+    }
+
+    @Test
     public void testCreateEvent() {
         // Create an id-less event.
         Event eventToCreate = DomainObjectUtils.createEventObject(

@@ -30,18 +30,29 @@ public interface EventService {
     String EVENT_OVERSPECIFIED = "event.overspecified";
     String EVENT_INCONSISTENT = "event.inconsistent";
     String EVENT_NOT_FOUND = "event.not.found";
+    String EVENT_QUERY_PARAMETERS_BAD = "event.query.parameters.bad";
 
     /**
-     * Returns events according to the search parameters
-     * 
-     * @param query the query
-     * @param skip the number of initial results to skip
-     * @param max the maximum number of results to display
+     * Returns events according to the search parameters. Two queries are
+     * possible: a generic "free text" search (q parameter) and a date range
+     * search (from and to parameters).  These queries are mutually exclusive.
+     *
+     * @param query
+     *            a free-text query
+     * @param startDate
+     *            the start date for a date range query
+     * @param stopDate
+     *            the stop date for a date range query
+     * @param skip
+     *            the number of initial results to skip
+     * @param max
+     *            the maximum number of results to display
      * 
      * @return the (paginated) set of events matching the query parameters
      */
     @GET
     List<Event> getEvents(@QueryParam("q") String query,
+            @QueryParam("from") String startDate, @QueryParam("to") String stopDate,
             @QueryParam("skip") @DefaultValue("0") int skip,
             @QueryParam("max") @DefaultValue("50") int max);
 
