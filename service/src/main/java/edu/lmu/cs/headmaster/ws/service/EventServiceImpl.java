@@ -6,6 +6,8 @@ import java.util.List;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.joda.time.Interval;
+
 import edu.lmu.cs.headmaster.ws.dao.EventDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Event;
@@ -39,8 +41,9 @@ public class EventServiceImpl extends AbstractService implements EventService {
         // We'll do the queries next.
         if (textQuery) {
             throw new UnsupportedOperationException();
-        } else {
-            throw new UnsupportedOperationException();
+        } else { // Sure to be dateQuery at this point.
+            Interval interval = validateInterval(startDate, stopDate);
+            return eventDao.getEventsByDate(interval.getStart(), interval.getEnd(), skip, max);
         }
     }
 

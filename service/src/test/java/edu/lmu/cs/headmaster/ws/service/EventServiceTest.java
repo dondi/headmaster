@@ -94,7 +94,7 @@ public class EventServiceTest extends ServiceTest {
         // Supply a date range that encloses the known event(s) in the fixture.
         List<Event> events = ws.path("events")
                 .queryParam("from", "2012-06-01")
-                .queryParam("to", "2012-07-31 23:59:59")
+                .queryParam("to", "2012-07-31T23:59:59")
                 .get(ClientResponse.class)
                 .getEntity(new GenericType<List<Event>>(){});
 
@@ -105,7 +105,7 @@ public class EventServiceTest extends ServiceTest {
         // Now supply a date range that is entirely before the fixture event(s);
         events = ws.path("events")
                 .queryParam("from", "2012-01-01")
-                .queryParam("to", "2012-06-30 23:59:59")
+                .queryParam("to", "2012-06-30T23:59:59")
                 .get(ClientResponse.class)
                 .getEntity(new GenericType<List<Event>>(){});
 
@@ -114,8 +114,8 @@ public class EventServiceTest extends ServiceTest {
 
         // Finally, we go entirely after the fixture event(s).
         events = ws.path("events")
-                .queryParam("from", "2012-08-01 13:00:00")
-                .queryParam("to", "2012-09-30 23:59:59")
+                .queryParam("from", "2012-08-01T13:00:00-08:00")
+                .queryParam("to", "2012-09-30T23:59:59-07:00")
                 .get(ClientResponse.class)
                 .getEntity(new GenericType<List<Event>>(){});
 
