@@ -106,6 +106,7 @@ public class Headmaster extends AuthenticatedWebApplication {
 
         mountBookmarkablePage("events", EventListPage.class);
         mountBookmarkablePage("events/new", EventCreationPage.class);
+        mountBookmarkablePage("events/search", EventSearchPage.class);
     }
 
 }
