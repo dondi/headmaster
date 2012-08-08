@@ -1,0 +1,67 @@
+<!doctype html>
+
+<!-- Note: Content outside wicket:extend is for local, file-based development and design only, and
+     will be replaced by ClientPage content when deployed. -->
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Headmaster: Event Search</title>
+
+        <link rel="stylesheet"
+                href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css"/>
+        <link rel="stylesheet" href="lib/bootstrap-datepicker/datepicker.css"/>
+
+        <link rel="stylesheet" href="css/client.css"/>
+    </head>
+    <body>
+        <wicket:extend>
+            <div class="container">
+                <div class="page-header">
+                    <h1><wicket:message key="title">Event Search</wicket:message></h1>
+                </div>
+
+                <form class="well form-search">
+                    <label for="search-field">
+                        <wicket:message key="prompt.search">Search for</wicket:message>:
+                    </label>
+                    <input type="text" class="input-medium search-query" id="search-field">
+                </form>
+
+                <div class="progress progress-striped active hide" id="search-progress">
+                    <div class="bar" style="width: 100%;"></div>
+                </div>
+
+                <table class="table table-striped hide" id="search-results">
+                    <thead><tr>
+                        <th><wicket:message key="list.head.date">Date</wicket:message></th>
+                        <th><wicket:message key="list.head.title">Title</wicket:message></th>
+                    </tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+            <wicket:link>
+                <script src="js/event-search.js"></script>
+            </wicket:link>
+        </wicket:extend>
+
+        <script src="js/headmaster-offline.js"></script>
+
+        <script src="lib/date.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-transition.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-alert.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-modal.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-dropdown.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-scrollspy.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-tab.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-tooltip.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-popover.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-button.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-collapse.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-carousel.js"></script>
+        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-typeahead.js"></script>
+        <script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    </body>
+</html>
