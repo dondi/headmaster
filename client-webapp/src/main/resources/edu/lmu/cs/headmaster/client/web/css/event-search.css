@@ -1,0 +1,8 @@
+#search-empty {
+    text-align: center;
+}
+
+/* The search page includes a description field. */
+table th:last-child {
+    width: 50%;
+}

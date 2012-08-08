@@ -13,6 +13,12 @@
         <link rel="stylesheet" href="lib/bootstrap-datepicker/datepicker.css"/>
 
         <link rel="stylesheet" href="css/client.css"/>
+        <wicket:head>
+            <wicket:link>
+                <link rel="stylesheet" href="css/event-list.css"/>
+                <link rel="stylesheet" href="css/event-search.css"/>
+            </wicket:link>
+        </wicket:head>
     </head>
     <body>
         <wicket:extend>
@@ -32,10 +38,15 @@
                     <div class="bar" style="width: 100%;"></div>
                 </div>
 
+                <div class="alert alert-info hide" id="search-empty">
+                    <wicket:message key="prompt.empty">(no matching events)</wicket:message>
+                </div>
+
                 <table class="table table-striped hide" id="search-results">
                     <thead><tr>
                         <th><wicket:message key="list.head.date">Date</wicket:message></th>
                         <th><wicket:message key="list.head.title">Title</wicket:message></th>
+                        <th><wicket:message key="list.head.description">Description</wicket:message></th>
                     </tr></thead>
                     <tbody></tbody>
                 </table>
