@@ -117,6 +117,13 @@ public class Headmaster extends AuthenticatedWebApplication {
             new String[] { "id" }
         );
         mount(eventViewUrls);
+
+        MixedParamUrlCodingStrategy eventEditorUrls = new MixedParamUrlCodingStrategy(
+            "events/edit",
+            EventEditorPage.class,
+            new String[] { "id" }
+        );
+        mount(eventEditorUrls);
     }
 
 }
