@@ -21,8 +21,8 @@ public class EventDaoHibernateImpl extends HibernateDaoSupport implements EventD
     @SuppressWarnings("unchecked")
     public List<Event> getEvents(String query, int skip, int max) {
         return (List<Event>)getSession().createQuery(
-            "from Event event where event.title like :term or event.description like :term order by event.dateTime")
-                .setParameter("term", "%" + query + "%")
+            "from Event event where lower(event.title) like :term or lower(event.description) like :term order by event.dateTime desc")
+                .setParameter("term", ("%" + query + "%").toLowerCase())
                 .setFirstResult(skip)
                 .setMaxResults(max)
                 .list();

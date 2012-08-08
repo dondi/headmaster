@@ -19,7 +19,8 @@ public interface EventDao {
     /**
      * Returns a paginated set of events that match the required query term,
      * skipping the first <code>skip</code> results and returning at most
-     * <code>max</code> results.
+     * <code>max</code> results. Search is case-insensitive, and listed in
+     * reverse chronological order.
      */
     List<Event> getEvents(String query, int skip, int max);
 

@@ -125,9 +125,10 @@ public class EventServiceTest extends ServiceTest {
 
     @Test
     public void testGetEventsByTerm() {
-        // Use a text query that can be found in the event title.
+        // Use a text query that can be found in the event title. We
+        // intentionally mix case to validate the case insensitivity.
         List<Event> events = ws.path("events")
-                .queryParam("q", "mmit")
+                .queryParam("q", "MmIt")
                 .get(ClientResponse.class)
                 .getEntity(new GenericType<List<Event>>(){});
 

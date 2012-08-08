@@ -71,8 +71,9 @@ public class EventDaoTest extends ApplicationContextTest {
 
     @Test
     public void testGetEventsByTerm() {
-        // Use a text query that can be found in the event title.
-        List<Event> events = eventDao.getEvents("mmit", 0, 10);
+        // Use a text query that can be found in the event title. We
+        // intentionally mix case to validate the case insensitivity.
+        List<Event> events = eventDao.getEvents("mMIt", 0, 10);
 
         // There should only be one event there.  We'll check just the ID.
         Assert.assertEquals(1, events.size());
