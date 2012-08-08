@@ -1,8 +1,12 @@
 $(function () {
-    // Retrieve the ID that we were given, and load up the event with that ID.
+    // Retrieve the ID that we were given.
     var eventId = $("#event-id").text(),
         DATE_FORMAT = "MMMM d, yyyy";
 
+    // Set up the edit button.
+    $("#edit-button").attr({ href: "edit/" + eventId });
+
+    // Load up the event with that ID.
     $.getJSON(
         Headmaster.serviceUri("events/" + eventId),
         function (data, textStatus, jqXHR) {
