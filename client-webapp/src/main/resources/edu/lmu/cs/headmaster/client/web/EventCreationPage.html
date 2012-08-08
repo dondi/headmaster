@@ -16,62 +16,6 @@
     </head>
     <body>
         <wicket:extend>
-            <div class="container">
-                <div class="alert alert-success hide fade in" id="event-success">
-                    <h4 class="alert-heading">
-                        <wicket:message key="success.title">Event Created</wicket:message>
-                    </h4>
-                    <wicket:message key="success.message">The event has been saved.</wicket:message>
-                </div>
-                <form class="form-horizontal">
-                    <fieldset>
-                        <div class="page-header">
-                            <h1><wicket:message key="title">New Event</wicket:message></h1>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="event-date">
-                                <wicket:message key="prompt.date">Event Date</wicket:message>
-                            </label>
-                            <div class="controls">
-                                <input class="input-xlarge" type="text" id="event-date"
-                                        data-date-format="m/d/yyyy"
-                                        placeholder="m/d/yyyy"/>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="event-title">
-                                <wicket:message key="prompt.title">Event Title</wicket:message>
-                            </label>
-                            <div class="controls">
-                                <input class="input-xlarge" type="text" id="event-title"/>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="event-description">
-                                <wicket:message key="prompt.description">Event Description</wicket:message>
-                            </label>
-                            <div class="controls">
-                                <textarea class="input-xlarge" id="event-description" rows="5"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <div class="pull-right">
-                                <button class="btn" id="event-cancel">
-                                    <wicket:message key="button.cancel">Cancel</wicket:message>
-                                </button>
-                                <button class="btn btn-primary" id="event-save">
-                                    <wicket:message key="button.save">Save</wicket:message>
-                                </button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-
-            <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-            <wicket:link>
-                <script src="js/event-creation.js"></script>
-            </wicket:link>
         </wicket:extend>
 
         <script src="js/headmaster-offline.js"></script>

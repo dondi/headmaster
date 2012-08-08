@@ -16,7 +16,16 @@ public abstract class EventWriterPage extends ClientPage {
         super(pageParameters);
 
         // Relay the requested event ID to the rendered web page.
-        add(new Label("event-id", new Model<Long>(pageParameters.getLong("id"))));
-   }
+        add(new Label(
+            "event-id",
+            pageParameters.containsKey("id") ?
+                new Model<Long>(pageParameters.getLong("id")) :
+                new Model<String>() {
+                    public String getObject() {
+                        return "";
+                    }
+                }
+        ));
+    }
 
 }
