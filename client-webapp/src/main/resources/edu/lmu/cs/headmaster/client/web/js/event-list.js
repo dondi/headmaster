@@ -1,6 +1,9 @@
 $(function () {
     // Load up events for this month, last month, and next month. We use the
     // trick of setting the date to 0 in order to get the last day of the month.
+
+    // TODO Implement date navigation so that the user can scroll through the months.
+    // Ideally with a datepicker.
     var today = new Date(),
         thisMonth = today.getMonth(),
         thisYear = today.getFullYear(),
