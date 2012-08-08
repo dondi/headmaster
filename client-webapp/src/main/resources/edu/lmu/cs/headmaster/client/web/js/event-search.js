@@ -39,7 +39,8 @@ $(function () {
                     tbody.empty();
                     if (data.length) {
                         $.each(data, function (index, event) {
-                            tbody.append($(
+                            tbody.append(
+                                $(
                                     "<tr><td>" +
                                     Date.parse(event.dateTime).toString(TABLE_FORMAT) +
                                     "</td><td>" +
@@ -47,7 +48,10 @@ $(function () {
                                     "</td><td>" +
                                     event.description +
                                     "</td></tr>"
-                            ));
+                                ).click(function () {
+                                    location = event.id;
+                                })
+                            );
                         });
                         jSearchEmpty.fadeOut(function () {
                             jSearchResults.fadeIn();

@@ -29,13 +29,17 @@ $(function () {
                     // Load up the data.
                     var tbody = $("#" + tableId + " > tbody");
                     $.each(data, function (index, event) {
-                        tbody.append($(
-                            "<tr><td>" +
-                            Date.parse(event.dateTime).toString(TABLE_FORMAT) +
-                            "</td><td>" +
-                            event.title +
-                            "</td></tr>"
-                        ));
+                        tbody.append(
+                            $(
+                                "<tr><td>" +
+                                Date.parse(event.dateTime).toString(TABLE_FORMAT) +
+                                "</td><td>" +
+                                event.title +
+                                "</td></tr>"
+                            ).click(function () {
+                                location = event.id;
+                            })
+                        );
                     });
 
                     // Show/hide as needed.

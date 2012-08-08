@@ -3,6 +3,10 @@ table {
     table-layout: fixed;
 }
 
+table td {
+    cursor: pointer;
+}
+
 table th:first-child {
     width: 25%;
 }

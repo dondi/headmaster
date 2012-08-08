@@ -6,6 +6,7 @@ import org.apache.wicket.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.javascript.DefaultJavascriptCompressor;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.target.coding.MixedParamUrlCodingStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 /**
@@ -104,9 +105,18 @@ public class Headmaster extends AuthenticatedWebApplication {
         mountBookmarkablePage("logout", LogoutPage.class);
         mountBookmarkablePage("relay", ServiceRelayPage.class);
 
-        mountBookmarkablePage("events", EventListPage.class);
+        mountBookmarkablePage("events/list", EventListPage.class);
         mountBookmarkablePage("events/new", EventCreationPage.class);
         mountBookmarkablePage("events/search", EventSearchPage.class);
+
+        // More URL customization, now for URLs with parameters.
+        // Special handling: individual referral page is parameterized.
+        MixedParamUrlCodingStrategy eventViewUrls = new MixedParamUrlCodingStrategy(
+            "events",
+            EventViewPage.class,
+            new String[] { "id" }
+        );
+        mount(eventViewUrls);
     }
 
 }
