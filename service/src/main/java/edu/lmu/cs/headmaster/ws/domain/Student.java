@@ -33,11 +33,13 @@ import edu.lmu.cs.headmaster.ws.util.DateTimeXmlAdapter;
 public class Student {
 
     private Long id;
+    private Boolean active = Boolean.TRUE;
     private String schoolId;
     private String lastName;
     private String firstName;
     private String middleInitial;
-    private String email;
+    private String primaryEmail;
+    private String secondaryEmail;
     private String campusBox;
     private String college;
     private Boolean inLivingLearningCommunity;
@@ -84,6 +86,19 @@ public class Student {
         this.id = id;
     }
 
+    /**
+     * Indicates whether a student is still in the program or institution under
+     * which this installation of Headmaster is running. Better approach than
+     * having to delete the student.
+     */
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     public String getSchoolId() {
         return schoolId;
     }
@@ -119,12 +134,21 @@ public class Student {
     }
 
     @Lob
-    public String getEmail() {
-        return email;
+    public String getPrimaryEmail() {
+        return primaryEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPrimaryEmail(String primaryEmail) {
+        this.primaryEmail = primaryEmail;
+    }
+
+    @Lob
+    public String getSecondaryEmail() {
+        return secondaryEmail;
+    }
+
+    public void setSecondaryEmail(String secondaryEmail) {
+        this.secondaryEmail = secondaryEmail;
     }
 
     public String getCampusBox() {
