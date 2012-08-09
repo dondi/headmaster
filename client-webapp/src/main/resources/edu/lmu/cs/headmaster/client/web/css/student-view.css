@@ -9,3 +9,7 @@ form label {
 #student-thesis-container .well {
     text-align: center;
 }
+
+#student-thesis-inmajor {
+    margin-left: 1ex;
+}

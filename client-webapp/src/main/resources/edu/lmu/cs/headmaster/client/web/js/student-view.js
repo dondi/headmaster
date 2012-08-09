@@ -41,11 +41,9 @@ $(function () {
             $("#student-thesis-term").text(data.thesisTerm || BLANK);
             $("#student-thesis-year").text(data.thesisYear || data.expectedGraduationYear);
             $("#student-thesis-advisor").text(data.thesisAdvisor || BLANK);
-            $("#student-thesis-inmajor")
-                .removeClass(data.thesisInMajor ? "icon-remove" : "icon-ok")
-                .addClass(data.thesisInMajor ? "icon-ok" : "icon-remove");
+            $("#student-thesis-inmajor").text(data.thesisInMajor ? "Yes" : "No");
             if (!data.thesisInMajor) {
-                $("#student-thesis-course").fadeOut();
+                $("#student-thesis-course-container").fadeOut();
             }
             $("#student-thesis-course").text(data.thesisCourse || BLANK);
         }
