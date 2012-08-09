@@ -2,7 +2,11 @@
     text-align: center;
 }
 
-form label {
+.form-horizontal {
+    padding-top: 18px;
+}
+
+.form-horizontal label {
     font-weight: bold;
 }
 

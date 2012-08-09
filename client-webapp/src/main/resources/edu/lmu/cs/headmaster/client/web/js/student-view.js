@@ -3,7 +3,9 @@ $(function () {
     var studentId = $("#student-id").text(),
         DATE_FORMAT = "MMMM d, yyyy",
         UNSPECIFIED = "(unspecified)",
-        BLANK = "";
+        BLANK = "",
+        YES = "Yes",
+        NO = "No";
 
     // Set up the edit button.
     $("#edit-button").attr({ href: "edit/" + studentId });
@@ -35,13 +37,30 @@ $(function () {
                 data.lastName
             );
             $("#student-gradyear").text(data.expectedGraduationYear);
+            $("#student-college").text(data.college || BLANK);
+            $("#student-advisor").text(data.advisor || BLANK);
+            $("#student-degree").text(data.degree || BLANK);
+            $("#student-inllc").text(data.inLivingLearningCommunity ? YES : NO);
+            $("#student-transfer").text(data.transferStudent ? YES : NO);
+            $("#student-studyabroad").text(data.hasStudiedAbroad ? YES : NO);
+
+            // Entry information.
+            $("#student-entryyear").text(data.entryYear || BLANK);
+            $("#student-honorsentrydate").text(data.honorsEntryDate ?
+                Date.parse(data.honorsEntryDate).toString(DATE_FORMAT) : BLANK
+            );
+            $("#student-hsgpa").text(data.highSchoolGpa || BLANK);
+            $("#student-act").text(data.actScore || BLANK);
+            $("#student-sat-verbal").text(data.satVerbalScore || BLANK);
+            $("#student-sat-math").text(data.satMathScore || BLANK);
+            $("#student-sat-writing").text(data.satWritingScore || BLANK);
 
             // Thesis information.
             $("#student-thesis-title").text(data.thesisTitle || UNSPECIFIED);
             $("#student-thesis-term").text(data.thesisTerm || BLANK);
             $("#student-thesis-year").text(data.thesisYear || data.expectedGraduationYear);
             $("#student-thesis-advisor").text(data.thesisAdvisor || BLANK);
-            $("#student-thesis-inmajor").text(data.thesisInMajor ? "Yes" : "No");
+            $("#student-thesis-inmajor").text(data.thesisInMajor ? YES : NO);
             if (!data.thesisInMajor) {
                 $("#student-thesis-course-container").fadeOut();
             }

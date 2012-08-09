@@ -38,68 +38,254 @@
                 </div>
 
                 <div class="row">
-                    <div class="span5">
-                        <form class="form-horizontal"><fieldset>
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <wicket:message key="label.email1">Primary email</wicket:message>
-                                </label>
-                                <div class="controls">
-                                    <span class="input-medium uneditable-input"
-                                            id="student-email1">
-                                    </span>
+                    <div class="span5 accordion" id="student-data-accordion">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <h3 class="accordion-toggle"
+                                        data-toggle="collapse"
+                                        data-target="#student-contact-container"
+                                        data-parent="#student-data-accordion">
+                                    <wicket:message key="heading.contact">Contact</wicket:message>
+                                </h3>
+                            </div>
+            
+                            <div class="accordion-body collapse in" id="student-contact-container">
+                                <div class="form-horizontal accordion-inner">
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.email1">Primary email</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-email1">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.email2">Secondary email</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-email2">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.campus-box">Campus Box</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-campus-box">
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <wicket:message key="label.email2">Secondary email</wicket:message>
-                                </label>
-                                <div class="controls">
-                                    <span class="input-medium uneditable-input"
-                                            id="student-email2">
-                                    </span>
+                        </div>
+
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <h3 class="accordion-toggle"
+                                        data-toggle="collapse"
+                                        data-target="#student-academics-container"
+                                        data-parent="#student-data-accordion">
+                                    <wicket:message key="heading.academics">Academics</wicket:message>
+                                </h3>
+                            </div>
+            
+                            <div class="accordion-body collapse in" id="student-academics-container">
+                                <div class="form-horizontal accordion-inner">
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.college">College</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-college">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.advisor">Advisor</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-advisor">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.degree">Degree</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-degree">
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <wicket:message key="label.campus-box">Campus Box</wicket:message>
-                                </label>
-                                <div class="controls">
-                                    <span class="input-medium uneditable-input"
-                                            id="student-campus-box">
-                                    </span>
+                        </div>
+
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <h3 class="accordion-toggle"
+                                        data-toggle="collapse"
+                                        data-target="#student-status-container"
+                                        data-parent="#student-data-accordion">
+                                    <wicket:message key="heading.status">Status</wicket:message>
+                                </h3>
+                            </div>
+            
+                            <div class="accordion-body collapse in" id="student-status-container">
+                                <div class="form-horizontal accordion-inner">
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.inllc">
+                                                In LLC
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input">
+                                                <span class="badge badge-info"
+                                                        id="student-inllc">
+                                                    ?
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.transfer">
+                                                Transfer
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input">
+                                                <span class="badge badge-info"
+                                                        id="student-transfer">
+                                                    ?
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.studyabroad">
+                                                Has Studied Abroad
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input">
+                                                <span class="badge badge-info"
+                                                        id="student-studyabroad">
+                                                    ?
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <wicket:message key="label.college">College</wicket:message>
-                                </label>
-                                <div class="controls">
-                                    <span class="input-medium uneditable-input"
-                                            id="student-college">
-                                    </span>
+                        </div>
+
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <h3 class="accordion-toggle"
+                                        data-toggle="collapse"
+                                        data-target="#student-entry-container"
+                                        data-parent="#student-data-accordion">
+                                    <wicket:message key="heading.entry">Entry Information</wicket:message>
+                                </h3>
+                            </div>
+            
+                            <div class="accordion-body collapse in" id="student-entry-container">
+                                <div class="form-horizontal accordion-inner">
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.entryyear">Entry Year</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-entryyear">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.honorsentrydate">Honors Entry Date</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-honorsentrydate">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.hsgpa">High School GPA</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-hsgpa">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.act">ACT Score</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-act">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.sat.verbal">SAT Verbal Score</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-sat-verbal">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.sat.math">SAT Math Score</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-sat-math">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.sat.writing">SAT Writing Score</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-sat-writing">
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <wicket:message key="label.advisor">Advisor</wicket:message>
-                                </label>
-                                <div class="controls">
-                                    <span class="input-medium uneditable-input"
-                                            id="student-advisor">
-                                    </span>
-                                </div>
-                            </div>
-                        </fieldset></form>
+                        </div>
                     </div>
 
-                    <div class="span7 accordion" id="student-accordion">
+                    <div class="span7 accordion" id="student-list-accordion">
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <h2 class="accordion-toggle"
                                         data-toggle="collapse"
                                         data-target="#student-attendance-container"
-                                        data-parent="#student-accordion">
+                                        data-parent="#student-list-accordion">
                                     <wicket:message key="heading.attendance">Attendance</wicket:message>
                                 </h2>
                             </div>
@@ -126,7 +312,7 @@
                                 <h2 class="accordion-toggle"
                                         data-toggle="collapse"
                                         data-target="#student-grades-container"
-                                        data-parent="#student-accordion">
+                                        data-parent="#student-list-accordion">
                                     <wicket:message key="heading.grades">Grades</wicket:message>
                                 </h2>
                             </div>
@@ -153,7 +339,7 @@
                                 <h2 class="accordion-toggle"
                                         data-toggle="collapse"
                                         data-target="#student-grants-container"
-                                        data-parent="#student-accordion">
+                                        data-parent="#student-list-accordion">
                                     <wicket:message key="heading.grants">Grants</wicket:message>
                                 </h2>
                             </div>
@@ -180,7 +366,7 @@
                                 <h2 class="accordion-toggle"
                                         data-toggle="collapse"
                                         data-target="#student-thesis-container"
-                                        data-parent="#student-accordion">
+                                        data-parent="#student-list-accordion">
                                     <wicket:message key="heading.thesis">Thesis</wicket:message>
                                 </h2>
                             </div>
@@ -195,7 +381,7 @@
                                         </h4>
                                     </div>
             
-                                    <form class="form-horizontal"><fieldset>
+                                    <div class="form-horizontal">
                                         <div class="control-group">
                                             <label class="control-label">
                                                 <wicket:message key="label.thesis.advisor">Advisor</wicket:message>
@@ -209,7 +395,7 @@
                                         <div class="control-group">
                                             <label class="control-label">
                                                 <wicket:message key="label.thesis.inmajor">
-                                                    Thesis in major?
+                                                    Thesis in Major
                                                 </wicket:message>
                                             </label>
                                             <div class="controls">
@@ -231,7 +417,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </fieldset></form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
