@@ -35,6 +35,10 @@
                         <div class="bar" style="width: 100%;"></div>
                     </div>
     
+                    <div class="alert alert-info hide" id="list-this-empty">
+                        <wicket:message key="prompt.empty">(no events)</wicket:message>
+                    </div>
+
                     <table class="table table-striped hide" id="list-this">
                         <thead><tr>
                             <th><wicket:message key="list.head.date">Date</wicket:message></th>
@@ -54,6 +58,10 @@
                             <div class="bar" style="width: 100%;"></div>
                         </div>
 
+                        <div class="alert alert-info hide" id="list-last-empty">
+                            <wicket:message key="prompt.empty">(no events)</wicket:message>
+                        </div>
+
                         <table class="table table-striped table-condensed hide" id="list-last">
                             <thead><tr>
                                 <th><wicket:message key="list.head.date">Date</wicket:message></th>
@@ -70,6 +78,10 @@
 
                         <div class="progress progress-striped active" id="list-progress-next">
                             <div class="bar" style="width: 100%;"></div>
+                        </div>
+
+                        <div class="alert alert-info hide" id="list-next-empty">
+                            <wicket:message key="prompt.empty">(no events)</wicket:message>
                         </div>
 
                         <table class="table table-striped table-condensed hide" id="list-next">

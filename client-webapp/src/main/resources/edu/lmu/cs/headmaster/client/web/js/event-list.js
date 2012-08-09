@@ -16,7 +16,9 @@ $(function () {
         QUERY_FORMAT = "yyyy-MM-ddThh:mm:ss",
         TABLE_FORMAT = "M/d/yyyy",
 
-        getEvents = function (fromDate, toDate, tableId, progressId) {
+        getEvents = function (fromDate, toDate, tableId, progressId, emptyId) {
+            $("#" + progressId).fadeIn();
+            $("#" + tableId + ", #" + emptyId).fadeOut();
             $.getJSON(
                 Headmaster.serviceUri("events"),
 
@@ -27,30 +29,36 @@ $(function () {
 
                 function (data, textStatus, jqXHR) {
                     // Load up the data.
-                    var tbody = $("#" + tableId + " > tbody");
-                    $.each(data, function (index, event) {
-                        tbody.append(
-                            $(
-                                "<tr><td>" +
-                                Date.parse(event.dateTime).toString(TABLE_FORMAT) +
-                                "</td><td>" +
-                                event.title +
-                                "</td></tr>"
-                            ).click(function () {
-                                location = event.id;
-                            })
-                        );
-                    });
+                    var tbody;
+                    if (data.length) {
+                        tbody = $("#" + tableId + " > tbody");
+                        $.each(data, function (index, event) {
+                            tbody.append(
+                                $(
+                                    "<tr><td>" +
+                                    Date.parse(event.dateTime).toString(TABLE_FORMAT) +
+                                    "</td><td>" +
+                                    event.title +
+                                    "</td></tr>"
+                                ).click(function () {
+                                    location = event.id;
+                                })
+                            );
+                        });
+                        
+                        // Show/hide as needed.
+                        $("#" + tableId).fadeIn();
+                    } else {
+                        $("#" + emptyId).fadeIn();
+                    }
 
-                    // Show/hide as needed.
-                    $("#" + tableId).fadeIn();
                     $("#" + progressId).fadeOut();
                 }
             );
         };
 
     // Ajax time.
-    getEvents(thisFrom, thisTo, "list-this", "list-progress-this");
-    getEvents(lastFrom, lastTo, "list-last", "list-progress-last");
-    getEvents(nextFrom, nextTo, "list-next", "list-progress-next");
+    getEvents(thisFrom, thisTo, "list-this", "list-progress-this", "list-this-empty");
+    getEvents(lastFrom, lastTo, "list-last", "list-progress-last", "list-last-empty");
+    getEvents(nextFrom, nextTo, "list-next", "list-progress-next", "list-next-empty");
 });

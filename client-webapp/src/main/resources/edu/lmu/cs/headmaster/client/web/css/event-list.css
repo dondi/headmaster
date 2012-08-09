@@ -10,3 +10,8 @@ table td {
 table th:first-child {
     width: 25%;
 }
+
+/* Our use of alerts here is limited to messages for empty tables. */
+.alert {
+    text-align: center;
+}
