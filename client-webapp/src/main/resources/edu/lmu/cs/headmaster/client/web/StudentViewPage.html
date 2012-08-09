@@ -81,6 +81,66 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.address">Address</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-address">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.city">City</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-city">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.state">State</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-state">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.zip">Zip</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-zip">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.phone.main">Main Phone</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-phone-main">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.phone.cell">Cell Phone</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-phone-cell]">
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -97,6 +157,36 @@
             
                             <div class="accordion-body collapse in" id="student-academics-container">
                                 <div class="form-horizontal accordion-inner">
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.status">Academic Status</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-status">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.majors">Major(s)</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-majors">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.minors">Minor(s)</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-minors">
+                                            </span>
+                                        </div>
+                                    </div>
                                     <div class="control-group">
                                         <label class="control-label">
                                             <wicket:message key="label.college">College</wicket:message>
@@ -124,6 +214,16 @@
                                         <div class="controls">
                                             <span class="input-medium uneditable-input"
                                                     id="student-degree">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.gpa">Cumulative GPA</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-gpa">
                                             </span>
                                         </div>
                                     </div>
@@ -277,6 +377,22 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <h3 class="accordion-toggle"
+                                        data-toggle="collapse"
+                                        data-target="#student-notes-container"
+                                        data-parent="#student-data-accordion">
+                                    <wicket:message key="heading.notes">Notes</wicket:message>
+                                </h3>
+                            </div>
+            
+                            <div class="accordion-body collapse in" id="student-notes-container">
+                                <div class="accordion-inner" id="student-notes">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="span7 accordion" id="student-list-accordion">
@@ -415,6 +531,38 @@
                                                 <span class="input-xlarge uneditable-input"
                                                         id="student-thesis-course">
                                                 </span>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">
+                                                <wicket:message key="label.thesis.submitted">
+                                                    Submitted
+                                                </wicket:message>
+                                            </label>
+                                            <div class="controls">
+                                                <span class="input-xlarge uneditable-input">
+                                                    <span class="badge badge-info"
+                                                            id="student-thesis-submitted">
+                                                        ?
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="control-group" id="student-thesis-submissiondate-container">
+                                            <label class="control-label">
+                                                <wicket:message key="label.thesis.submissiondate">Submission Date</wicket:message>
+                                            </label>
+                                            <div class="controls">
+                                                <span class="input-xlarge uneditable-input"
+                                                        id="student-thesis-submissiondate">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">
+                                                <wicket:message key="label.thesis.notes">Notes</wicket:message>
+                                            </label>
+                                            <div class="controls" id="student-thesis-notes">
                                             </div>
                                         </div>
                                     </div>
