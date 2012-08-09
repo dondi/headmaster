@@ -111,6 +111,13 @@ public class Headmaster extends AuthenticatedWebApplication {
 
         // More URL customization, now for URLs with parameters.
         // Special handling: individual referral page is parameterized.
+        MixedParamUrlCodingStrategy studentViewUrls = new MixedParamUrlCodingStrategy(
+            "students",
+            StudentViewPage.class,
+            new String[] { "id" }
+        );
+        mount(studentViewUrls);
+
         MixedParamUrlCodingStrategy eventViewUrls = new MixedParamUrlCodingStrategy(
             "events",
             EventViewPage.class,
