@@ -64,12 +64,15 @@ public class Student {
     private String mainPhone;
     private String cellPhone;
     private Double cumulativeGpa;
+    private String notes;
     private Boolean thesisInMajor;
     private String thesisAdvisor;
     private String thesisCourse;
     private Term thesisTerm;
     private Integer thesisYear;
     private String thesisTitle;
+    private DateTime thesisSubmissionDate;
+    private String thesisNotes;
     private String academicStatus;
     private List<GPA> grades = new ArrayList<GPA>();
     private List<Event> attendance = new ArrayList<Event>();
@@ -358,6 +361,15 @@ public class Student {
         this.cumulativeGpa = cumulativeGpa;
     }
 
+    @Lob
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public Boolean isThesisInMajor() {
         return thesisInMajor;
     }
@@ -406,6 +418,25 @@ public class Student {
 
     public void setThesisTitle(String thesisTitle) {
         this.thesisTitle = thesisTitle;
+    }
+
+    @Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+    @XmlJavaTypeAdapter(value=DateTimeXmlAdapter.class)
+    public DateTime getThesisSubmissionDate() {
+        return thesisSubmissionDate;
+    }
+
+    public void setThesisSubmissionDate(DateTime thesisSubmissionDate) {
+        this.thesisSubmissionDate = thesisSubmissionDate;
+    }
+
+    @Lob
+    public String getThesisNotes() {
+        return thesisNotes;
+    }
+
+    public void setThesisNotes(String thesisNotes) {
+        this.thesisNotes = thesisNotes;
     }
 
     public String getAcademicStatus() {
