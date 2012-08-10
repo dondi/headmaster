@@ -109,6 +109,8 @@ public class Headmaster extends AuthenticatedWebApplication {
         mountBookmarkablePage("events/new", EventCreationPage.class);
         mountBookmarkablePage("events/search", EventSearchPage.class);
 
+        mountBookmarkablePage("students/new", StudentCreationPage.class);
+
         // More URL customization, now for URLs with parameters.
         // Special handling: individual referral page is parameterized.
         MixedParamUrlCodingStrategy studentViewUrls = new MixedParamUrlCodingStrategy(
@@ -117,6 +119,13 @@ public class Headmaster extends AuthenticatedWebApplication {
             new String[] { "id" }
         );
         mount(studentViewUrls);
+
+        MixedParamUrlCodingStrategy studentEditorUrls = new MixedParamUrlCodingStrategy(
+            "students/edit",
+            StudentEditorPage.class,
+            new String[] { "id" }
+        );
+        mount(studentEditorUrls);
 
         MixedParamUrlCodingStrategy eventViewUrls = new MixedParamUrlCodingStrategy(
             "events",
