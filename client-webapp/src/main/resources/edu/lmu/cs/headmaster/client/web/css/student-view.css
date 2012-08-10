@@ -6,8 +6,12 @@
     padding-top: 18px;
 }
 
-.form-horizontal label {
+.form-horizontal label, .form-inline label {
     font-weight: bold;
+}
+
+.form-inline label, .form-inline input {
+    margin-right: 0.5em;
 }
 
 #student-thesis-container .well {

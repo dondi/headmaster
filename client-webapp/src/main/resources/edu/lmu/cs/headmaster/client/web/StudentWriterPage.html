@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Headmaster: View Student</title>
+        <title>Headmaster: Student Entry UI</title>
 
         <link rel="stylesheet"
                 href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css"/>
@@ -21,20 +21,41 @@
     </head>
     <body>
         <wicket:extend>
+            <wicket:child/>
+
             <!-- Special data delivery element. -->
             <div class="hide" id="student-id" wicket:id="student-id"></div>
 
             <div class="container">
-                <div class="page-header">
-                    <a class="btn btn-primary btn-large pull-right" id="edit-button" href="#">
-                        <wicket:message key="button.edit">Edit</wicket:message>
-                    </a>
-                    <h2>
-                        <wicket:message key="heading.gradyear.prefix">Class of</wicket:message>
-                        <span id="student-gradyear"></span>
-                        <wicket:message key="heading.gradyear.postfix"></wicket:message>
-                    </h2>
-                    <h1 id="student-name"></h1>
+                <div class="alert alert-success hide fade in" id="student-success">
+                    <h4 class="alert-heading">
+                        <wicket:message key="success.title">Student Written</wicket:message>
+                    </h4>
+                    <wicket:message key="success.message">The event has been saved.</wicket:message>
+                </div>
+                <div class="page-header well">
+                    <div class="form-inline">
+                        <label class="control-label" for="student-firstname">
+                            <wicket:message key="label.name.first">First Name</wicket:message>
+                        </label>
+                        <input type="text" class="input-xlarge span2"
+                                id="student-firstname"/>
+                        <label class="control-label" for="student-middlename">
+                            <wicket:message key="label.name.middle">Middle Initial</wicket:message>
+                        </label>
+                        <input type="text" class="input-xlarge span1"
+                                id="student-middlename"/>
+                        <label class="control-label" for="student-lastname">
+                            <wicket:message key="label.name.last">Last Name</wicket:message>
+                        </label>
+                        <input type="text" class="input-xlarge span3"
+                                id="student-lastname"/>
+                        <label class="control-label" for="student-gradyear">
+                            <wicket:message key="heading.gradyear.prefix">Class of</wicket:message>
+                        </label>
+                        <input type="number" step="1" class="input-xlarge span1"
+                                id="student-gradyear"/>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -56,9 +77,8 @@
                                             <wicket:message key="label.email1">Primary email</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-email1">
-                                            </span>
+                                            <input type="email" class="input-medium"
+                                                    id="student-email1"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -66,9 +86,8 @@
                                             <wicket:message key="label.email2">Secondary email</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-email2">
-                                            </span>
+                                            <input type="email" class="input-medium"
+                                                    id="student-email2"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -76,9 +95,8 @@
                                             <wicket:message key="label.campus-box">Campus Box</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-campus-box">
-                                            </span>
+                                            <input type="text" class="input-medium"
+                                                    id="student-campus-box"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -86,9 +104,8 @@
                                             <wicket:message key="label.address">Address</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-address">
-                                            </span>
+                                            <input type="text" class="input-medium"
+                                                    id="student-address"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -96,9 +113,8 @@
                                             <wicket:message key="label.city">City</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-city">
-                                            </span>
+                                            <input type="text" class="input-medium"
+                                                    id="student-city"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -106,9 +122,8 @@
                                             <wicket:message key="label.state">State</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-state">
-                                            </span>
+                                            <input type="text" class="input-medium"
+                                                    id="student-state"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -116,9 +131,8 @@
                                             <wicket:message key="label.zip">Zip</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-zip">
-                                            </span>
+                                            <input type="text" class="input-medium"
+                                                    id="student-zip"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -126,9 +140,8 @@
                                             <wicket:message key="label.phone.main">Main Phone</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-phone-main">
-                                            </span>
+                                            <input type="tel" class="input-medium"
+                                                    id="student-phone-main"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -136,9 +149,8 @@
                                             <wicket:message key="label.phone.cell">Cell Phone</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-phone-cell">
-                                            </span>
+                                            <input type="tel" class="input-medium"
+                                                    id="student-phone-cell"/>
                                         </div>
                                     </div>
                                 </div>
@@ -162,9 +174,8 @@
                                             <wicket:message key="label.status">Academic Status</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-status">
-                                            </span>
+                                            <input type="text" class="input-medium"
+                                                    id="student-status"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -192,9 +203,8 @@
                                             <wicket:message key="label.college">College</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-college">
-                                            </span>
+                                            <input type="text" class="input-medium"
+                                                    id="student-college"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -202,9 +212,8 @@
                                             <wicket:message key="label.advisor">Advisor</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-advisor">
-                                            </span>
+                                            <input type="text" class="input-medium"
+                                                    id="student-advisor"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -212,9 +221,8 @@
                                             <wicket:message key="label.degree">Degree</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-degree">
-                                            </span>
+                                            <input type="text" class="input-medium"
+                                                    id="student-degree"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -222,9 +230,8 @@
                                             <wicket:message key="label.gpa">Cumulative GPA</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-gpa">
-                                            </span>
+                                            <input type="number" class="input-medium"
+                                                    id="student-gpa"/>
                                         </div>
                                     </div>
                                 </div>
@@ -250,12 +257,20 @@
                                             </wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input">
-                                                <span class="badge badge-info"
-                                                        id="student-inllc">
-                                                    ?
-                                                </span>
-                                            </span>
+                                            <label class="radio inline" for="student-inllc-yes">
+                                                <input type="radio" name="in-llc"
+                                                        id="student-inllc-yes"/>
+                                                <wicket:message key="label.radio.yes">
+                                                    Yes
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="student-inllc-no">
+                                                <input type="radio" name="in-llc"
+                                                        id="student-inllc-no" checked/>
+                                                <wicket:message key="label.radio.no">
+                                                    No
+                                                </wicket:message>
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -265,12 +280,20 @@
                                             </wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input">
-                                                <span class="badge badge-info"
-                                                        id="student-transfer">
-                                                    ?
-                                                </span>
-                                            </span>
+                                            <label class="radio inline" for="student-transfer-yes">
+                                                <input type="radio" name="transfer"
+                                                        id="student-transfer-yes"/>
+                                                <wicket:message key="label.radio.yes">
+                                                    Yes
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="student-transfer-no">
+                                                <input type="radio" name="transfer"
+                                                        id="student-transfer-no" checked/>
+                                                <wicket:message key="label.radio.no">
+                                                    No
+                                                </wicket:message>
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -280,12 +303,20 @@
                                             </wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input">
-                                                <span class="badge badge-info"
-                                                        id="student-studyabroad">
-                                                    ?
-                                                </span>
-                                            </span>
+                                            <label class="radio inline" for="student-studyabroad-yes">
+                                                <input type="radio" name="studyabroad"
+                                                        id="student-studyabroad-yes"/>
+                                                <wicket:message key="label.radio.yes">
+                                                    Yes
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="student-studyabroad-no">
+                                                <input type="radio" name="studyabroad"
+                                                        id="student-studyabroad-no" checked/>
+                                                <wicket:message key="label.radio.no">
+                                                    No
+                                                </wicket:message>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -309,9 +340,8 @@
                                             <wicket:message key="label.entryyear">Entry Year</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-entryyear">
-                                            </span>
+                                            <input type="number" step="1" class="input-medium"
+                                                    id="student-entryyear"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -319,9 +349,8 @@
                                             <wicket:message key="label.honorsentrydate">Honors Entry Date</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-honorsentrydate">
-                                            </span>
+                                            <input type="date" class="input-medium"
+                                                    id="student-honorsentrydate"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -329,9 +358,8 @@
                                             <wicket:message key="label.hsgpa">High School GPA</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-hsgpa">
-                                            </span>
+                                            <input type="number" class="input-medium"
+                                                    id="student-hsgpa"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -339,9 +367,8 @@
                                             <wicket:message key="label.act">ACT Score</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-act">
-                                            </span>
+                                            <input type="number" class="input-medium"
+                                                    id="student-act"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -349,9 +376,8 @@
                                             <wicket:message key="label.sat.verbal">SAT Verbal Score</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-sat-verbal">
-                                            </span>
+                                            <input type="number" class="input-medium"
+                                                    id="student-sat-verbal"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -359,9 +385,8 @@
                                             <wicket:message key="label.sat.math">SAT Math Score</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-sat-math">
-                                            </span>
+                                            <input type="number" class="input-medium"
+                                                    id="student-sat-math"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -369,9 +394,8 @@
                                             <wicket:message key="label.sat.writing">SAT Writing Score</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-sat-writing">
-                                            </span>
+                                            <input type="number" class="input-medium"
+                                                    id="student-sat-writing"/>
                                         </div>
                                     </div>
                                 </div>
@@ -389,7 +413,9 @@
                             </div>
             
                             <div class="accordion-body collapse in" id="student-notes-container">
-                                <div class="accordion-inner" id="student-notes">
+                                <div class="accordion-inner">
+                                    <textarea class="input-xlarge" rows="10"
+                                            id="student-notes"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -489,23 +515,61 @@
 
                             <div class="accordion-body collapse in" id="student-thesis-container">
                                 <div class="accordion-inner">
-                                    <div class="well">
-                                        <h3><span id="student-thesis-title">(unspecified)</span></h3>
-                                        <h4>
-                                            <span id="student-thesis-term">(unspecified)</span>
-                                            <span id="student-thesis-year"></span>
-                                        </h4>
-                                    </div>
-            
                                     <div class="form-horizontal">
                                         <div class="control-group">
                                             <label class="control-label">
-                                                <wicket:message key="label.thesis.advisor">Advisor</wicket:message>
+                                                <wicket:message key="label.thesis.title">
+                                                    Title
+                                                </wicket:message>
                                             </label>
                                             <div class="controls">
-                                                <span class="input-xlarge uneditable-input"
-                                                        id="student-thesis-advisor">
-                                                </span>
+                                                <input type="text" class="input-xlarge"
+                                                        id="student-thesis-title"/>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">
+                                                <wicket:message key="label.thesis.term">
+                                                    Term
+                                                </wicket:message>
+                                            </label>
+                                            <div class="controls">
+                                                <label class="radio inline" for="student-thesis-term-fall">
+                                                    <input type="radio" name="thesis-term"
+                                                            id="student-thesis-term-fall"/>
+                                                    <wicket:message key="label.term.fall">
+                                                        Fall
+                                                    </wicket:message>
+                                                </label>
+                                                <label class="radio inline" for="student-thesis-term-spring">
+                                                    <input type="radio" name="thesis-term"
+                                                            id="student-thesis-term-spring" checked/>
+                                                    <wicket:message key="label.term.spring">
+                                                        Spring
+                                                    </wicket:message>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">
+                                                <wicket:message key="label.thesis.year">
+                                                    Year
+                                                </wicket:message>
+                                            </label>
+                                            <div class="controls">
+                                                <input type="number" step="1" class="input-xlarge"
+                                                        id="student-thesis-year"/>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">
+                                                <wicket:message key="label.thesis.advisor">
+                                                    Advisor
+                                                </wicket:message>
+                                            </label>
+                                            <div class="controls">
+                                                <input type="text" class="input-xlarge"
+                                                        id="student-thesis-advisor"/>
                                             </div>
                                         </div>
                                         <div class="control-group">
@@ -515,22 +579,31 @@
                                                 </wicket:message>
                                             </label>
                                             <div class="controls">
-                                                <span class="input-xlarge uneditable-input">
-                                                    <span class="badge badge-info"
-                                                            id="student-thesis-inmajor">
-                                                        ?
-                                                    </span>
-                                                </span>
+                                                <label class="radio inline" for="student-thesis-inmajor-yes">
+                                                    <input type="radio" name="thesis-inmajor"
+                                                            id="student-thesis-inmajor-yes"/>
+                                                    <wicket:message key="label.radio.yes">
+                                                        Yes
+                                                    </wicket:message>
+                                                </label>
+                                                <label class="radio inline" for="student-thesis-inmajor-no">
+                                                    <input type="radio" name="thesis-inmajor"
+                                                            id="student-thesis-inmajor-no" checked/>
+                                                    <wicket:message key="label.radio.no">
+                                                        No
+                                                    </wicket:message>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="control-group" id="student-thesis-course-container">
                                             <label class="control-label">
-                                                <wicket:message key="label.thesis.course">Course</wicket:message>
+                                                <wicket:message key="label.thesis.course">
+                                                    Course
+                                                </wicket:message>
                                             </label>
                                             <div class="controls">
-                                                <span class="input-xlarge uneditable-input"
-                                                        id="student-thesis-course">
-                                                </span>
+                                                <input type="text" class="input-xlarge"
+                                                        id="student-thesis-course"/>
                                             </div>
                                         </div>
                                         <div class="control-group">
@@ -540,29 +613,42 @@
                                                 </wicket:message>
                                             </label>
                                             <div class="controls">
-                                                <span class="input-xlarge uneditable-input">
-                                                    <span class="badge badge-info"
-                                                            id="student-thesis-submitted">
-                                                        ?
-                                                    </span>
-                                                </span>
+                                                <label class="radio inline" for="student-thesis-submitted-yes">
+                                                    <input type="radio" name="thesis-submitted"
+                                                            id="student-thesis-submitted-yes"/>
+                                                    <wicket:message key="label.radio.yes">
+                                                        Yes
+                                                    </wicket:message>
+                                                </label>
+                                                <label class="radio inline" for="student-thesis-submitted-no">
+                                                    <input type="radio" name="thesis-submitted"
+                                                            id="student-thesis-submitted-no" checked/>
+                                                    <wicket:message key="label.radio.no">
+                                                        No
+                                                    </wicket:message>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="control-group" id="student-thesis-submissiondate-container">
                                             <label class="control-label">
-                                                <wicket:message key="label.thesis.submissiondate">Submission Date</wicket:message>
+                                                <wicket:message key="label.thesis.submissiondate">
+                                                    Submission Date
+                                                </wicket:message>
                                             </label>
                                             <div class="controls">
-                                                <span class="input-xlarge uneditable-input"
-                                                        id="student-thesis-submissiondate">
-                                                </span>
+                                                <input type="date" class="input-xlarge"
+                                                        id="student-thesis-submissiondate"/>
                                             </div>
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">
-                                                <wicket:message key="label.thesis.notes">Notes</wicket:message>
+                                                <wicket:message key="label.thesis.notes">
+                                                    Notes
+                                                </wicket:message>
                                             </label>
-                                            <div class="controls" id="student-thesis-notes">
+                                            <div class="controls">
+                                                <textarea class="input-xlarge" rows="5"
+                                                        id="student-thesis-notes"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -571,11 +657,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-actions">
+                    <div class="pull-right">
+                        <button class="btn" id="student-cancel">
+                            <wicket:message key="button.cancel">Cancel</wicket:message>
+                        </button>
+                        <button class="btn btn-primary" id="student-save">
+                            <wicket:message key="button.save">Save</wicket:message>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <script src="http://code.jquery.com/jquery-latest.min.js"></script>
             <wicket:link>
-                <script src="js/student-view.js"></script>
+                <script src="js/student-writer.js"></script>
             </wicket:link>
         </wicket:extend>
 
