@@ -2,82 +2,123 @@ $(function () {
     // Retrieve the ID that we were given.
     var studentId = $("#student-id").text(),
         DATE_FORMAT = "M/d/yyyy",
-        UNSPECIFIED = "(unspecified)",
         BLANK = "",
         YES = "Yes",
-        NO = "No";
+        NO = "No",
+
+        // Helper function for updating elements that depend on the value of
+        // another element.
+        updateDependentElements = function () {
+            var inMajor = $("#student-thesis-inmajor-yes").attr("checked"),
+                thesisSubmitted = $("#student-thesis-submitted-yes").attr("checked");
+
+            $("#student-thesis-course-container *")
+                .removeClass(inMajor ? "disabled" : "")
+                .addClass(inMajor ? "" : "disabled");
+            $("#student-thesis-course")
+                .removeAttr(!inMajor ? "" : "disabled")
+                .attr(inMajor ? {} : { disabled: "disabled" });
+
+            $("#student-thesis-submissiondate-container *")
+                .removeClass(thesisSubmitted ? "disabled" : "")
+                .addClass(!thesisSubmitted ? "" : "disabled");
+            $("#student-thesis-submissiondate")
+                .removeAttr(!thesisSubmitted ? "" : "disabled")
+                .attr(thesisSubmitted ? {} : { disabled: "disabled" });
+        };
 
     // If supplied, load up the student with that ID.
     if (studentId) {
         $.getJSON(
             Headmaster.serviceUri("students/" + studentId),
             function (data, textStatus, jqXHR) {
-                // TODO
-                $("#student-name").text(
-                        data.firstName + " " +
-                        (data.middleInitial ? data.middleInitial + "." : "") +
-                        data.lastName
-                );
-                $("#student-gradyear").text(data.expectedGraduationYear);
+                // Student name and graduation year.
+                $("#student-firstname").val(data.firstName || BLANK);
+                $("#student-middlename").val(data.middleInitial || BLANK);
+                $("#student-lastname").val(data.lastName || BLANK);
+                $("#student-gradyear").val(data.expectedGraduationYear);
 
                 // Contact information.
-                $("#student-email1").text(data.primaryEmail || BLANK);
-                $("#student-email2").text(data.secondaryEmail || BLANK);
-                $("#student-campus-box").text(data.campusBox || BLANK);
-                $("#student-address").text(data.address || BLANK);
-                $("#student-city").text(data.city || BLANK);
-                $("#student-state").text(data.state || BLANK);
-                $("#student-zip").text(data.zip || BLANK);
-                $("#student-phone-main").text(data.mainPhone || BLANK);
-                $("#student-phone-cell").text(data.cellPhone || BLANK);
+                $("#student-email1").val(data.primaryEmail || BLANK);
+                $("#student-email2").val(data.secondaryEmail || BLANK);
+                $("#student-campus-box").val(data.campusBox || BLANK);
+                $("#student-address").val(data.address || BLANK);
+                $("#student-city").val(data.city || BLANK);
+                $("#student-state").val(data.state || BLANK);
+                $("#student-zip").val(data.zip || BLANK);
+                $("#student-phone-main").val(data.mainPhone || BLANK);
+                $("#student-phone-cell").val(data.cellPhone || BLANK);
 
                 // Academic information.
-                $("#student-college").text(data.college || BLANK);
-                $("#student-advisor").text(data.advisor || BLANK);
-                $("#student-degree").text(data.degree || BLANK);
-                $("#student-gpa").text(data.cumulativeGpa || BLANK);
+                $("#student-college").val(data.college || BLANK);
+                $("#student-advisor").val(data.advisor || BLANK);
+                $("#student-degree").val(data.degree || BLANK);
+                $("#student-gpa").val(data.cumulativeGpa || BLANK);
                 // TODO majors
                 // TODO minors
-                $("#student-status").text(data.academicStatus || BLANK);
+                $("#student-status").val(data.academicStatus || BLANK);
 
                 // Status information.
-                $("#student-inllc").text(data.inLivingLearningCommunity ? YES : NO);
-                $("#student-transfer").text(data.transferStudent ? YES : NO);
-                $("#student-studyabroad").text(data.hasStudiedAbroad ? YES : NO);
+                $("#student-inllc-" + (data.inLivingLearningCommunity ? "yes" : "no"))
+                    .attr({ checked: "checked" });
+                $("#student-inllc-" + (data.inLivingLearningCommunity ? "no" : "yes"))
+                    .removeAttr("checked");
+
+                $("#student-transfer-" + (data.transferStudent ? "yes" : "no"))
+                    .attr({ checked: "checked" });
+                $("#student-transfer-" + (data.transferStudent ? "no" : "yes"))
+                    .removeAttr("checked");
+
+                $("#student-studyabroad-" + (data.hasStudiedAbroad ? "yes" : "no"))
+                    .attr({ checked: "checked" });
+                $("#student-studyabroad-" + (data.hasStudiedAbroad ? "no" : "yes"))
+                    .removeAttr("checked");
 
                 // Entry information.
-                $("#student-entryyear").text(data.entryYear || BLANK);
-                $("#student-honorsentrydate").text(data.honorsEntryDate ?
+                $("#student-entryyear").val(data.entryYear || BLANK);
+                $("#student-honorsentrydate").val(data.honorsEntryDate ?
                         Date.parse(data.honorsEntryDate).toString(DATE_FORMAT) : BLANK);
-                $("#student-hsgpa").text(data.highSchoolGpa || BLANK);
-                $("#student-act").text(data.actScore || BLANK);
-                $("#student-sat-verbal").text(data.satVerbalScore || BLANK);
-                $("#student-sat-math").text(data.satMathScore || BLANK);
-                $("#student-sat-writing").text(data.satWritingScore || BLANK);
+                $("#student-hsgpa").val(data.highSchoolGpa || BLANK);
+                $("#student-act").val(data.actScore || BLANK);
+                $("#student-sat-verbal").val(data.satVerbalScore || BLANK);
+                $("#student-sat-math").val(data.satMathScore || BLANK);
+                $("#student-sat-writing").val(data.satWritingScore || BLANK);
 
                 // Notes.
-                $("#student-notes").text(data.notes || BLANK);
+                $("#student-notes").val(data.notes || BLANK);
 
                 // Thesis information.
-                $("#student-thesis-title").text(data.thesisTitle || UNSPECIFIED);
-                $("#student-thesis-term").text(data.thesisTerm || BLANK);
-                $("#student-thesis-year").text(data.thesisYear || data.expectedGraduationYear);
-                $("#student-thesis-advisor").text(data.thesisAdvisor || BLANK);
-                $("#student-thesis-inmajor").text(data.thesisInMajor ? YES : NO);
-                if (!data.thesisInMajor) {
-                    $("#student-thesis-course-container").fadeOut();
-                }
-                $("#student-thesis-course").text(data.thesisCourse || BLANK);
-                $("#student-thesis-submitted").text(data.thesisSubmissionDate ? YES : NO);
-                if (!data.thesisSubmissionDate) {
-                    $("#student-thesis-submissiondate-container").fadeOut();
-                }
-                $("#student-thesis-submissiondate").text(data.thesisSubmissionDate ?
+                $("#student-thesis-title").val(data.thesisTitle || BLANK);
+                $("#student-thesis-term-" + (data.thesisTerm === "FALL" ? "fall" : "spring"))
+                    .attr({ checked: "checked" });
+                $("#student-thesis-term-" + (data.thesisTerm === "FALL" ? "spring" : "fall"))
+                    .removeAttr("checked");
+                $("#student-thesis-year").val(data.thesisYear || data.expectedGraduationYear);
+                $("#student-thesis-advisor").val(data.thesisAdvisor || BLANK);
+
+                $("#student-thesis-inmajor-" + (data.thesisInMajor ? "yes" : "no"))
+                    .attr({ checked: "checked" });
+                $("#student-thesis-inmajor-" + (data.thesisInMajor ? "no" : "yes"))
+                    .removeAttr("checked");
+                $("#student-thesis-course").val(data.thesisCourse || BLANK);
+
+                $("#student-thesis-submitted-" + (data.thesisSubmissionDate ? "yes" : "no"))
+                    .attr({ checked: "checked" });
+                $("#student-thesis-submitted-" + (data.thesisSubmissionDate ? "no" : "yes"))
+                    .removeAttr("checked");
+                $("#student-thesis-submissiondate").val(data.thesisSubmissionDate ?
                         Date.parse(data.thesisSubmissionDate).toString(DATE_FORMAT) : BLANK);
-                $("#student-thesis-notes").text(data.thesisNotes || BLANK);
+
+                $("#student-thesis-notes").val(data.thesisNotes || BLANK);
             }
         );
     }
+
+    // Put dependent user interface elements in the correct initial state.
+    updateDependentElements();
+
+    // Set up event handling so that the above function gets called when necessary.
+    $('input[type="radio"]').click(updateDependentElements);
 
     // Datepicker setup.
     $("#student-honorsentrydate, #student-thesis-submissiondate").datepicker();
