@@ -17,9 +17,46 @@ $(function () {
     $("#student-attendance-container").on("show", function () {
         console.log("load attendance");
     });
+
     $("#student-grades-container").on("show", function () {
-        console.log("load grades");
+        var progress = $("#student-grades-progress"),
+            empty = $("#student-grades-empty"),
+            table = $("#student-grades ");
+
+        progress.fadeIn();
+        empty.fadeOut();
+        table.fadeOut();
+        $.getJSON(
+            Headmaster.serviceUri("students/" + studentId + "/grades"),
+            function (data, textStatus, jqXHR) {
+                // Load up the data.
+                var tbody;
+                if (data.length) {
+                    tbody = table.find("tbody");
+                    tbody.empty();
+                    $.each(data, function (index, gpa) {
+                        tbody.append(
+                            $(
+                                "<tr><td>" +
+                                gpa.term + " " + gpa.year +
+                                "</td><td>" +
+                                gpa.gpa.toFixed(2) +
+                                "</td></tr>"
+                            ).data("gpa", gpa) // Save the actual object as data on that row.
+                        );
+                    });
+                    
+                    // Show/hide as needed.
+                    table.fadeIn();
+                } else {
+                    empty.fadeIn();
+                }
+
+                progress.fadeOut();
+            }
+        );
     });
+
     $("#student-grants-container").on("show", function () {
         console.log("load grants");
     });

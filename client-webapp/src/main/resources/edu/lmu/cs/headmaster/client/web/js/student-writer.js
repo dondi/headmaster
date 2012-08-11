@@ -114,6 +114,49 @@ $(function () {
 
                 $("#student-thesis-notes").val(data.thesisNotes || BLANK);
 
+                // Set up loading functions for collections.
+                $("#student-grades-container").on("show", function () {
+                    var progress = $("#student-grades-progress"),
+                        empty = $("#student-grades-empty"),
+                        table = $("#student-grades ");
+
+                    progress.fadeIn();
+                    empty.fadeOut();
+                    table.fadeOut();
+                    $.getJSON(
+                        Headmaster.serviceUri("students/" + studentId + "/grades"),
+                        function (data, textStatus, jqXHR) {
+                            // Load up the data.
+                            var tbody;
+                            if (data.length) {
+                                tbody = table.find("tbody");
+                                tbody.empty();
+                                $.each(data, function (index, gpa) {
+                                    tbody.append(
+                                        $(
+                                            "<tr><td>" +
+                                            gpa.term + " " + gpa.year +
+                                            "</td><td>" +
+                                            gpa.gpa.toFixed(2) +
+                                            "</td></tr>"
+                                        ).data("gpa", gpa) // Save the actual object as data on that row.
+                                        .click(function () {
+                                            // TODO grade editing.
+                                        })
+                                    );
+                                });
+                                
+                                // Show/hide as needed.
+                                table.fadeIn();
+                            } else {
+                                empty.fadeIn();
+                            }
+
+                            progress.fadeOut();
+                        }
+                    );
+                });
+
                 // Now that values have been set, put dependent user interface
                 // elements in the correct initial state.
                 updateDependentElements();
