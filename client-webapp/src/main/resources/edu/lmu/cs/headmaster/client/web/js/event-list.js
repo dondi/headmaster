@@ -17,8 +17,13 @@ $(function () {
         TABLE_FORMAT = "M/d/yyyy",
 
         getEvents = function (fromDate, toDate, tableId, progressId, emptyId) {
-            $("#" + progressId).fadeIn();
-            $("#" + tableId + ", #" + emptyId).fadeOut();
+            var progress = $("#" + progressId),
+                empty = $("#" + emptyId),
+                table = $("#" + tableId);
+
+            progress.fadeIn();
+            empty.fadeOut();
+            table.fadeOut();
             $.getJSON(
                 Headmaster.serviceUri("events"),
 
@@ -31,7 +36,7 @@ $(function () {
                     // Load up the data.
                     var tbody;
                     if (data.length) {
-                        tbody = $("#" + tableId + " > tbody");
+                        tbody = table.find("tbody");
                         $.each(data, function (index, event) {
                             tbody.append(
                                 $(
@@ -47,12 +52,12 @@ $(function () {
                         });
                         
                         // Show/hide as needed.
-                        $("#" + tableId).fadeIn();
+                        table.fadeIn();
                     } else {
-                        $("#" + emptyId).fadeIn();
+                        empty.fadeIn();
                     }
 
-                    $("#" + progressId).fadeOut();
+                    progress.fadeOut();
                 }
             );
         };
