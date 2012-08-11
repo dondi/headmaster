@@ -35,7 +35,12 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
 
     @Override
     public List<Event> getStudentAttendance(Long id) {
-        return null;
+        Student student = (Student)getSession()
+                .createQuery("from Student s left join fetch s.attendance where s.id = :id")
+                .setParameter("id", id)
+                .uniqueResult();
+
+        return (student == null) ? null : student.getAttendance();
     }
 
     @Override

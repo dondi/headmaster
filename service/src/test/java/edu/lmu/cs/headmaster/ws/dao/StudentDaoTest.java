@@ -93,6 +93,20 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
+    public void testGetStudentAttendanceForStudentWithNoEvents() {
+        // We get a non-null but empty list for a student without events.
+        List<Event> events = studentDao.getStudentAttendance(1000003L);
+        Assert.assertNotNull(events);
+        Assert.assertEquals(0, events.size());
+    }
+
+    @Test
+    public void testGetStudentAttendanceForNonexistentStudent() {
+        // We expect null attendance when the student does not exist.
+        Assert.assertNull(studentDao.getStudentAttendance(2000000L));
+    }
+
+    @Test
     public void testCreateOrUpdateStudentGrades() {
         // Build the grade list.
         List<GPA> grades = new ArrayList<GPA>();
