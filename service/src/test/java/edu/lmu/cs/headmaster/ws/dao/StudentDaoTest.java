@@ -81,6 +81,24 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
+    public void testGetStudentsByLastName() {
+        // When without commas and not all-digits, the student query is hits on
+        // "last name starts with query," case insensitive.
+        List<Student> students = studentDao.getStudents("cer", 0, 10);
+        Assert.assertEquals(1, students.size());
+        Assert.assertEquals(Long.valueOf(1000001L), students.get(0).getId());
+
+        students = studentDao.getStudents("k", 0, 10);
+        Assert.assertEquals(2, students.size());
+ 
+        // Search results are sorted by last name, first name.
+        Assert.assertEquals(Long.valueOf(1000004L), students.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000002L), students.get(1).getId());
+    }
+
+    // TODO Many more ways to test getStudents...
+
+    @Test
     public void testGetStudentAttendance() {
         // Verify that the text fixture event attendance comes out correctly.
         for (long l = 1000000L; l < 1000003L; l++) {
