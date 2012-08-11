@@ -25,7 +25,7 @@ public interface StudentDao {
     /**
      * Returns the events attended by the student with the given id.
      */
-    List<Event> getStudentAttendance(Long id);
+    List<Event> getStudentAttendanceById(Long id);
 
     /**
      * Saves the given student, which should have a null id.

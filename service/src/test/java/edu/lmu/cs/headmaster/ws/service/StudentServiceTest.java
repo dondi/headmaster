@@ -7,7 +7,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
 
+import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.domain.Term;
@@ -46,6 +48,38 @@ public class StudentServiceTest extends ServiceTest {
         // Grant and event data do not come along for the ride.
         Assert.assertEquals(0, student.getGrants().size());
         Assert.assertEquals(0, student.getAttendance().size());
+    }
+
+    @Test
+    public void testGetStudentAttendanceById() {
+        // Verify that the text fixture event attendance comes out correctly.
+        for (long l = 1000000L; l < 1000003L; l++) {
+            List<Event> events = ws.path("students/" + l + "/attendance")
+                    .get(new GenericType<List<Event>>(){});
+            Assert.assertEquals(1, events.size());
+            Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
+            Assert.assertEquals("Summit", events.get(0).getTitle());
+            Assert.assertEquals("The big one", events.get(0).getDescription());
+        }
+    }
+
+    @Test
+    public void testGetStudentAttendanceByIdForStudentWithNoEvents() {
+        // We get a non-null but empty list for a student without events.
+        List<Event> events = ws.path("students/1000003/attendance")
+                .get(new GenericType<List<Event>>(){});
+        Assert.assertNotNull(events);
+        Assert.assertEquals(0, events.size());
+    }
+
+    @Test
+    public void testGetStudentAttendanceByIdForNonexistentStudent() {
+        // We expect a 404 when the student does not exist.
+        ClientResponse clientResponse = ws.path("students/2000000/attendance")
+                .get(ClientResponse.class);
+        Assert.assertEquals(404, clientResponse.getStatus());
+        Assert.assertEquals("404 " + StudentService.STUDENT_NOT_FOUND,
+                clientResponse.getEntity(String.class));
     }
 
     @Test

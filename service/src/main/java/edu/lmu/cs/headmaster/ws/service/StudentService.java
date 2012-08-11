@@ -14,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
@@ -81,4 +82,15 @@ public interface StudentService {
     @Path("{id}")
     Student getStudentById(@PathParam("id") Long id);
 
+    /**
+     * Returns the events attended by the student with the given id.
+     *
+     * @param id the id of the requested student.
+     * @return the events attended by the student with the given id.
+     * @throws ServiceException if there is no student with the given id, causing the framework
+     * to generate an HTTP 404.
+     */
+    @GET
+    @Path("{id}/attendance")
+    List<Event> getStudentAttendanceById(@PathParam("id") Long id);
 }

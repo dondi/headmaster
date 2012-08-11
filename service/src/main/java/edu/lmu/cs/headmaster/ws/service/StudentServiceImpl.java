@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.dao.StudentDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
+import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
 /**
@@ -62,6 +63,12 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
         Student student = studentDao.getStudentById(id);
         validate(student != null, Response.Status.NOT_FOUND, STUDENT_NOT_FOUND);
         return student;
+    }
+
+    @Override
+    public List<Event> getStudentAttendanceById(Long id) {
+        logServiceCall();
+        return null;
     }
 
 }

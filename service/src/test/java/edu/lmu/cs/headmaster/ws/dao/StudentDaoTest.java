@@ -99,10 +99,10 @@ public class StudentDaoTest extends ApplicationContextTest {
     // TODO Many more ways to test getStudents...
 
     @Test
-    public void testGetStudentAttendance() {
+    public void testGetStudentAttendanceById() {
         // Verify that the text fixture event attendance comes out correctly.
         for (long l = 1000000L; l < 1000003L; l++) {
-            List<Event> events = studentDao.getStudentAttendance(l);
+            List<Event> events = studentDao.getStudentAttendanceById(l);
             Assert.assertEquals(1, events.size());
             Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
             Assert.assertEquals("Summit", events.get(0).getTitle());
@@ -111,17 +111,17 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
-    public void testGetStudentAttendanceForStudentWithNoEvents() {
+    public void testGetStudentAttendanceByIdForStudentWithNoEvents() {
         // We get a non-null but empty list for a student without events.
-        List<Event> events = studentDao.getStudentAttendance(1000003L);
+        List<Event> events = studentDao.getStudentAttendanceById(1000003L);
         Assert.assertNotNull(events);
         Assert.assertEquals(0, events.size());
     }
 
     @Test
-    public void testGetStudentAttendanceForNonexistentStudent() {
+    public void testGetStudentAttendanceByIdForNonexistentStudent() {
         // We expect null attendance when the student does not exist.
-        Assert.assertNull(studentDao.getStudentAttendance(2000000L));
+        Assert.assertNull(studentDao.getStudentAttendanceById(2000000L));
     }
 
     @Test
