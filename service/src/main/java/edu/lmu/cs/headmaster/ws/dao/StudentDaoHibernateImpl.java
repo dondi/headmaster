@@ -1,5 +1,6 @@
 package edu.lmu.cs.headmaster.ws.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,12 +47,15 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
 
     @Override
     public List<GPA> getGradesById(Long id) {
-        return ((Student)getSession()
-                .createQuery("from Student s inner join fetch s.grades g " +
+        Student student = (Student)getSession()
+                .createQuery("from Student s left join fetch s.grades g " +
                         "where s.id = :id " +
                         "order by g.year, g.term")
                 .setParameter("id", id)
-                .uniqueResult()).getGrades();
+                .uniqueResult();
+
+        return (student == null) ? null : ((student.getGrades() == null) ?
+                new ArrayList<GPA>() : student.getGrades());
     }
 
     /**
