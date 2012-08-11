@@ -6,8 +6,10 @@ $(function () {
         YES = "Yes",
         NO = "No",
 
-        // Helper function for updating elements that depend on the value of
-        // another element.
+        /*
+         * Helper function for updating elements that depend on the value of
+         * another element.
+         */
         updateDependentElements = function () {
             var inMajor = Headmaster.isChecked("student-thesis-inmajor-yes"),
                 thesisSubmitted = Headmaster.isChecked("student-thesis-submitted-yes");
@@ -35,7 +37,9 @@ $(function () {
         $.getJSON(
             Headmaster.serviceUri("students/" + studentId),
             function (data, textStatus, jqXHR) {
-                var gradesTbody = $("#student-grades > tbody");
+                var createRowFromString = function (string) {
+                    return $("<tr><td>" + string + "</td></tr>");
+                };
 
                 // Student name and graduation year.
                 $("#student-firstname").val(data.firstName || BLANK);
@@ -58,10 +62,12 @@ $(function () {
                 $("#student-college").val(data.college || BLANK);
                 $("#student-advisor").val(data.advisor || BLANK);
                 $("#student-degree").val(data.degree || BLANK);
-                $("#student-gpa").val(data.cumulativeGpa || BLANK);
-                // TODO majors
-                // TODO minors
+                $("#student-gpa").val(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
                 $("#student-status").val(data.academicStatus || BLANK);
+
+                // Majors and minors.
+                Headmaster.loadArrayIntoTable(data.majors, "student-majors", "student-majors-empty", createRowFromString);
+                Headmaster.loadArrayIntoTable(data.minors, "student-minors", "student-minors-empty", createRowFromString);
 
                 // Status information.
                 $("#student-inllc-" + (data.inLivingLearningCommunity ? "yes" : "no"))
@@ -93,24 +99,18 @@ $(function () {
                 $("#student-notes").val(data.notes || BLANK);
 
                 // Grade information.
-                if (data.grades && data.grades.length) {
-                    $.each(data.grades, function (index, gpa) {
-                        gradesTbody.append(
-                            $(
-                                "<tr><td>" +
-                                gpa.term + " " + gpa.year +
-                                "</td><td>" +
-                                gpa.gpa.toFixed(2) +
-                                "</td></tr>"
-                            ).data("gpa", gpa) // Save the actual object as data on that row.
-                        );
-                    });
-                    $("#student-grades").fadeIn();
-                    $("#student-grades-empty").fadeOut();
-                } else {
-                    $("#student-grades").fadeOut();
-                    $("#student-grades-empty").fadeIn();
-                }
+                Headmaster.loadArrayIntoTable(
+                    data.grades, "student-grades", "student-grades-empty",
+                    function (gpa) {
+                        return $(
+                            "<tr><td>" +
+                            gpa.term + " " + gpa.year +
+                            "</td><td>" +
+                            gpa.gpa.toFixed(2) +
+                            "</td></tr>"
+                        ).data("gpa", gpa); // Save the actual object as data on that row.
+                    }
+                );
 
                 // Thesis information.
                 $("#student-thesis-title").val(data.thesisTitle || BLANK);
@@ -185,9 +185,11 @@ $(function () {
             advisor: $("#student-advisor").val(),
             degree: $("#student-degree").val(),
             cumulativeGpa: $("#student-gpa").val(),
-            // TODO majors
-            // TODO minors
             academicStatus: $("#student-status").val(),
+
+            // Majors and minors (to be gathered later).
+            majors: [],
+            minors: [],
 
             // Status information.
             inLivingLearningCommunity: Headmaster.isChecked("student-inllc-yes"),
@@ -220,6 +222,14 @@ $(function () {
                     Date.parse($("#student-thesis-submissiondate").val()) : null,
             thesisNotes: $("#student-thesis-notes").val()
         };
+
+        // Gather tabular data.
+        $("#student-majors > tbody td").each(function (index, td) {
+            studentData.majors.push($(td).text());
+        });
+        $("#student-minors > tbody td").each(function (index, td) {
+            studentData.minors.push($(td).text());
+        });
 
         // Gather grade data.
         $("#student-grades > tbody > tr").each(function (index, tr) {

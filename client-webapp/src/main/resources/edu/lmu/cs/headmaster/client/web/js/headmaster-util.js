@@ -24,6 +24,28 @@
             if (object[propertyName]) {
                 object[propertyName] = object[propertyName].toString(dateFormat || PARTIAL_ISO8601);
             }
+        },
+
+        /*
+         * Loads an array into a web page table. The createRow parameter is a
+         * function (object) which is expected to return a jQuery element for
+         * the table row that corresponds to that object.
+         */
+        loadArrayIntoTable: function (arrayToLoad, tableId, emptyId, createRow) {
+            var table = $("#" + tableId),
+                empty = $("#" + emptyId),
+                tbody = table.find("tbody");
+
+            if (arrayToLoad && arrayToLoad.length) {
+                $.each(arrayToLoad, function (index, item) {
+                    tbody.append(createRow(item));
+                });
+                table.fadeIn();
+                empty.fadeOut();
+            } else {
+                table.fadeOut();
+                empty.fadeIn();
+            }
         }
 
     });

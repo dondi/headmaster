@@ -5,30 +5,7 @@ $(function () {
         UNSPECIFIED = "(unspecified)",
         BLANK = "",
         YES = "Yes",
-        NO = "No",
-
-        /*
-         * Helper function for loading an array into a web page table. The
-         * createRow parameter is a function (object) which is expected to
-         * return a jQuery element for the table row that corresponds to that
-         * object.
-         */
-        loadArrayIntoTable = function (arrayToLoad, tableId, emptyId, createRow) {
-            var table = $("#" + tableId),
-                empty = $("#" + emptyId),
-                tbody = table.find("tbody");
-
-            if (arrayToLoad && arrayToLoad.length) {
-                $.each(arrayToLoad, function (index, item) {
-                    tbody.append(createRow(item));
-                });
-                table.fadeIn();
-                empty.fadeOut();
-            } else {
-                table.fadeOut();
-                empty.fadeIn();
-            }
-        };
+        NO = "No";
 
     // Set up the edit button.
     $("#edit-button").attr({ href: "edit/" + studentId });
@@ -80,8 +57,8 @@ $(function () {
             $("#student-status").text(data.academicStatus || BLANK);
 
             // Majors and minors.
-            loadArrayIntoTable(data.majors, "student-majors", "student-majors-empty", createRowFromString);
-            loadArrayIntoTable(data.minors, "student-minors", "student-minors-empty", createRowFromString);
+            Headmaster.loadArrayIntoTable(data.majors, "student-majors", "student-majors-empty", createRowFromString);
+            Headmaster.loadArrayIntoTable(data.minors, "student-minors", "student-minors-empty", createRowFromString);
 
             // Status information.
             $("#student-inllc").text(data.inLivingLearningCommunity ? YES : NO);
@@ -102,7 +79,7 @@ $(function () {
             $("#student-notes").text(data.notes || BLANK);
 
             // Grade information.
-            loadArrayIntoTable(
+            Headmaster.loadArrayIntoTable(
                 data.grades, "student-grades", "student-grades-empty",
                 function (gpa) {
                     return $(
