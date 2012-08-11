@@ -67,6 +67,27 @@ public class StudentServiceTest extends ServiceTest {
     }
 
     @Test
+    public void testGetGradesByIdForNonExistentStudent() {
+        // When a student does not exist, we should get a 404.
+        ClientResponse clientResponse = ws.path("students/2000000/grades")
+                .get(ClientResponse.class);
+        Assert.assertEquals(404, clientResponse.getStatus());
+        Assert.assertEquals(
+            "404 " + StudentService.STUDENT_NOT_FOUND,
+            clientResponse.getEntity(String.class)
+        );
+    }
+
+    @Test
+    public void testGetGradesByIdForStudentWithoutGrades() {
+        // When a student does exist but has no grades, we get an empty list
+        // back.
+        List<GPA> grades = ws.path("students/1000000/grades")
+                .get(new GenericType<List<GPA>>(){});
+        Assert.assertEquals(0, grades.size());
+    }
+
+    @Test
     public void testSetStudentGradesById() {
         // This PUT test verifies the setting of GPA records.
         List<GPA> grades = new ArrayList<GPA>();
