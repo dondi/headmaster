@@ -5,7 +5,30 @@ $(function () {
         UNSPECIFIED = "(unspecified)",
         BLANK = "",
         YES = "Yes",
-        NO = "No";
+        NO = "No",
+
+        /*
+         * Helper function for loading an array into a web page table. The
+         * createRow parameter is a function (object) which is expected to
+         * return a jQuery element for the table row that corresponds to that
+         * object.
+         */
+        loadArrayIntoTable = function (arrayToLoad, tableId, emptyId, createRow) {
+            var table = $("#" + tableId),
+                empty = $("#" + emptyId),
+                tbody = table.find("tbody");
+
+            if (arrayToLoad && arrayToLoad.length) {
+                $.each(arrayToLoad, function (index, item) {
+                    tbody.append(createRow(item));
+                });
+                table.fadeIn();
+                empty.fadeOut();
+            } else {
+                table.fadeOut();
+                empty.fadeIn();
+            }
+        };
 
     // Set up the edit button.
     $("#edit-button").attr({ href: "edit/" + studentId });
@@ -27,7 +50,9 @@ $(function () {
     $.getJSON(
         Headmaster.serviceUri("students/" + studentId),
         function (data, textStatus, jqXHR) {
-            var gradesTbody = $("#student-grades > tbody");
+            var createRowFromString = function (string) {
+                return $("<tr><td>" + string + "</td></tr>");
+            };
 
             $("#student-name").text(
                 data.firstName + " " +
@@ -52,9 +77,11 @@ $(function () {
             $("#student-advisor").text(data.advisor || BLANK);
             $("#student-degree").text(data.degree || BLANK);
             $("#student-gpa").text(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
-            // TODO majors
-            // TODO minors
             $("#student-status").text(data.academicStatus || BLANK);
+
+            // Majors and minors.
+            loadArrayIntoTable(data.majors, "student-majors", "student-majors-empty", createRowFromString);
+            loadArrayIntoTable(data.minors, "student-minors", "student-minors-empty", createRowFromString);
 
             // Status information.
             $("#student-inllc").text(data.inLivingLearningCommunity ? YES : NO);
@@ -75,24 +102,18 @@ $(function () {
             $("#student-notes").text(data.notes || BLANK);
 
             // Grade information.
-            if (data.grades && data.grades.length) {
-                $.each(data.grades, function (index, gpa) {
-                    gradesTbody.append(
-                        $(
-                            "<tr><td>" +
-                            gpa.term + " " + gpa.year +
-                            "</td><td>" +
-                            gpa.gpa.toFixed(2) +
-                            "</td></tr>"
-                        )
+            loadArrayIntoTable(
+                data.grades, "student-grades", "student-grades-empty",
+                function (gpa) {
+                    return $(
+                        "<tr><td>" +
+                        gpa.term + " " + gpa.year +
+                        "</td><td>" +
+                        gpa.gpa.toFixed(2) +
+                        "</td></tr>"
                     );
-                });
-                $("#student-grades").fadeIn();
-                $("#student-grades-empty").fadeOut();
-            } else {
-                $("#student-grades").fadeOut();
-                $("#student-grades-empty").fadeIn();
-            }
+                }
+            );
 
             // Thesis information.
             $("#student-thesis-title").text(data.thesisTitle || UNSPECIFIED);

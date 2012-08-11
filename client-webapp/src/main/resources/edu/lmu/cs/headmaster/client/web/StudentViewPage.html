@@ -172,9 +172,13 @@
                                             <wicket:message key="label.majors">Major(s)</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-majors">
-                                            </span>
+                                            <div class="alert alert-info hide message-empty" id="student-majors-empty">
+                                                <wicket:message key="prompt.empty.majors">(none)</wicket:message>
+                                            </div>
+                    
+                                            <table class="table table-striped hide" id="student-majors">
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -182,9 +186,13 @@
                                             <wicket:message key="label.minors">Minor(s)</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-minors">
-                                            </span>
+                                            <div class="alert alert-info hide message-empty" id="student-minors-empty">
+                                                <wicket:message key="prompt.empty.minors">(none)</wicket:message>
+                                            </div>
+                    
+                                            <table class="table table-striped hide" id="student-minors">
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="control-group">
