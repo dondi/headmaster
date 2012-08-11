@@ -15,3 +15,10 @@ insert into event(id, datetime, description, title) values(1000000, '2012-07-28 
 insert into event_student(event_id, student_id, attendees_order) values(1000000, 1000002, 0);
 insert into event_student(event_id, student_id, attendees_order) values(1000000, 1000000, 1);
 insert into event_student(event_id, student_id, attendees_order) values(1000000, 1000001, 2);
+
+-- Preloaded grades.
+insert into gpa(id, gpa, term, year) values(1000000, 3.5, 1, 2016);
+insert into gpa(id, gpa, term, year) values(1000001, 3.8, 2, 2015);
+
+insert into student_gpa(student_id, grades_id) values(1000002, 1000000);
+insert into student_gpa(student_id, grades_id) values(1000002, 1000001);

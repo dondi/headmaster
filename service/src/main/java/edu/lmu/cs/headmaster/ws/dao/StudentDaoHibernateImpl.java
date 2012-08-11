@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
 /**
@@ -41,6 +42,11 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     @Override
     public void createOrUpdateStudent(Student student) {
         getHibernateTemplate().saveOrUpdate(student);
+    }
+
+    @Override
+    public List<GPA> getGradesById(Long id) {
+        return null;
     }
 
     /**

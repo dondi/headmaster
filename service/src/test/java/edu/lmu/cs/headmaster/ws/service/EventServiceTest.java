@@ -95,8 +95,7 @@ public class EventServiceTest extends ServiceTest {
         List<Event> events = ws.path("events")
                 .queryParam("from", "2012-06-01")
                 .queryParam("to", "2012-07-31T23:59:59")
-                .get(ClientResponse.class)
-                .getEntity(new GenericType<List<Event>>(){});
+                .get(new GenericType<List<Event>>(){});
 
         // There should only be one event there.  We'll check just the ID.
         Assert.assertEquals(1, events.size());
@@ -106,8 +105,7 @@ public class EventServiceTest extends ServiceTest {
         events = ws.path("events")
                 .queryParam("from", "2012-01-01")
                 .queryParam("to", "2012-06-30T23:59:59")
-                .get(ClientResponse.class)
-                .getEntity(new GenericType<List<Event>>(){});
+                .get(new GenericType<List<Event>>(){});
 
         // Now there should be nothing.
         Assert.assertEquals(0, events.size());
@@ -116,8 +114,7 @@ public class EventServiceTest extends ServiceTest {
         events = ws.path("events")
                 .queryParam("from", "2012-08-01T13:00:00-08:00")
                 .queryParam("to", "2012-09-30T23:59:59-07:00")
-                .get(ClientResponse.class)
-                .getEntity(new GenericType<List<Event>>(){});
+                .get(new GenericType<List<Event>>(){});
 
         // Again, there should be nothing.
         Assert.assertEquals(0, events.size());
@@ -129,8 +126,7 @@ public class EventServiceTest extends ServiceTest {
         // intentionally mix case to validate the case insensitivity.
         List<Event> events = ws.path("events")
                 .queryParam("q", "MmIt")
-                .get(ClientResponse.class)
-                .getEntity(new GenericType<List<Event>>(){});
+                .get(new GenericType<List<Event>>(){});
 
         // There should only be one event there.  We'll check just the ID.
         Assert.assertEquals(1, events.size());
@@ -139,8 +135,7 @@ public class EventServiceTest extends ServiceTest {
         // Do another one with a term in the description.
         events = ws.path("events")
                 .queryParam("q", "The big")
-                .get(ClientResponse.class)
-                .getEntity(new GenericType<List<Event>>(){});
+                .get(new GenericType<List<Event>>(){});
 
         // We should get the same event back.
         Assert.assertEquals(1, events.size());
@@ -149,8 +144,7 @@ public class EventServiceTest extends ServiceTest {
         // Finally, we go with a term that should not match anything.
         events = ws.path("events")
                 .queryParam("q", "blarg")
-                .get(ClientResponse.class)
-                .getEntity(new GenericType<List<Event>>(){});
+                .get(new GenericType<List<Event>>(){});
 
         // Now there should be nothing.
         Assert.assertEquals(0, events.size());

@@ -14,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
@@ -80,5 +81,12 @@ public interface StudentService {
     @GET
     @Path("{id}")
     Student getStudentById(@PathParam("id") Long id);
+
+    /**
+     * Returns a student's grades.
+     */
+    @GET
+    @Path("{id}/grades")
+    List<GPA> getStudentGradesById(@PathParam("id") Long id);
 
 }

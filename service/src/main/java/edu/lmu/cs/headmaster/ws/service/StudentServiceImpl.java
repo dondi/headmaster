@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.dao.StudentDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
+import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
 /**
@@ -63,5 +64,11 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
         validate(student != null, Response.Status.NOT_FOUND, STUDENT_NOT_FOUND);
         return student;
     }
-    
+
+    @Override
+    public List<GPA> getStudentGradesById(Long id) {
+        logServiceCall();
+        return null;
+    }
+
 }
