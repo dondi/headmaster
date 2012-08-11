@@ -9,8 +9,8 @@ $(function () {
         // Helper function for updating elements that depend on the value of
         // another element.
         updateDependentElements = function () {
-            var inMajor = $("#student-thesis-inmajor-yes").attr("checked"),
-                thesisSubmitted = $("#student-thesis-submitted-yes").attr("checked");
+            var inMajor = Headmaster.isChecked("student-thesis-inmajor-yes"),
+                thesisSubmitted = Headmaster.isChecked("student-thesis-submitted-yes");
 
             $("#student-thesis-course-container *")
                 .removeClass(inMajor ? "disabled" : "")
@@ -26,6 +26,9 @@ $(function () {
                 .removeAttr(!thesisSubmitted ? "" : "disabled")
                 .attr(thesisSubmitted ? {} : { disabled: "disabled" });
         };
+
+    // Datepicker setup.
+    $("#student-honorsentrydate, #student-thesis-submissiondate").datepicker();
 
     // If supplied, load up the student with that ID.
     if (studentId) {
@@ -110,18 +113,19 @@ $(function () {
                         Date.parse(data.thesisSubmissionDate).toString(DATE_FORMAT) : BLANK);
 
                 $("#student-thesis-notes").val(data.thesisNotes || BLANK);
+
+                // Now that values have been set, put dependent user interface
+                // elements in the correct initial state.
+                updateDependentElements();
             }
         );
+    } else {
+        // Just update dependent elements in the case that there is no id.
+        updateDependentElements();
     }
-
-    // Put dependent user interface elements in the correct initial state.
-    updateDependentElements();
 
     // Set up event handling so that the above function gets called when necessary.
     $('input[type="radio"]').click(updateDependentElements);
-
-    // Datepicker setup.
-    $("#student-honorsentrydate, #student-thesis-submissiondate").datepicker();
 
     // Button click handling.
     $("#student-cancel").click(function (event) {
@@ -130,10 +134,63 @@ $(function () {
     });
 
     $("#student-save").click(function (event) {
-        // TODO
         // Grab the data from the web page.
         var studentData = {
-            id: studentId
+            id: studentId,
+
+            // Student name and graduation year.
+            firstName: $("#student-firstname").val(),
+            middleInitial: $("#student-middlename").val(),
+            lastName: $("#student-lastname").val(),
+            expectedGraduationYear: $("#student-gradyear").val(),
+
+            // Contact information.
+            primaryEmail: $("#student-email1").val(),
+            secondaryEmail: $("#student-email2").val(),
+            campusBox: $("#student-campus-box").val(),
+            address: $("#student-address").val(),
+            city: $("#student-city").val(),
+            state: $("#student-state").val(),
+            zip: $("#student-zip").val(),
+            mainPhone: $("#student-phone-main").val(),
+            cellPhone: $("#student-phone-cell").val(),
+
+            // Academic information.
+            college: $("#student-college").val(),
+            advisor: $("#student-advisor").val(),
+            degree: $("#student-degree").val(),
+            cumulativeGpa: $("#student-gpa").val(),
+            // TODO majors
+            // TODO minors
+            academicStatus: $("#student-status").val(),
+
+            // Status information.
+            inLivingLearningCommunity: Headmaster.isChecked("student-inllc-yes"),
+            transferStudent: Headmaster.isChecked("student-transfer-yes"),
+            hasStudiedAbroad: Headmaster.isChecked("student-studyabroad-yes"),
+
+            // Entry information.
+            entryYear: $("#student-entryyear").val(),
+            honorsEntryDate: Date.parse($("#student-honorsentrydate").val()),
+            highSchoolGpa: $("#student-hsgpa").val(),
+            actScore: $("#student-act").val(),
+            satVerbalScore: $("#student-sat-verbal").val(),
+            satMathScore: $("#student-sat-math").val(),
+            satWritingScore: $("#student-sat-writing").val(),
+
+            // Notes.
+            notes: $("#student-notes").val(),
+
+            // Thesis information.
+            thesisTitle: $("#student-thesis-title").val(),
+            thesisTerm: Headmaster.isChecked("student-thesis-term-fall") ? "FALL" : "SPRING",
+            thesisYear: $("#student-thesis-year").val(),
+            thesisAdvisor: $("#student-thesis-advisor").val(),
+            thesisInMajor: Headmaster.isChecked("student-thesis-inmajor-yes"),
+            thesisCourse: $("#student-thesis-course").val(),
+            thesisSubmissionDate: Headmaster.isChecked("student-thesis-submitted-yes") ?
+                    Date.parse($("#student-thesis-submissiondate").val()) : null,
+            thesisNotes: $("#student-thesis-notes").val()
         };
 
         // Ditch the id attribute if it is empty.
@@ -142,7 +199,9 @@ $(function () {
         }
 
         // Convert the dates into strings that the service will parse correctly.
-        // TODO
+        $.each(["honorsEntryDate", "thesisSubmissionDate"], function (index, propertyName) {
+            Headmaster.dateToDateString(studentData, propertyName);
+        });
 
         // Ajax call.
         $.ajax({

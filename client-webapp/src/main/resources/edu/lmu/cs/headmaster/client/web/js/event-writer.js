@@ -2,15 +2,17 @@ $(function () {
     // Retrieve the ID that we were given, and load up the event with that ID
     // (if there).
     var eventId = $("#event-id").text(),
-        DATE_FORMAT = "M/d/yyyy";
+        DATE_FORMAT = "M/d/yyyy",
+        BLANK = "";
 
     if (eventId) {
         $.getJSON(
             Headmaster.serviceUri("events/" + eventId),
             function (data, textStatus, jqXHR) {
-                $("#event-date").val(Date.parse(data.dateTime).toString(DATE_FORMAT));
-                $("#event-title").val(data.title);
-                $("#event-description").val(data.description);
+                $("#event-date").val(data.dateTime ?
+                        Date.parse(data.dateTime).toString(DATE_FORMAT) : BLANK);
+                $("#event-title").val(data.title || BLANK);
+                $("#event-description").val(data.description || BLANK);
                 
                 // List the attendees.
                 if (!data.attendees || !data.attendees.length) {
@@ -46,9 +48,7 @@ $(function () {
         }
 
         // Convert the date into a string that the service will parse correctly.
-        if (eventData.dateTime) {
-            eventData.dateTime = eventData.dateTime.toString("yyyy-MM-dd");
-        }
+        Headmaster.dateToDateString(eventData, "dateTime");
 
         // Ajax call.
         $.ajax({

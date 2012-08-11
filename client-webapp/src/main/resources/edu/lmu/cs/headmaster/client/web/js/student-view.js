@@ -23,9 +23,6 @@ $(function () {
     $("#student-grants-container").on("show", function () {
         console.log("load grants");
     });
-    $("#student-thesis-container").on("show", function () {
-        console.log("load thesis");
-    });
 
     // Load up the event with that ID.
     $.getJSON(
@@ -33,7 +30,7 @@ $(function () {
         function (data, textStatus, jqXHR) {
             $("#student-name").text(
                 data.firstName + " " +
-                (data.middleInitial ? data.middleInitial + "." : "") +
+                (data.middleInitial ? data.middleInitial + ". " : "") +
                 data.lastName
             );
             $("#student-gradyear").text(data.expectedGraduationYear);
