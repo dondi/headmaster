@@ -72,18 +72,15 @@ public class StudentDaoTest extends ApplicationContextTest {
 
     @Test
     public void testGetGradesByIdForNonExistentStudent() {
-        // The getGradesById call is designed to return an empty list so as not
-        // to give away whether the requested student exists.
-        List<GPA> grades = studentDao.getGradesById(2000000L);
-        Assert.assertEquals(0, grades.size());
+        // When a student does not exist, we get null back.
+        Assert.assertNull(studentDao.getGradesById(2000000L));
     }
 
     @Test
     public void testGetGradesByIdForStudentWithoutGrades() {
-        // The getGradesById call is designed to return an empty list so as not
-        // to give away whether the requested student exists.
-        List<GPA> grades = studentDao.getGradesById(1000000L);
-        Assert.assertEquals(0, grades.size());
+        // When a student does exist but has no grades, we get an empty list
+        // back.
+        Assert.assertEquals(0, studentDao.getGradesById(1000000L).size());
     }
 
 }
