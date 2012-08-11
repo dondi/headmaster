@@ -46,7 +46,12 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
 
     @Override
     public List<GPA> getGradesById(Long id) {
-        return null;
+        return ((Student)getSession()
+                .createQuery("from Student s inner join fetch s.grades g " +
+                        "where s.id = :id " +
+                        "order by g.year, g.term")
+                .setParameter("id", id)
+                .uniqueResult()).getGrades();
     }
 
     /**

@@ -70,4 +70,20 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertEquals(3.5, grades.get(1).getGpa(), 0.0);
     }
 
+    @Test
+    public void testGetGradesByIdForNonExistentStudent() {
+        // The getGradesById call is designed to return an empty list so as not
+        // to give away whether the requested student exists.
+        List<GPA> grades = studentDao.getGradesById(2000000L);
+        Assert.assertEquals(0, grades.size());
+    }
+
+    @Test
+    public void testGetGradesByIdForStudentWithoutGrades() {
+        // The getGradesById call is designed to return an empty list so as not
+        // to give away whether the requested student exists.
+        List<GPA> grades = studentDao.getGradesById(1000000L);
+        Assert.assertEquals(0, grades.size());
+    }
+
 }
