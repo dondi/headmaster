@@ -8,7 +8,6 @@ import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.dao.StudentDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
-import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
 /**
@@ -63,22 +62,6 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
         Student student = studentDao.getStudentById(id);
         validate(student != null, Response.Status.NOT_FOUND, STUDENT_NOT_FOUND);
         return student;
-    }
-
-    @Override
-    public List<GPA> getStudentGradesById(Long id) {
-        logServiceCall();
-
-        List<GPA> grades = studentDao.getGradesById(id);
-        validate(grades != null, Response.Status.NOT_FOUND, STUDENT_NOT_FOUND);
-        return grades;
-    }
-
-    @Override
-    public Response setStudentGradesById(Long id, List<GPA> grades) {
-        logServiceCall();
-        studentDao.setGradesById(id, grades);
-        return Response.noContent().build();
     }
 
 }

@@ -2,7 +2,6 @@ package edu.lmu.cs.headmaster.ws.dao;
 
 import java.util.List;
 
-import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
 /**
@@ -31,15 +30,5 @@ public interface StudentDao {
      * Updates or saves the given student, which should have a non-null id.
      */
     void createOrUpdateStudent(Student student);
-
-    /**
-     * Returns the complete grade list for the student with the given id.
-     */
-    List<GPA> getGradesById(Long id);
-
-    /**
-     * Sets the complete grade list for the student with the given id.
-     */
-    void setGradesById(Long id, List<GPA> grades);
 
 }

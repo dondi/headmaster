@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -447,8 +448,9 @@ public class Student {
         this.academicStatus = academicStatus;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @XmlTransient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OrderBy("year, term")
     public List<GPA> getGrades() {
         return grades;
     }

@@ -1,15 +1,12 @@
 package edu.lmu.cs.headmaster.ws.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
 /**
@@ -44,28 +41,6 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     @Override
     public void createOrUpdateStudent(Student student) {
         getHibernateTemplate().saveOrUpdate(student);
-    }
-
-    @Override
-    public List<GPA> getGradesById(Long id) {
-        Student student = (Student)getSession()
-                .createQuery("from Student s left join fetch s.grades g " +
-                        "where s.id = :id " +
-                        "order by g.year, g.term")
-                .setParameter("id", id)
-                .uniqueResult();
-
-        return (student == null) ? null : ((student.getGrades() == null) ?
-                new ArrayList<GPA>() : student.getGrades());
-    }
-
-    @Override
-    public void setGradesById(Long id, List<GPA> grades) {
-        // Load the student, set the new grades, then saveOrUpdate.
-        Session session = getSession();
-        Student student = (Student)session.get(Student.class, id);
-        student.setGrades(grades);
-        session.saveOrUpdate(student);
     }
 
     /**

@@ -18,6 +18,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -28,6 +30,7 @@ import edu.lmu.cs.headmaster.ws.util.DateTimeXmlAdapter;
  * institution.
  */
 @Entity
+// "grant" is a reserved word.
 @Table(name="researchgrant")
 @XmlRootElement
 public class Grant {
@@ -121,6 +124,7 @@ public class Grant {
         joinColumns = @JoinColumn(name = "grant_id"),
         inverseJoinColumns = @JoinColumn(name = "student_id")
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Student> getStudents() {
         return students;
     }

@@ -3,13 +3,10 @@ package edu.lmu.cs.headmaster.ws.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.core.GenericEntity;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
 
 import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
@@ -44,18 +41,17 @@ public class StudentServiceTest extends ServiceTest {
         // The text fixture data has some empty values.
         Assert.assertNull(student.getMiddleInitial());
         Assert.assertNull(student.getEntryYear());
-
-        // Collection data do not come along for the ride.
         Assert.assertEquals(0, student.getGrades().size());
+
+        // Grant and event data do not come along for the ride.
         Assert.assertEquals(0, student.getGrants().size());
         Assert.assertEquals(0, student.getAttendance().size());
     }
 
     @Test
-    public void testGetStudentGradesById() {
+    public void testGetStudentByIdGrades() {
         // This test fixture student is supposed to have grades.
-        List<GPA> grades = ws.path("students/1000002/grades")
-                .get(new GenericType<List<GPA>>(){});
+        List<GPA> grades = ws.path("students/1000002").get(Student.class).getGrades();
         Assert.assertEquals(2, grades.size());
 
         // We expect grades to be sorted by year then term.
@@ -69,32 +65,10 @@ public class StudentServiceTest extends ServiceTest {
     }
 
     @Test
-    public void testGetGradesByIdForNonExistentStudent() {
-        // When a student does not exist, we should get a 404.
-        ClientResponse clientResponse = ws.path("students/2000000/grades")
-                .get(ClientResponse.class);
-        Assert.assertEquals(404, clientResponse.getStatus());
-        Assert.assertEquals(
-            "404 " + StudentService.STUDENT_NOT_FOUND,
-            clientResponse.getEntity(String.class)
-        );
-    }
-
-    @Test
-    public void testGetGradesByIdForStudentWithoutGrades() {
-        // When a student does exist but has no grades, we get an empty list
-        // back.
-        List<GPA> grades = ws.path("students/1000000/grades")
-                .get(new GenericType<List<GPA>>(){});
-        Assert.assertEquals(0, grades.size());
-    }
-
-    @Test
-    public void testSetStudentGradesById() {
-        // This PUT test verifies the setting of GPA records.
+    public void testCreateOrUpdateStudentGrades() {
+        // This PUT test verifies the full setting of GPA records.
         List<GPA> grades = new ArrayList<GPA>();
 
-        // We leave the correctness of the GET to other unit tests.
         GPA gpa = new GPA();
         gpa.setTerm(Term.FALL);
         gpa.setYear(2013);
@@ -107,13 +81,17 @@ public class StudentServiceTest extends ServiceTest {
         gpa.setGpa(3.75);
         grades.add(gpa);
 
-        // Now, save the grades.  We should get a 204.
-        ClientResponse response = ws.path("students/1000000/grades")
-                .put(ClientResponse.class, new GenericEntity<List<GPA>>(grades){});
+        // We leave the correctness of the GET to other unit tests.
+        Student student = ws.path("students/1000000").get(Student.class);
+        student.setGrades(grades);
+
+        // Now, save the student.  We should get a 204.
+        ClientResponse response = ws.path("students/1000000")
+                .put(ClientResponse.class, student);
         Assert.assertEquals(204, response.getStatus());
 
         // We check that the grades were indeed saved.
-        grades = ws.path("students/1000000/grades").get(new GenericType<List<GPA>>(){});
+        grades = ws.path("students/1000000").get(Student.class).getGrades();
         Assert.assertEquals(2, grades.size());
         Assert.assertEquals(Term.FALL, grades.get(0).getTerm());
         Assert.assertEquals(2013, grades.get(0).getYear());

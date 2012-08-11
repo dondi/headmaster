@@ -14,7 +14,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
@@ -81,23 +80,5 @@ public interface StudentService {
     @GET
     @Path("{id}")
     Student getStudentById(@PathParam("id") Long id);
-
-    /**
-     * Returns a student's grades.
-     */
-    @GET
-    @Path("{id}/grades")
-    List<GPA> getStudentGradesById(@PathParam("id") Long id);
-
-    // TODO For completeness, there should also be:
-    // - a GET {id}/grades/{gid} (returns a specific GPA object)
-    // - a POST to {id}/grades (adds a single GPA object)
-
-    /**
-     * Sets a student's grades.
-     */
-    @PUT
-    @Path("{id}/grades")
-    Response setStudentGradesById(@PathParam("id") Long id, List<GPA> grades);
 
 }

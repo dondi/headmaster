@@ -28,16 +28,9 @@ public class StudentDaoTest extends ApplicationContextTest {
         // The text fixture data has some empty values.
         Assert.assertNull(student.getMiddleInitial());
         Assert.assertNull(student.getEntryYear());
+        Assert.assertEquals(0, student.getGrades().size());
 
-        // Collection data do not come along for the ride.
-        try {
-            student.getGrades().size();
-            // If this doesn't bork, something is wrong.
-            Assert.fail("getGrades should not succeed, but did.");
-        } catch(LazyInitializationException lazyInitializationException) {
-            // This is what should happen; carry on.
-        }
-
+        // Grant and event data do not come along for the ride.
         try {
             student.getGrants().size();
             // If this doesn't bork, something is wrong.
@@ -56,9 +49,9 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
-    public void testGetGradesById() {
+    public void testGetStudentByIdGrades() {
         // One of the test fixture students has grades.
-        List<GPA> grades = studentDao.getGradesById(1000002L);
+        List<GPA> grades = studentDao.getStudentById(1000002L).getGrades();
         Assert.assertEquals(2, grades.size());
 
         // We expect grades to be sorted by year then term.
@@ -72,20 +65,7 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
-    public void testGetGradesByIdForNonExistentStudent() {
-        // When a student does not exist, we get null back.
-        Assert.assertNull(studentDao.getGradesById(2000000L));
-    }
-
-    @Test
-    public void testGetGradesByIdForStudentWithoutGrades() {
-        // When a student does exist but has no grades, we get an empty list
-        // back.
-        Assert.assertEquals(0, studentDao.getGradesById(1000000L).size());
-    }
-
-    @Test
-    public void testSetGradesById() {
+    public void testCreateOrUpdateStudentGrades() {
         // Build the grade list.
         List<GPA> grades = new ArrayList<GPA>();
 
@@ -102,10 +82,12 @@ public class StudentDaoTest extends ApplicationContextTest {
         gpa.setGpa(2.0);
         grades.add(gpa);
 
-        studentDao.setGradesById(1000000L, grades);
+        Student student = studentDao.getStudentById(1000000L);
+        student.setGrades(grades);
+        studentDao.createOrUpdateStudent(student);
 
         // We check that the grades were indeed saved.
-        grades = studentDao.getGradesById(1000000L);
+        grades = studentDao.getStudentById(1000000L).getGrades();
         Assert.assertEquals(2, grades.size());
         Assert.assertEquals(Term.SUMMER, grades.get(0).getTerm());
         Assert.assertEquals(2015, grades.get(0).getYear());
