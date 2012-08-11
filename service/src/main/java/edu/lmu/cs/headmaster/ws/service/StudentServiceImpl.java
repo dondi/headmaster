@@ -77,7 +77,8 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
     @Override
     public Response setStudentGradesById(Long id, List<GPA> grades) {
         logServiceCall();
-        return null;
+        studentDao.setGradesById(id, grades);
+        return Response.noContent().build();
     }
 
 }

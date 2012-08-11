@@ -3,6 +3,8 @@ package edu.lmu.cs.headmaster.ws.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.GenericEntity;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -106,7 +108,8 @@ public class StudentServiceTest extends ServiceTest {
         grades.add(gpa);
 
         // Now, save the grades.  We should get a 204.
-        ClientResponse response = ws.path("students/1000000/grades").put(ClientResponse.class, grades);
+        ClientResponse response = ws.path("students/1000000/grades")
+                .put(ClientResponse.class, new GenericEntity<List<GPA>>(grades){});
         Assert.assertEquals(204, response.getStatus());
 
         // We check that the grades were indeed saved.
