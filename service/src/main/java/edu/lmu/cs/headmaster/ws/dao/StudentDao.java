@@ -2,6 +2,7 @@ package edu.lmu.cs.headmaster.ws.dao;
 
 import java.util.List;
 
+import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
 /**
@@ -20,6 +21,11 @@ public interface StudentDao {
      * <code>max</code> results.
      */
     List<Student> getStudents(String query, int skip, int max);
+
+    /**
+     * Returns the events attended by the student with the given id.
+     */
+    List<Event> getStudentAttendance(Long id);
 
     /**
      * Saves the given student, which should have a null id.

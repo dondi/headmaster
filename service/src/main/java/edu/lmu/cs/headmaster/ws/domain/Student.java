@@ -460,6 +460,9 @@ public class Student {
     }
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "attendees")
+    // Event objects reference back to their student attendees, producing a
+    // cycle in the data structure. Cycles will not ship out of the web service,
+    // so we have to break the cycle and design our API around this limitation.
     @XmlTransient
     public List<Event> getAttendance() {
         return attendance;
@@ -470,6 +473,7 @@ public class Student {
     }
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "students")
+    // Same here for grant objects.
     @XmlTransient
     public List<Grant> getGrants() {
         return grants;

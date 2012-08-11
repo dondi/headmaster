@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
 /**
@@ -30,6 +31,11 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
                 .setFirstResult(skip)
                 .setMaxResults(max)
                 .list();
+    }
+
+    @Override
+    public List<Event> getStudentAttendance(Long id) {
+        return null;
     }
 
     @Override

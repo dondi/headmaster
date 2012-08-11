@@ -7,6 +7,7 @@ import org.hibernate.LazyInitializationException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.domain.Term;
@@ -77,6 +78,18 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertEquals("Computer Science", student.getMajors().get(0));
         Assert.assertEquals("Mathematics", student.getMajors().get(1));
         Assert.assertEquals("Music", student.getMinors().get(0));
+    }
+
+    @Test
+    public void testGetStudentAttendance() {
+        // Verify that the text fixture event attendance comes out correctly.
+        for (long l = 1000000L; l < 1000003L; l++) {
+            List<Event> events = studentDao.getStudentAttendance(l);
+            Assert.assertEquals(1, events.size());
+            Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
+            Assert.assertEquals("Summit", events.get(0).getTitle());
+            Assert.assertEquals("The big one", events.get(0).getDescription());
+        }
     }
 
     @Test
