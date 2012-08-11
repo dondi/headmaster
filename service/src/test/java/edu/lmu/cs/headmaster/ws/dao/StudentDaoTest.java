@@ -102,8 +102,7 @@ public class StudentDaoTest extends ApplicationContextTest {
         gpa.setGpa(2.0);
         grades.add(gpa);
 
-        // Now, save the grades.  We should show one record updated.
-        Assert.assertEquals(1, studentDao.setGradesById(1000000L, grades));
+        studentDao.setGradesById(1000000L, grades);
 
         // We check that the grades were indeed saved.
         grades = studentDao.getGradesById(1000000L);

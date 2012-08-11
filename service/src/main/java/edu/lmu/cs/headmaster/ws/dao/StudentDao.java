@@ -40,6 +40,6 @@ public interface StudentDao {
     /**
      * Sets the complete grade list for the student with the given id.
      */
-    int setGradesById(Long id, List<GPA> grades);
+    void setGradesById(Long id, List<GPA> grades);
 
 }

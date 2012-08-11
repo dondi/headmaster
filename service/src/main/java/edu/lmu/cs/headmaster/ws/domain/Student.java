@@ -447,7 +447,7 @@ public class Student {
         this.academicStatus = academicStatus;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @XmlTransient
     public List<GPA> getGrades() {
         return grades;

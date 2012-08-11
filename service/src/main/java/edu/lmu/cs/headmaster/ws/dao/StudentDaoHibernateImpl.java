@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import edu.lmu.cs.headmaster.ws.domain.GPA;
@@ -59,13 +60,12 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     }
 
     @Override
-    public int setGradesById(Long id, List<GPA> grades) {
-        return getSession()
-            .createQuery("update Student s set grades = :grades where s.id = :id")
-            .setParameter("id", id)
-            .setParameter("grades", grades)
-            .executeUpdate();
-            
+    public void setGradesById(Long id, List<GPA> grades) {
+        // Load the student, set the new grades, then saveOrUpdate.
+        Session session = getSession();
+        Student student = (Student)session.get(Student.class, id);
+        student.setGrades(grades);
+        session.saveOrUpdate(student);
     }
 
     /**
