@@ -12,59 +12,23 @@ $(function () {
 
     // Set up other interactive components.
     $(".collapse").collapse();
+
     // TODO set up listeners so that as an accordion opens, the right Ajax call is made
-    //      (except for thesis, which is known right away)
+    //      (except for grades and thesis, which are known right away)
     $("#student-attendance-container").on("show", function () {
         console.log("load attendance");
-    });
-
-    $("#student-grades-container").on("show", function () {
-        var progress = $("#student-grades-progress"),
-            empty = $("#student-grades-empty"),
-            table = $("#student-grades ");
-
-        progress.fadeIn();
-        empty.fadeOut();
-        table.fadeOut();
-        $.getJSON(
-            Headmaster.serviceUri("students/" + studentId + "/grades"),
-            function (data, textStatus, jqXHR) {
-                // Load up the data.
-                var tbody;
-                if (data.length) {
-                    tbody = table.find("tbody");
-                    tbody.empty();
-                    $.each(data, function (index, gpa) {
-                        tbody.append(
-                            $(
-                                "<tr><td>" +
-                                gpa.term + " " + gpa.year +
-                                "</td><td>" +
-                                gpa.gpa.toFixed(2) +
-                                "</td></tr>"
-                            ).data("gpa", gpa) // Save the actual object as data on that row.
-                        );
-                    });
-                    
-                    // Show/hide as needed.
-                    table.fadeIn();
-                } else {
-                    empty.fadeIn();
-                }
-
-                progress.fadeOut();
-            }
-        );
     });
 
     $("#student-grants-container").on("show", function () {
         console.log("load grants");
     });
 
-    // Load up the event with that ID.
+    // Load up the student with that ID.
     $.getJSON(
         Headmaster.serviceUri("students/" + studentId),
         function (data, textStatus, jqXHR) {
+            var gradesTbody = $("#student-grades > tbody");
+
             $("#student-name").text(
                 data.firstName + " " +
                 (data.middleInitial ? data.middleInitial + ". " : "") +
@@ -87,7 +51,7 @@ $(function () {
             $("#student-college").text(data.college || BLANK);
             $("#student-advisor").text(data.advisor || BLANK);
             $("#student-degree").text(data.degree || BLANK);
-            $("#student-gpa").text(data.cumulativeGpa || BLANK);
+            $("#student-gpa").text(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
             // TODO majors
             // TODO minors
             $("#student-status").text(data.academicStatus || BLANK);
@@ -109,6 +73,26 @@ $(function () {
 
             // Notes.
             $("#student-notes").text(data.notes || BLANK);
+
+            // Grade information.
+            if (data.grades && data.grades.length) {
+                $.each(data.grades, function (index, gpa) {
+                    gradesTbody.append(
+                        $(
+                            "<tr><td>" +
+                            gpa.term + " " + gpa.year +
+                            "</td><td>" +
+                            gpa.gpa.toFixed(2) +
+                            "</td></tr>"
+                        )
+                    );
+                });
+                $("#student-grades").fadeIn();
+                $("#student-grades-empty").fadeOut();
+            } else {
+                $("#student-grades").fadeOut();
+                $("#student-grades-empty").fadeIn();
+            }
 
             // Thesis information.
             $("#student-thesis-title").text(data.thesisTitle || UNSPECIFIED);

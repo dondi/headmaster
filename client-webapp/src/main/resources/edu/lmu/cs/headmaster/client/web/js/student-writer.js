@@ -35,6 +35,8 @@ $(function () {
         $.getJSON(
             Headmaster.serviceUri("students/" + studentId),
             function (data, textStatus, jqXHR) {
+                var gradesTbody = $("#student-grades > tbody");
+
                 // Student name and graduation year.
                 $("#student-firstname").val(data.firstName || BLANK);
                 $("#student-middlename").val(data.middleInitial || BLANK);
@@ -90,6 +92,26 @@ $(function () {
                 // Notes.
                 $("#student-notes").val(data.notes || BLANK);
 
+                // Grade information.
+                if (data.grades && data.grades.length) {
+                    $.each(data.grades, function (index, gpa) {
+                        gradesTbody.append(
+                            $(
+                                "<tr><td>" +
+                                gpa.term + " " + gpa.year +
+                                "</td><td>" +
+                                gpa.gpa.toFixed(2) +
+                                "</td></tr>"
+                            ).data("gpa", gpa) // Save the actual object as data on that row.
+                        );
+                    });
+                    $("#student-grades").fadeIn();
+                    $("#student-grades-empty").fadeOut();
+                } else {
+                    $("#student-grades").fadeOut();
+                    $("#student-grades-empty").fadeIn();
+                }
+
                 // Thesis information.
                 $("#student-thesis-title").val(data.thesisTitle || BLANK);
                 $("#student-thesis-term-" + (data.thesisTerm === "FALL" ? "fall" : "spring"))
@@ -115,47 +137,7 @@ $(function () {
                 $("#student-thesis-notes").val(data.thesisNotes || BLANK);
 
                 // Set up loading functions for collections.
-                $("#student-grades-container").on("show", function () {
-                    var progress = $("#student-grades-progress"),
-                        empty = $("#student-grades-empty"),
-                        table = $("#student-grades ");
-
-                    progress.fadeIn();
-                    empty.fadeOut();
-                    table.fadeOut();
-                    $.getJSON(
-                        Headmaster.serviceUri("students/" + studentId + "/grades"),
-                        function (data, textStatus, jqXHR) {
-                            // Load up the data.
-                            var tbody;
-                            if (data.length) {
-                                tbody = table.find("tbody");
-                                tbody.empty();
-                                $.each(data, function (index, gpa) {
-                                    tbody.append(
-                                        $(
-                                            "<tr><td>" +
-                                            gpa.term + " " + gpa.year +
-                                            "</td><td>" +
-                                            gpa.gpa.toFixed(2) +
-                                            "</td></tr>"
-                                        ).data("gpa", gpa) // Save the actual object as data on that row.
-                                        .click(function () {
-                                            // TODO grade editing.
-                                        })
-                                    );
-                                });
-                                
-                                // Show/hide as needed.
-                                table.fadeIn();
-                            } else {
-                                empty.fadeIn();
-                            }
-
-                            progress.fadeOut();
-                        }
-                    );
-                });
+                // TODO
 
                 // Now that values have been set, put dependent user interface
                 // elements in the correct initial state.
@@ -224,6 +206,9 @@ $(function () {
             // Notes.
             notes: $("#student-notes").val(),
 
+            // Grades (to be gathered later).
+            grades: [],
+
             // Thesis information.
             thesisTitle: $("#student-thesis-title").val(),
             thesisTerm: Headmaster.isChecked("student-thesis-term-fall") ? "FALL" : "SPRING",
@@ -235,6 +220,11 @@ $(function () {
                     Date.parse($("#student-thesis-submissiondate").val()) : null,
             thesisNotes: $("#student-thesis-notes").val()
         };
+
+        // Gather grade data.
+        $("#student-grades > tbody > tr").each(function (index, tr) {
+            studentData.grades.push($(tr).data("gpa"));
+        });
 
         // Ditch the id attribute if it is empty.
         if (!studentData.id) {
