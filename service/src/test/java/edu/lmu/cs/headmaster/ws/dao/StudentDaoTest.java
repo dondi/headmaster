@@ -28,6 +28,8 @@ public class StudentDaoTest extends ApplicationContextTest {
         // The text fixture data has some empty values.
         Assert.assertNull(student.getMiddleInitial());
         Assert.assertNull(student.getEntryYear());
+        Assert.assertEquals(0, student.getMajors().size());
+        Assert.assertEquals(0, student.getMinors().size());
         Assert.assertEquals(0, student.getGrades().size());
 
         // Grant and event data do not come along for the ride.
@@ -65,6 +67,19 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
+    public void testGetStudentByIdMajorsAndMinors() {
+        // One of the test fixture students has majors and minors.
+        Student student = studentDao.getStudentById(1000002L);
+        Assert.assertEquals(2, student.getMajors().size());
+        Assert.assertEquals(1, student.getMinors().size());
+
+        // Majors and minors are manually ordered.
+        Assert.assertEquals("Computer Science", student.getMajors().get(0));
+        Assert.assertEquals("Mathematics", student.getMajors().get(1));
+        Assert.assertEquals("Music", student.getMinors().get(0));
+    }
+
+    @Test
     public void testCreateOrUpdateStudentGrades() {
         // Build the grade list.
         List<GPA> grades = new ArrayList<GPA>();
@@ -96,6 +111,28 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertEquals(Term.SPRING, grades.get(1).getTerm());
         Assert.assertEquals(2017, grades.get(1).getYear());
         Assert.assertEquals(2.75, grades.get(1).getGpa(), 0.0);
+    }
+
+    @Test
+    public void testCreateOrUpdateStudentAddMajorsAndMinors() {
+        // Grab a test fixture student.
+        Student student = studentDao.getStudentById(1000001L);
+
+        // Add a major and some minors.
+        student.getMajors().add("Biology");
+        student.getMinors().add("Physics");
+        student.getMinors().add("Chemistry");
+
+        studentDao.createOrUpdateStudent(student);
+
+        // Now re-grab and check.
+        student = studentDao.getStudentById(1000001L);
+        Assert.assertEquals(1, student.getMajors().size());
+        Assert.assertEquals(2, student.getMinors().size());
+
+        Assert.assertEquals("Biology", student.getMajors().get(0));
+        Assert.assertEquals("Physics", student.getMinors().get(0));
+        Assert.assertEquals("Chemistry", student.getMinors().get(1));
     }
 
 }

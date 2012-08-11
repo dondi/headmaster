@@ -9,6 +9,11 @@ insert into student(id, firstname, lastname, active, expectedgraduationyear) val
 insert into student(id, firstname, lastname, active, expectedgraduationyear) values(1000001, 'Vint', 'Cerf', true, 2015);
 insert into student(id, firstname, lastname, active, expectedgraduationyear) values(1000002, 'Don', 'Knuth', true, 2015);
 
+insert into student_majors(student_id, majors, majors_order) values(1000002, 'Computer Science', 0);
+insert into student_majors(student_id, majors, majors_order) values(1000002, 'Mathematics', 1);
+
+insert into student_minors(student_id, minors, minors_order) values(1000002, 'Music', 0);
+
 -- Test fixture events.
 insert into event(id, datetime, description, title) values(1000000, '2012-07-28 10:31:03', 'The big one', 'Summit');
 
