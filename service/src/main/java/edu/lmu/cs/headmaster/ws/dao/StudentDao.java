@@ -25,16 +25,21 @@ public interface StudentDao {
     /**
      * Saves the given student, which should have a null id.
      */
-    public Student createStudent(Student student);
+    Student createStudent(Student student);
 
     /**
      * Updates or saves the given student, which should have a non-null id.
      */
-    public void createOrUpdateStudent(Student student);
+    void createOrUpdateStudent(Student student);
 
     /**
      * Returns the complete grade list for the student with the given id.
      */
     List<GPA> getGradesById(Long id);
+
+    /**
+     * Sets the complete grade list for the student with the given id.
+     */
+    int setGradesById(Long id, List<GPA> grades);
 
 }

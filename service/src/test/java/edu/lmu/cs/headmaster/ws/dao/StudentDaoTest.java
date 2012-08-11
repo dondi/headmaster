@@ -1,5 +1,6 @@
 package edu.lmu.cs.headmaster.ws.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.LazyInitializationException;
@@ -81,6 +82,39 @@ public class StudentDaoTest extends ApplicationContextTest {
         // When a student does exist but has no grades, we get an empty list
         // back.
         Assert.assertEquals(0, studentDao.getGradesById(1000000L).size());
+    }
+
+    @Test
+    public void testSetGradesById() {
+        // Build the grade list.
+        List<GPA> grades = new ArrayList<GPA>();
+
+        // We leave the correctness of the GET to other unit tests.
+        GPA gpa = new GPA();
+        gpa.setTerm(Term.SPRING);
+        gpa.setYear(2017);
+        gpa.setGpa(2.75);
+        grades.add(gpa);
+
+        gpa = new GPA();
+        gpa.setTerm(Term.SUMMER);
+        gpa.setYear(2015);
+        gpa.setGpa(2.0);
+        grades.add(gpa);
+
+        // Now, save the grades.  We should show one record updated.
+        Assert.assertEquals(1, studentDao.setGradesById(1000000L, grades));
+
+        // We check that the grades were indeed saved.
+        grades = studentDao.getGradesById(1000000L);
+        Assert.assertEquals(2, grades.size());
+        Assert.assertEquals(Term.SUMMER, grades.get(0).getTerm());
+        Assert.assertEquals(2015, grades.get(0).getYear());
+        Assert.assertEquals(2.0, grades.get(0).getGpa(), 0.0);
+
+        Assert.assertEquals(Term.SPRING, grades.get(1).getTerm());
+        Assert.assertEquals(2017, grades.get(1).getYear());
+        Assert.assertEquals(2.75, grades.get(1).getGpa(), 0.0);
     }
 
 }

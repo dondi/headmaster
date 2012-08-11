@@ -89,4 +89,15 @@ public interface StudentService {
     @Path("{id}/grades")
     List<GPA> getStudentGradesById(@PathParam("id") Long id);
 
+    // TODO For completeness, there should also be:
+    // - a GET {id}/grades/{gid} (returns a specific GPA object)
+    // - a POST to {id}/grades (adds a single GPA object)
+
+    /**
+     * Sets a student's grades.
+     */
+    @PUT
+    @Path("{id}/grades")
+    Response setStudentGradesById(@PathParam("id") Long id, List<GPA> grades);
+
 }

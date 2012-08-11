@@ -108,6 +108,17 @@ public class StudentServiceTest extends ServiceTest {
         // Now, save the grades.  We should get a 204.
         ClientResponse response = ws.path("students/1000000/grades").put(ClientResponse.class, grades);
         Assert.assertEquals(204, response.getStatus());
+
+        // We check that the grades were indeed saved.
+        grades = ws.path("students/1000000/grades").get(new GenericType<List<GPA>>(){});
+        Assert.assertEquals(2, grades.size());
+        Assert.assertEquals(Term.FALL, grades.get(0).getTerm());
+        Assert.assertEquals(2013, grades.get(0).getYear());
+        Assert.assertEquals(3.5, grades.get(0).getGpa(), 0.0);
+
+        Assert.assertEquals(Term.SPRING, grades.get(1).getTerm());
+        Assert.assertEquals(2014, grades.get(1).getYear());
+        Assert.assertEquals(3.75, grades.get(1).getGpa(), 0.0);
     }
 
 }

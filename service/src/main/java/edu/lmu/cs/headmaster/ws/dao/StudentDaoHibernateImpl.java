@@ -58,6 +58,16 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
                 new ArrayList<GPA>() : student.getGrades());
     }
 
+    @Override
+    public int setGradesById(Long id, List<GPA> grades) {
+        return getSession()
+            .createQuery("update Student s set grades = :grades where s.id = :id")
+            .setParameter("id", id)
+            .setParameter("grades", grades)
+            .executeUpdate();
+            
+    }
+
     /**
      * Returns a base HQL query object (no pagination) for the free-form text search value
      * for students.

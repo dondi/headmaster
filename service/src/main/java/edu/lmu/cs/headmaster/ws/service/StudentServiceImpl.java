@@ -74,4 +74,10 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
         return grades;
     }
 
+    @Override
+    public Response setStudentGradesById(Long id, List<GPA> grades) {
+        logServiceCall();
+        return null;
+    }
+
 }
