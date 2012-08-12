@@ -136,8 +136,35 @@ $(function () {
 
                 $("#student-thesis-notes").val(data.thesisNotes || BLANK);
 
-                // Set up loading functions for collections.
-                // TODO
+                // Set up listeners so that as an accordion opens, the right Ajax call is made
+                // (except for grades and thesis, which are known right away).
+                $("#student-attendance-container").on("show", function () {
+                    Headmaster.loadJsonArrayIntoTable(
+                        Headmaster.serviceUri("students/" + studentId + "/attendance"),
+                        "student-attendance-progress",
+                        "student-attendance",
+                        "student-attendance-empty",
+                        function (event) {
+                            return $(
+                                "<tr><td>" +
+                                (event.dateTime ?
+                                        Date.parse(event.dateTime).toString(DATE_FORMAT) :
+                                        UNSPECIFIED) +
+                                "</td><td>" +
+                                (event.title || UNSPECIFIED) +
+                                "</td></tr>"
+                            ).click(function () {
+                                // View that student if the row is clicked.
+                                location = "../../events/" + event.id;
+                            });
+                        }
+                    );
+
+                    // We only load once.
+                    $(this).unbind("show");
+                });
+
+                // TODO grants
 
                 // Now that values have been set, put dependent user interface
                 // elements in the correct initial state.
@@ -145,8 +172,15 @@ $(function () {
             }
         );
     } else {
-        // Just update dependent elements in the case that there is no id.
+        // When there is no id, we update the dependent elements and clear out the lists.
+        // Update dependent elements in the case that there is no id.
         updateDependentElements();
+        $(".progress").fadeOut();
+        Headmaster.toggleElements(false, $("#student-majors"), $("#student-majors-empty"));
+        Headmaster.toggleElements(false, $("#student-minors"), $("#student-minors-empty"));
+        Headmaster.toggleElements(false, $("#student-attendance"), $("#student-attendance-empty"));
+        Headmaster.toggleElements(false, $("#student-grades"), $("#student-grades-empty"));
+        Headmaster.toggleElements(false, $("#student-grants"), $("#student-grants-empty"));
     }
 
     // Set up event handling so that the above function gets called when necessary.

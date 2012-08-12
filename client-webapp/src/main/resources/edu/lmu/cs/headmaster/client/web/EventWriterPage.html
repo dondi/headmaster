@@ -77,7 +77,9 @@
                         </h2>
 
                         <div class="alert alert-info hide" id="event-attendees-empty">
-                            <wicket:message key="prompt.empty">(no attendees)</wicket:message>
+                            <wicket:message key="prompt.empty.attendees">
+                                (no attendees)
+                            </wicket:message>
                         </div>
 
                         <table class="table table-striped hide" id="event-attendees">
@@ -105,15 +107,38 @@
                     <h3><wicket:message key="heading.attendees.add">Add Attendees</wicket:message></h3>
                 </div>
 
-                <div class="modal-body" wicket:id="addAttendeePanel">
+                <div class="modal-body">
+                    <span class="help-block">
+                        <wicket:message key="instructions.attendees.add">
+                            Enter a search query, then click on a search result to add that
+                            student to this event.
+                        </wicket:message>
+                    </span>
+                    <form class="well form-search">
+                        <label for="search-field">
+                            <wicket:message key="prompt.search">Search for</wicket:message>:
+                        </label>
+                        <input type="text" class="input-medium search-query" id="search-field">
+                    </form>
+        
+                    <div class="progress progress-striped active hide" id="search-progress">
+                        <div class="bar" style="width: 100%;"></div>
+                    </div>
+        
+                    <div class="alert alert-info hide" id="search-empty">
+                        <wicket:message key="prompt.empty.students">
+                            (no matching students)
+                        </wicket:message>
+                    </div>
+        
+                    <table class="table table-striped hide" id="search-results">
+                        <tbody></tbody>
+                    </table>
                 </div>
 
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">
                         <wicket:message key="button.done">Done</wicket:message>
-                    </a>
-                    <a href="#" class="btn btn-primary">
-                        <wicket:message key="button.add">Add</wicket:message>
                     </a>
                 </div>
             </div>
