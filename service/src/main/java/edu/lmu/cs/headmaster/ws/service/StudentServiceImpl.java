@@ -28,9 +28,18 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
     }
 
     @Override
-    public List<Student> getStudents(String query, int skip, int max) {
+    public List<Student> getStudents(String query, Boolean active,
+            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
+            int skip, int max) {
         logServiceCall();
-        return studentDao.getStudents(preprocessQuery(query, skip, max, 0, 50), skip, max);
+
+        // At least one of query, expectedGraduationYearFrom, or expectedGraduationYearTo must be set.
+        validate(query != null || expectedGraduationYearFrom != null ||
+                expectedGraduationYearTo != null, Response.Status.BAD_REQUEST, QUERY_REQUIRED);
+        return studentDao.getStudents(
+            query != null ? preprocessQuery(query, skip, max, 0, 50) : null,
+            active, expectedGraduationYearFrom, expectedGraduationYearTo, skip, max
+        );
     }
 
     @Override

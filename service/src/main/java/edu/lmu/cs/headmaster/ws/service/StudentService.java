@@ -43,6 +43,9 @@ public interface StudentService {
      */
     @GET
     List<Student> getStudents(@QueryParam("q") String query,
+            @QueryParam("active") @DefaultValue("true") Boolean active,
+            @QueryParam("expectedGraduationYearFrom") Integer expectedGraduationYearFrom,
+            @QueryParam("expectedGraduationYearTo") Integer expectedGraduationYearTo,
             @QueryParam("skip") @DefaultValue("0") int skip,
             @QueryParam("max") @DefaultValue("50") int max);
 

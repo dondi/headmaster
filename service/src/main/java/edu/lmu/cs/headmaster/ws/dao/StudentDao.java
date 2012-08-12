@@ -20,7 +20,9 @@ public interface StudentDao {
      * skipping the first <code>skip</code> results and returning at most
      * <code>max</code> results.
      */
-    List<Student> getStudents(String query, int skip, int max);
+    List<Student> getStudents(String query, Boolean active,
+            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
+            int skip, int max);
 
     /**
      * Returns the events attended by the student with the given id.

@@ -84,11 +84,11 @@ public class StudentDaoTest extends ApplicationContextTest {
     public void testGetStudentsByLastName() {
         // When without commas and not all-digits, the student query is hits on
         // "last name starts with query," case insensitive.
-        List<Student> students = studentDao.getStudents("cer", 0, 10);
+        List<Student> students = studentDao.getStudents("cer", null, null, null, 0, 10);
         Assert.assertEquals(1, students.size());
         Assert.assertEquals(Long.valueOf(1000001L), students.get(0).getId());
 
-        students = studentDao.getStudents("k", 0, 10);
+        students = studentDao.getStudents("k", null, null, null, 0, 10);
         Assert.assertEquals(2, students.size());
  
         // Search results are sorted by last name, first name.

@@ -26,7 +26,9 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Student> getStudents(String query, int skip, int max) {
+    public List<Student> getStudents(String query, Boolean active,
+            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
+            int skip, int max) {
         return createBaseStudentQuery(query)
                 .setFirstResult(skip)
                 .setMaxResults(max)
