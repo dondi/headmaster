@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import edu.lmu.cs.headmaster.ws.dao.util.QueryBuilder;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 
@@ -29,10 +29,12 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     public List<Student> getStudents(String query, Boolean active,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
             int skip, int max) {
-        return createBaseStudentQuery(query)
-                .setFirstResult(skip)
-                .setMaxResults(max)
-                .list();
+        return createStudentQuery(query, active,
+                expectedGraduationYearFrom, expectedGraduationYearTo)
+            .build(getSession())
+            .setFirstResult(skip)
+            .setMaxResults(max)
+            .list();
     }
 
     @Override
@@ -57,57 +59,46 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     }
 
     /**
-     * Returns a base HQL query object (no pagination) for the free-form text search value
+     * Returns a base HQL query object (no pagination) for the given parameters
      * for students.
      */
-    private Query createBaseStudentQuery(String query) {
-        // The desired return order.
-        final String orderBy = " order by lower(s.lastName), lower(s.firstName)";
+    private QueryBuilder createStudentQuery(String query, Boolean active,
+            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo) {
+        // The desired return order is lastName, firstName.
+        QueryBuilder builder = new QueryBuilder(
+            "from Student s",
+            "order by lower(s.lastName), lower(s.firstName)"
+        );
 
-        Matcher m = WORD_COMMA_WORD.matcher(query);
-        if (m.matches()) {
-            return getLastNameFirstNameQuery(m.group(1), m.group(2), orderBy);
+        if (query != null) {
+            Matcher m = WORD_COMMA_WORD.matcher(query);
+            if (m.matches()) {
+                builder.clause("lower(s.lastName) like lower(:lastName)", m.group(1) + "%");
+                builder.clause("lower(s.firstName) like lower(:firstName)", m.group(2) + "%");
+            } else {
+                m = ALL_DIGITS.matcher(query);
+                if (m.matches()) {
+                    builder.clause("s.schoolId = :schoolId", query);
+                } else {
+                    builder.clause("lower(s.lastName) like lower(:lastName)", query + "%");
+                }
+            }
         }
 
-        m = ALL_DIGITS.matcher(query);
-        if (m.matches()) {
-            return getDigitStringQuery(query, orderBy);
+        if (active != null) {
+            builder.clause("s.active = :active", active);
         }
 
-        // The query is not in any specific form, so do the default
-        return getDefaultQuery(query, orderBy);
+        if (expectedGraduationYearFrom != null) {
+            builder.clause("s.expectedGraduationYear >= :gradYearFrom", expectedGraduationYearFrom);
+        }
+
+        if (expectedGraduationYearTo != null) {
+            builder.clause("s.expectedGraduationYear <= :gradYearTo", expectedGraduationYearTo);
+        }
+
+        // All done.
+        return builder;
     }
 
-    /**
-     * Returns the query for finding students given leading characters for the last name, leading
-     * characters for the first name, and an ordering criteria.
-     */
-    private Query getLastNameFirstNameQuery(String last, String first, String orderBy) {
-        return getSession()
-                .createQuery("from Student s where lower(s.lastName) like lower(?) and " +
-                        "lower(s.firstName) like lower(?) " +
-                        orderBy)
-                .setParameter(0, last + "%")
-                .setParameter(1, first + "%");
-    }
-
-    /**
-     * Returns a query for finding student given a digit string.  The digit string will always
-     * be searched as a school id.
-     */
-    private Query getDigitStringQuery(String query, String orderBy) {
-        return getSession()
-                .createQuery("from Student s where s.schoolId = ? " + orderBy)
-                .setParameter(0, query);
-    }
-
-    /**
-     * Return a query for finding students by a prefix of last name only; this is the "default"
-     * query to run when the input doesn't have any particular known format.
-     */
-    private Query getDefaultQuery(String query, String orderBy) {
-        return getSession()
-                .createQuery("from Student s where lower(s.lastName) like lower(?) " + orderBy)
-                .setParameter(0, query + "%");
-    }
 }
