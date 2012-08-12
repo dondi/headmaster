@@ -60,6 +60,9 @@ $(function () {
                 data.lastName
             );
             $("#student-gradyear").text(data.expectedGraduationYear);
+            $("#student-active")
+                .addClass(data.active ? "badge-success" : "badge-important")
+                .text(data.active ? "Active" : "Inactive");
 
             // Contact information.
             $("#student-email1").text(data.primaryEmail || BLANK);

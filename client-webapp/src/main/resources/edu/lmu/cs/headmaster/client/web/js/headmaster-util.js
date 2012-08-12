@@ -74,6 +74,29 @@
         loadArrayIntoTable: loadArrayIntoTable,
 
         /*
+         * The inverse of load array into table: this one transfers data from a
+         * table (well, really, a jQuery collection that typically comes from a
+         * table) into an array. The function also deletes the array if it is
+         * empty, because empty arrays don't travel well to the service.
+         * 
+         * - owner: the object that holds the array to be loaded
+         * - arrayProperty: the property name in owner for the array
+         * - sourceCollection: the jQuery collection holding the data to gather (typically,
+         *   a collection of tr or td, but can really be anything)
+         * - getArrayElement: the function (object) that returns the element to push onto the
+         *   array, given one member of sourceCollection
+         */
+        loadTableIntoArray: function (owner, arrayProperty, sourceCollection, getArrayElement) {
+            owner[arrayProperty] = owner[arrayProperty] || [];
+            sourceCollection.each(function (index, item) {
+                owner[arrayProperty].push(getArrayElement(item));
+            });
+            if (!owner[arrayProperty].length) {
+                delete owner[arrayProperty];
+            }
+        },
+
+        /*
          * Loads the array result of a JSON call into a web page table.
          * Essentially a decorator on loadArrayIntoTable that adds a JSON
          * connection.

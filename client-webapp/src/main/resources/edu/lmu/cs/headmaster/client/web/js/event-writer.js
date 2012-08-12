@@ -133,9 +133,12 @@ $(function () {
         };
 
         // Gather attendee data.
-        $("#event-attendees > tbody > tr").each(function (index, tr) {
-            eventData.attendees.push($(tr).data("student"));
-        });
+        Headmaster.loadTableIntoArray(
+            eventData, "attendees", $("#event-attendees > tbody > tr"),
+            function (tr) {
+                return $(tr).data("student");
+            }
+        );
 
         // Ditch the id attribute if it is empty.
         if (!eventData.id) {

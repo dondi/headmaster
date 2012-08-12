@@ -11,6 +11,15 @@ tbody > tr > td {
     cursor: pointer;
 }
 
+label.checkbox[for="student-active"] {
+    margin-left: 0.5em;
+    margin-top: -2px;
+}
+
+input#student-active {
+    margin-top: 5px;
+}
+
 /* Some table width customization for events (first column displays event date). */
 #student-attendance {
     table-layout: fixed;

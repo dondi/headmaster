@@ -46,6 +46,9 @@ $(function () {
                 $("#student-middlename").val(data.middleInitial || BLANK);
                 $("#student-lastname").val(data.lastName || BLANK);
                 $("#student-gradyear").val(data.expectedGraduationYear);
+                $("#student-active")
+                    .removeAttr(data.active ? null : "checked")
+                    .attr(data.active ? { checked: "checked" } : null);
 
                 // Contact information.
                 $("#student-email1").val(data.primaryEmail || BLANK);
@@ -202,6 +205,7 @@ $(function () {
             middleInitial: $("#student-middlename").val(),
             lastName: $("#student-lastname").val(),
             expectedGraduationYear: $("#student-gradyear").val(),
+            active: Headmaster.isChecked("student-active"),
 
             // Contact information.
             primaryEmail: $("#student-email1").val(),
@@ -257,18 +261,28 @@ $(function () {
             thesisNotes: $("#student-thesis-notes").val()
         };
 
-        // Gather tabular data.
-        $("#student-majors > tbody td").each(function (index, td) {
-            studentData.majors.push($(td).text());
-        });
-        $("#student-minors > tbody td").each(function (index, td) {
-            studentData.minors.push($(td).text());
-        });
+        // Gather array data. Empty arrays don't travel well, though, so
+        // we eliminate those.
+        Headmaster.loadTableIntoArray(
+            studentData, "majors", $("#student-majors > tbody td"),
+            function (td) {
+                return $(td).text();
+            }
+        );
 
-        // Gather grade data.
-        $("#student-grades > tbody > tr").each(function (index, tr) {
-            studentData.grades.push($(tr).data("gpa"));
-        });
+        Headmaster.loadTableIntoArray(
+            studentData, "minors", $("#student-minors > tbody td"),
+            function (td) {
+                return $(td).text();
+            }
+        );
+
+        Headmaster.loadTableIntoArray(
+            studentData, "grades", $("#student-grades > tbody > tr"),
+            function (tr) {
+                return $(tr).data("gpa");
+            }
+        );
 
         // Ditch the id attribute if it is empty.
         if (!studentData.id) {
