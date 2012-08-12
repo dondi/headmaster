@@ -68,7 +68,10 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
     @Override
     public List<Event> getStudentAttendanceById(Long id) {
         logServiceCall();
-        return null;
+
+        List<Event> events = studentDao.getStudentAttendanceById(id);
+        validate(events != null, Response.Status.NOT_FOUND, STUDENT_NOT_FOUND);
+        return events;
     }
 
 }
