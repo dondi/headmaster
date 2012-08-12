@@ -13,12 +13,38 @@ $(function () {
     // Set up other interactive components.
     $(".collapse").collapse();
 
-    // TODO set up listeners so that as an accordion opens, the right Ajax call is made
-    //      (except for grades and thesis, which are known right away)
+    // Set up listeners so that as an accordion opens, the right Ajax call is made
+    // (except for grades and thesis, which are known right away).
     $("#student-attendance-container").on("show", function () {
-        console.log("load attendance");
+        Headmaster.loadJsonArrayIntoTable(
+            Headmaster.serviceUri("students/" + studentId + "/attendance"),
+            "student-attendance-progress",
+            "student-attendance",
+            "student-attendance-empty",
+            function (event) {
+                return $(
+                    "<tr><td>" +
+                    (event.dateTime ?
+                            Date.parse(event.dateTime).toString(DATE_FORMAT) :
+                            UNSPECIFIED) +
+                    "</td><td>" +
+                    (event.title || UNSPECIFIED) +
+                    "</td></tr>"
+                )
+                    // We store the event's ID...
+                    .data("id", event.id)
+                    // ...so that we can view that student if the row is clicked.
+                    .click(function () {
+                        location = "../events/" + $(this).data("id");
+                    });
+            }
+        );
+
+        // We only load once.
+        $(this).unbind("show");
     });
 
+    // TODO
     $("#student-grants-container").on("show", function () {
         console.log("load grants");
     });
