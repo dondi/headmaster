@@ -13,13 +13,25 @@ $(function () {
                         Date.parse(data.dateTime).toString(DATE_FORMAT) : BLANK);
                 $("#event-title").val(data.title || BLANK);
                 $("#event-description").val(data.description || BLANK);
-                
+
                 // List the attendees.
-                if (!data.attendees || !data.attendees.length) {
-                    $("#event-attendees-empty").fadeIn();
-                }
-                
-                $("#event-attendees-progress").fadeOut();
+                Headmaster.loadArrayIntoTable(
+                    data.attendees, "event-attendees", "event-attendees-empty",
+                    function (student) {
+                        var td = $("<td>" + student.firstName + " " + student.lastName + "</td>"),
+                            tr = $("<tr></tr>");
+
+                        // Include a remove button.
+                        $('<i class="icon-remove-sign pull-right"></i>')
+                                .appendTo(td)
+                                .click(function () {
+                                    tr.remove();
+                                });
+
+                        // Save the actual object as data on that row.
+                        return tr.data("student", student).append(td);
+                    }
+                );
             }
         );
     }
@@ -39,8 +51,16 @@ $(function () {
             id: eventId,
             dateTime: Date.parse($("#event-date").val()),
             title: $("#event-title").val(),
-            description: $("#event-description").val()
+            description: $("#event-description").val(),
+
+            // To be filled out below.
+            attendees: []
         };
+
+        // Gather attendee data.
+        $("#event-attendees > tbody > tr").each(function (index, tr) {
+            eventData.attendees.push($(tr).data("student"));
+        });
 
         // Ditch the id attribute if it is empty.
         if (!eventData.id) {

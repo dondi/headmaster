@@ -1,14 +1,6 @@
 /* Dual purpose CSS, serving both StudentViewPage and StudentWriterPage. */
-.message-empty {
-    text-align: center;
-}
-
 .form-horizontal {
     padding-top: 18px;
-}
-
-.form-horizontal label, .form-inline label {
-    font-weight: bold;
 }
 
 .form-inline label, .form-inline input {

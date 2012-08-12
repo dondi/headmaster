@@ -5,3 +5,12 @@
         padding-top: 60px;
     }
 }
+
+/* Some client-wise overrides. */
+.message-empty {
+    text-align: center;
+}
+
+.form-horizontal label, .form-inline label {
+    font-weight: bold;
+}
