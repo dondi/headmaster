@@ -30,13 +30,10 @@ $(function () {
                     "</td><td>" +
                     (event.title || UNSPECIFIED) +
                     "</td></tr>"
-                )
-                    // We store the event's ID...
-                    .data("id", event.id)
-                    // ...so that we can view that student if the row is clicked.
-                    .click(function () {
-                        location = "../events/" + $(this).data("id");
-                    });
+                ).click(function () {
+                    // View that student if the row is clicked.
+                    location = "../events/" + event.id;
+                });
             }
         );
 

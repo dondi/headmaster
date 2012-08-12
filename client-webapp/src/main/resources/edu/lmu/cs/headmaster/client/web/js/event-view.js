@@ -25,13 +25,10 @@ $(function () {
                         student.firstName + " " +
                         student.lastName +
                         "</td></tr>"
-                    )
-                        // We store the student's ID...
-                        .data("id", student.id)
-                        // ...so that we can view that student if the row is clicked.
-                        .click(function () {
-                            location = "../students/" + $(this).data("id");
-                        });
+                    ).click(function () {
+                        // View that student if the row is clicked.
+                        location = "../students/" + student.id;
+                    });
                 }
             );
         }
