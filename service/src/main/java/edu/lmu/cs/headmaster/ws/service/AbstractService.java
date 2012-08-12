@@ -123,7 +123,7 @@ public class AbstractService {
 //
 //        if (roles == null || roles.isEmpty()) {
 //            logger.error("A user has logged in without any roles");
-//            throw new ServiceException(500, INVALID_USER);
+//            throw new ServiceException(Response.Status.INTERNAL_SERVER_ERROR, INVALID_USER);
 //        }
 //
 //        logger.debug(loginName + " has " + roles.size() + " roles.");
@@ -158,12 +158,12 @@ public class AbstractService {
      */
     protected String preprocessQuery(String q, int skip, int max, int minimumSkip, int maximumSkip) {
         try {
-            validate(q != null, 400, QUERY_REQUIRED);
+            validate(q != null, Response.Status.BAD_REQUEST, QUERY_REQUIRED);
             String query = StringUtils.trimToNull(URLDecoder.decode(q, "UTF-8"));
             validatePagination(skip, max, minimumSkip, maximumSkip);
             return query;
         } catch (UnsupportedEncodingException e) {
-            throw new ServiceException(500, UNSUPPORTED_ENCODING);
+            throw new ServiceException(Response.Status.INTERNAL_SERVER_ERROR, UNSUPPORTED_ENCODING);
         }
     }
 
@@ -179,7 +179,7 @@ public class AbstractService {
         try {
             return dateString == null ? null : new DateTime(dateString);
         } catch (IllegalArgumentException iae) {
-            throw new ServiceException(400, MALFORMED_ARGUMENT_DATE);
+            throw new ServiceException(Response.Status.BAD_REQUEST, MALFORMED_ARGUMENT_DATE);
         }
     }
 }
