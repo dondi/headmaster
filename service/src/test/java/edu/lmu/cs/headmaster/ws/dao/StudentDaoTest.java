@@ -30,6 +30,7 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertEquals(Long.valueOf(1000000L), student.getId());
         Assert.assertEquals("Berners-Lee", student.getLastName());
         Assert.assertEquals("Tim", student.getFirstName());
+        Assert.assertTrue(student.isActive());
         Assert.assertEquals(Integer.valueOf(2016), student.getExpectedGraduationYear());
 
         // The text fixture data has some empty values.
@@ -99,6 +100,37 @@ public class StudentDaoTest extends ApplicationContextTest {
  
         // Search results are sorted by last name, first name.
         Assert.assertEquals(Long.valueOf(1000004L), students.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000002L), students.get(1).getId());
+    }
+
+    @Test
+    public void testGetActiveStudents() {
+        List<Student> students = studentDao.getStudents(null, Boolean.TRUE, null, null, 0, 10);
+        Assert.assertEquals(3, students.size());
+
+        // Search results are sorted by last name, first name.
+        Assert.assertEquals(Long.valueOf(1000000L), students.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000004L), students.get(1).getId());
+        Assert.assertEquals(Long.valueOf(1000002L), students.get(2).getId());
+    }
+
+    @Test
+    public void testGetInactiveStudents() {
+        List<Student> students = studentDao.getStudents(null, Boolean.FALSE, null, null, 0, 10);
+        Assert.assertEquals(2, students.size());
+
+        // Search results are sorted by last name, first name.
+        Assert.assertEquals(Long.valueOf(1000001L), students.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000003L), students.get(1).getId());
+    }
+
+    @Test
+    public void testGetStudentsBySpecificExpectedGraduationYear() {
+        List<Student> students = studentDao.getStudents(null, null, 2015, 2015, 0, 10);
+        Assert.assertEquals(2, students.size());
+
+        // Search results are sorted by last name, first name.
+        Assert.assertEquals(Long.valueOf(1000001L), students.get(0).getId());
         Assert.assertEquals(Long.valueOf(1000002L), students.get(1).getId());
     }
 
