@@ -1,6 +1,8 @@
 package edu.lmu.cs.headmaster.ws.util;
 
-import org.springframework.context.ApplicationContext;
+import org.junit.After;
+import org.junit.Before;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -10,7 +12,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public abstract class ApplicationContextTest {
 
-    protected ApplicationContext applicationContext =
-            new ClassPathXmlApplicationContext("testContext.xml");
+    protected ConfigurableApplicationContext applicationContext;
+
+    @Before
+    public void setUpApplicationContextTest() {
+        applicationContext = new ClassPathXmlApplicationContext("testContext.xml");
+    }
+
+    @After
+    public void shutDownApplicationContextTest() {
+        applicationContext.close();
+        applicationContext = null;
+    }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
@@ -14,8 +15,14 @@ import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 
 public class EventDaoTest extends ApplicationContextTest {
 
-    private EventDao eventDao = (EventDao)applicationContext.getBean("eventDao");
-    private StudentDao studentDao = (StudentDao)applicationContext.getBean("studentDao");
+    private EventDao eventDao;
+    private StudentDao studentDao;
+
+    @Before
+    public void getRequiredBeans() {
+        eventDao = (EventDao)applicationContext.getBean("eventDao");
+        studentDao = (StudentDao)applicationContext.getBean("studentDao");
+    }
 
     @Test
     public void testGetEventById() {

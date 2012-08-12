@@ -1,6 +1,7 @@
 package edu.lmu.cs.headmaster.ws.dao;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.lmu.cs.headmaster.ws.domain.Role;
@@ -10,7 +11,12 @@ import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 
 public class UserDaoTest extends ApplicationContextTest {
 
-    private UserDao userDao = (UserDao)applicationContext.getBean("userDao");
+    private UserDao userDao;
+
+    @Before
+    public void getRequiredBeans() {
+        userDao = (UserDao)applicationContext.getBean("userDao");
+    }
 
     @Test
     public void testGetUserByLogin() {

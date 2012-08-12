@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.LazyInitializationException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
@@ -15,7 +16,12 @@ import edu.lmu.cs.headmaster.ws.util.ApplicationContextTest;
 
 public class StudentDaoTest extends ApplicationContextTest {
 
-    private StudentDao studentDao = (StudentDao)applicationContext.getBean("studentDao");
+    private StudentDao studentDao;
+
+    @Before
+    public void getRequiredBeans() {
+        studentDao = (StudentDao)applicationContext.getBean("studentDao");
+    }
 
     @Test
     public void testGetStudentById() {
