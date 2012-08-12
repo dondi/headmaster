@@ -17,11 +17,23 @@ $(function () {
             $("#event-description").text(data.description);
 
             // List the attendees.
-            if (!data.attendees || !data.attendees.length) {
-                $("#event-attendees-empty").fadeIn();
-            }
-
-            $("#event-attendees-progress").fadeOut();
+            Headmaster.loadArrayIntoTable(
+                data.attendees, "event-attendees", "event-attendees-empty",
+                function (student) {
+                    return $(
+                        "<tr><td>" +
+                        student.firstName + " " +
+                        student.lastName +
+                        "</td></tr>"
+                    )
+                        // We store the student's ID...
+                        .data("id", student.id)
+                        // ...so that we can view that student if the row is clicked.
+                        .click(function () {
+                            location = "../students/" + $(this).data("id");
+                        });
+                }
+            );
         }
     );
 });
