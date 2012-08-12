@@ -70,9 +70,10 @@
                     <div class="span6">
                         <h2>
                             <wicket:message key="heading.attendees">Attendees</wicket:message>
-                            <button class="btn btn-success pull-right" id="event-add-attendee">
-                                <wicket:message key="button.add">Add...</wicket:message>
-                            </button>
+                            <a class="btn btn-success pull-right" data-toggle="modal"
+                                    href="#student-search-modal" id="event-add-attendee">
+                                <wicket:message key="button.add">Add</wicket:message>...
+                            </a>
                         </h2>
 
                         <div class="alert alert-info hide" id="event-attendees-empty">
@@ -94,6 +95,26 @@
                             <wicket:message key="button.save">Save</wicket:message>
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Student search modal view. -->
+            <div class="modal hide fade" id="student-search-modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3><wicket:message key="heading.attendees.add">Add Attendees</wicket:message></h3>
+                </div>
+
+                <div class="modal-body" wicket:id="addAttendeePanel">
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">
+                        <wicket:message key="button.done">Done</wicket:message>
+                    </a>
+                    <a href="#" class="btn btn-primary">
+                        <wicket:message key="button.add">Add</wicket:message>
+                    </a>
                 </div>
             </div>
 

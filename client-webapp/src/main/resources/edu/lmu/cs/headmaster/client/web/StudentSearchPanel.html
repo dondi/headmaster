@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Note: Content outside wicket:extend is for local, file-based development and design only, and
+     will be replaced by ClientPage content when deployed. -->
+<html xmlns:wicket>
+<body>
+    <wicket:panel>
+        <div class="container">
+            <form class="well form-search">
+                <label for="search-field">
+                    <wicket:message key="prompt.search">Search for</wicket:message>:
+                </label>
+                <input type="text" class="input-medium search-query" id="search-field">
+            </form>
+
+            <div class="progress progress-striped active hide" id="search-progress">
+                <div class="bar" style="width: 100%;"></div>
+            </div>
+
+            <div class="alert alert-info hide" id="search-empty">
+                <wicket:message key="prompt.empty">(no matching students)</wicket:message>
+            </div>
+
+            <table class="table table-striped hide" id="search-results">
+                <thead><tr>
+                    <th><wicket:message key="list.head.name">Name</wicket:message></th>
+                </tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </wicket:panel>
+</body>
+</html>

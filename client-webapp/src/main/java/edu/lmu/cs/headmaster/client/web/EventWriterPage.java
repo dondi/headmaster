@@ -26,6 +26,9 @@ public abstract class EventWriterPage extends ClientPage {
                     }
                 }
         ));
+
+        // Include the student search panel.
+        add(new StudentSearchPanel("addAttendeePanel"));
     }
 
 }
