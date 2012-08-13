@@ -6,6 +6,8 @@ import java.util.List;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.joda.time.DateTime;
+
 import edu.lmu.cs.headmaster.ws.dao.StudentDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Event;
@@ -50,6 +52,12 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
         // expectedGraduationYearTo must be set.
         validate(query != null || classYear != null || expectedGraduationYearFrom != null ||
                 expectedGraduationYearTo != null, Response.Status.BAD_REQUEST, QUERY_REQUIRED);
+
+        // The classYear parameter produces an expected graduation year.
+        if (classYear != null) {
+            expectedGraduationYearFrom = expectedGraduationYearTo =
+                    classYear.getExpectedGraduationYear(new DateTime());
+        }
 
         return studentDao.getStudents(
             query != null ? preprocessQuery(query, skip, max, 0, 50) : null,
