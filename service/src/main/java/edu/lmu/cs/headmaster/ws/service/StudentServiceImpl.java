@@ -34,8 +34,21 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
             int skip, int max) {
         logServiceCall();
 
-        // At least one of query, expectedGraduationYearFrom, or expectedGraduationYearTo must be set.
-        validate(query != null || expectedGraduationYearFrom != null ||
+        // classYear is mutually exclusive with (expectedGraduationYearFrom,
+        // expectedGraduationYearTo).
+        validate(
+            (classYear == null && expectedGraduationYearFrom == null &&
+                            expectedGraduationYearTo == null) ||
+                    (classYear != null && expectedGraduationYearFrom == null &&
+                            expectedGraduationYearTo == null) ||
+                    (classYear == null && (expectedGraduationYearFrom != null ||
+                                expectedGraduationYearTo != null)),
+            Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT
+        );
+
+        // At least one of query, classYear, expectedGraduationYearFrom, or
+        // expectedGraduationYearTo must be set.
+        validate(query != null || classYear != null || expectedGraduationYearFrom != null ||
                 expectedGraduationYearTo != null, Response.Status.BAD_REQUEST, QUERY_REQUIRED);
 
         return studentDao.getStudents(
