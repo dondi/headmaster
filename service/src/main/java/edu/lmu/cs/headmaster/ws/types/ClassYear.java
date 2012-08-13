@@ -6,6 +6,9 @@ public enum ClassYear {
     FRESHMAN, SOPHOMORE, JUNIOR, SENIOR;
 
     public Integer getExpectedGraduationYear(DateTime referenceDate) {
-        return 0;
+        DateTime cutoff = new DateTime(referenceDate.getYear(), 7, 1, 0, 0, 0, 0);
+        int freshmanGraduationYear = (referenceDate.getYear() + 3) +
+                (referenceDate.compareTo(cutoff) < 0 ? 0 : 1);
+        return Integer.valueOf(freshmanGraduationYear - ordinal());
     }
 }
