@@ -30,6 +30,7 @@ public class AbstractService {
     public static final String SKIP_TOO_SMALL = "skip.too.small";
     public static final String MAX_TOO_LARGE = "max.too.large";
     public static final String QUERY_REQUIRED = "query.required";
+    public static final String ARGUMENT_CONFLICT = "argument.conflict";
     public static final String MALFORMED_ARGUMENT_DATE = "argument.date.malformed";
     public static final String MISSING_ARGUMENT_DATE = "argument.date.missing";
     public static final String UNSUPPORTED_ENCODING = "encoding.not.supported";

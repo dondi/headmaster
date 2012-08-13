@@ -21,13 +21,55 @@ public class StudentServiceTest extends ServiceTest {
 
     @Test
     public void testGetStudentsNoQuery() {
-        ClientResponse response = ws.path("students").get(ClientResponse.class);
+        ClientResponse clientResponse = ws.path("students").get(ClientResponse.class);
 
         // We expect error 400, QUERY_REQUIRED.
-        Assert.assertEquals(400, response.getStatus());
+        Assert.assertEquals(400, clientResponse.getStatus());
         Assert.assertEquals(
             "400 " + AbstractService.QUERY_REQUIRED,
-            response.getEntity(String.class)
+            clientResponse.getEntity(String.class)
+        );
+    }
+
+    @Test
+    public void testGetStudentsClassYearMutualExclusion() {
+        // The GET /students parameter "class" is mutually exclusive with
+        // "classFrom" and "classTo."
+        ClientResponse clientResponse = ws.path("students")
+                .queryParam("class", "FRESHMAN")
+                .queryParam("classFrom", "2012")
+                .get(ClientResponse.class);
+
+        // We expect error 400, ARGUMENT_CONFLICT.
+        Assert.assertEquals(400, clientResponse.getStatus());
+        Assert.assertEquals(
+            "400 " + AbstractService.ARGUMENT_CONFLICT,
+            clientResponse.getEntity(String.class)
+        );
+
+        clientResponse = ws.path("students")
+                .queryParam("class", "FRESHMAN")
+                .queryParam("classTo", "2012")
+                .get(ClientResponse.class);
+
+        // Still error 400, ARGUMENT_CONFLICT.
+        Assert.assertEquals(400, clientResponse.getStatus());
+        Assert.assertEquals(
+            "400 " + AbstractService.ARGUMENT_CONFLICT,
+            clientResponse.getEntity(String.class)
+        );
+
+        clientResponse = ws.path("students")
+                .queryParam("class", "FRESHMAN")
+                .queryParam("classFrom", "2012")
+                .queryParam("classTo", "2016")
+                .get(ClientResponse.class);
+
+        // Still more error 400, ARGUMENT_CONFLICT.
+        Assert.assertEquals(400, clientResponse.getStatus());
+        Assert.assertEquals(
+            "400 " + AbstractService.ARGUMENT_CONFLICT,
+            clientResponse.getEntity(String.class)
         );
     }
 
