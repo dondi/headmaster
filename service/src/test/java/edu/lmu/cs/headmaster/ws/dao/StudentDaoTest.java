@@ -11,7 +11,7 @@ import org.junit.Test;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
-import edu.lmu.cs.headmaster.ws.domain.Term;
+import edu.lmu.cs.headmaster.ws.types.Term;
 import edu.lmu.cs.headmaster.ws.util.ApplicationContextTest;
 
 public class StudentDaoTest extends ApplicationContextTest {

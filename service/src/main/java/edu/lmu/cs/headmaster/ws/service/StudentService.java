@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.types.ClassYear;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
@@ -44,8 +45,9 @@ public interface StudentService {
     @GET
     List<Student> getStudents(@QueryParam("q") String query,
             @QueryParam("active") @DefaultValue("true") Boolean active,
-            @QueryParam("expectedGraduationYearFrom") Integer expectedGraduationYearFrom,
-            @QueryParam("expectedGraduationYearTo") Integer expectedGraduationYearTo,
+            @QueryParam("class") ClassYear classYear,
+            @QueryParam("classFrom") Integer expectedGraduationYearFrom,
+            @QueryParam("classTo") Integer expectedGraduationYearTo,
             @QueryParam("skip") @DefaultValue("0") int skip,
             @QueryParam("max") @DefaultValue("50") int max);
 

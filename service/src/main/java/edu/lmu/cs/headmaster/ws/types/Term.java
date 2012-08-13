@@ -1,4 +1,4 @@
-package edu.lmu.cs.headmaster.ws.domain;
+package edu.lmu.cs.headmaster.ws.types;
 
 public enum Term {
     SPRING, SUMMER, FALL

@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import com.sun.jersey.api.client.ClientResponse;
 
-import edu.lmu.cs.headmaster.ws.domain.Role;
 import edu.lmu.cs.headmaster.ws.domain.User;
+import edu.lmu.cs.headmaster.ws.types.Role;
 import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 
 /**

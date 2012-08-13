@@ -13,11 +13,11 @@ import com.sun.jersey.api.json.JSONJAXBContext;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
-import edu.lmu.cs.headmaster.ws.domain.Role;
 import edu.lmu.cs.headmaster.ws.domain.Student;
-import edu.lmu.cs.headmaster.ws.domain.Term;
 import edu.lmu.cs.headmaster.ws.domain.User;
 import edu.lmu.cs.headmaster.ws.domain.UserRole;
+import edu.lmu.cs.headmaster.ws.types.Role;
+import edu.lmu.cs.headmaster.ws.types.Term;
 
 /**
  * A provider which ensures that JSON content is generated using the <em>natural</em> style,

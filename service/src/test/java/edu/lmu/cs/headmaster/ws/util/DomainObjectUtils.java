@@ -6,9 +6,9 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
-import edu.lmu.cs.headmaster.ws.domain.Role;
 import edu.lmu.cs.headmaster.ws.domain.User;
 import edu.lmu.cs.headmaster.ws.domain.UserRole;
+import edu.lmu.cs.headmaster.ws.types.Role;
 
 /**
  * Holder for utility methods of use to multiple unit tests.

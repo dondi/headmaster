@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import edu.lmu.cs.headmaster.ws.types.Term;
+
 @Entity
 @XmlRootElement
 public class GPA {

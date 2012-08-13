@@ -10,6 +10,7 @@ import edu.lmu.cs.headmaster.ws.dao.StudentDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.types.ClassYear;
 
 /**
  * The sole implementation of the student service.
@@ -28,7 +29,7 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
     }
 
     @Override
-    public List<Student> getStudents(String query, Boolean active,
+    public List<Student> getStudents(String query, Boolean active, ClassYear classYear,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
             int skip, int max) {
         logServiceCall();
@@ -36,6 +37,7 @@ public class StudentServiceImpl extends AbstractService implements StudentServic
         // At least one of query, expectedGraduationYearFrom, or expectedGraduationYearTo must be set.
         validate(query != null || expectedGraduationYearFrom != null ||
                 expectedGraduationYearTo != null, Response.Status.BAD_REQUEST, QUERY_REQUIRED);
+
         return studentDao.getStudents(
             query != null ? preprocessQuery(query, skip, max, 0, 50) : null,
             active, expectedGraduationYearFrom, expectedGraduationYearTo, skip, max

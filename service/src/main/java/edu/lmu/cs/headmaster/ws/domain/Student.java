@@ -24,6 +24,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import edu.lmu.cs.headmaster.ws.types.Term;
 import edu.lmu.cs.headmaster.ws.util.DateTimeXmlAdapter;
 
 /**

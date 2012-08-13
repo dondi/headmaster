@@ -12,7 +12,7 @@ import com.sun.jersey.api.client.GenericType;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
-import edu.lmu.cs.headmaster.ws.domain.Term;
+import edu.lmu.cs.headmaster.ws.types.Term;
 
 /**
  * Tests the student web service.
