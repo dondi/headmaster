@@ -1,0 +1,17 @@
+/* Some table width customization for students (second column displays email). */
+table {
+    table-layout: fixed;
+}
+
+table td {
+    cursor: pointer;
+}
+
+table th:nth-child(2) {
+    width: 25%;
+}
+
+/* Our use of alerts here is limited to messages for empty tables. */
+.alert {
+    text-align: center;
+}

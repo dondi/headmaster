@@ -112,6 +112,8 @@ public class Headmaster extends AuthenticatedWebApplication {
         mountBookmarkablePage("students/new", StudentCreationPage.class);
         mountBookmarkablePage("students/search", StudentSearchPage.class);
 
+        mountBookmarkablePage("students/freshmen", FreshmenPage.class);
+
         // More URL customization, now for URLs with parameters.
         // Special handling: individual referral page is parameterized.
         MixedParamUrlCodingStrategy studentViewUrls = new MixedParamUrlCodingStrategy(
