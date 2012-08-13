@@ -299,7 +299,7 @@ $(function () {
             type: studentData.id ? "PUT" : "POST",
             url: Headmaster.serviceUri("students" + (studentData.id ? "/" + studentData.id : "")),
             data: JSON.stringify(studentData),
-            success: function () {
+            success: function (data, textStatus, jqXHR) {
                 $("#student-success").fadeIn();
 
                 // If there is no studentId, then we are creating students,
@@ -307,13 +307,16 @@ $(function () {
                 // are to be created.
                 if (!studentId) {
                     $("input, textarea").val("");
+                    $("#student-new-link")
+                        .attr({ href: jqXHR.getResponseHeader("Location").split("/").pop() })
+                        .fadeIn();
                 } else {
                     location = "../" + studentId;
                 }
 
                 // Dismiss the alert after a fixed delay (not needed for edits).
                 setTimeout(function () {
-                    $("#student-success").fadeOut();
+                    $("#student-new-link, #student-success").fadeOut();
                 }, 5000);
             },
             contentType: "application/json",
