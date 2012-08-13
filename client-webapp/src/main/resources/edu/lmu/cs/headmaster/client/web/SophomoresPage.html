@@ -6,58 +6,19 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Headmaster: Student List</title>
+        <title>Headmaster: Sophomores</title>
 
         <link rel="stylesheet"
                 href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css"/>
         <link rel="stylesheet" href="lib/bootstrap-datepicker/datepicker.css"/>
 
         <link rel="stylesheet" href="css/client.css"/>
-        <wicket:head>
-            <wicket:link>
-                <link rel="stylesheet" href="css/student-list.css"/>
-            </wicket:link>
-        </wicket:head>
     </head>
     <body>
         <wicket:extend>
-            <div class="hide" id="student-query"></div>
-
-            <div class="container">
-                <div class="page-header">
-                    <a class="btn btn-info pull-right" id="email-button" href="#">
-                        <wicket:message key="button.email">Send Email</wicket:message>
-                    </a>
-                    <h1><wicket:message key="title">Student List</wicket:message></h1>
-                </div>
-
-                <div class="progress progress-striped active" id="student-list-progress">
-                    <div class="bar" style="width: 100%;"></div>
-                </div>
-
-                <div class="alert alert-info hide" id="student-list-empty">
-                    <wicket:message key="prompt.empty">(no students)</wicket:message>
-                </div>
-
-                <table class="table table-striped hide" id="student-list">
-                    <thead><tr>
-                        <th><wicket:message key="list.head.name">Name</wicket:message></th>
-                        <th><wicket:message key="list.head.email">email</wicket:message></th>
-                    </tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-
-            <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-
-            <!-- The main purpose of embedded child content is to insert a script that sets the
-                 query data property of #student-query to the JavaScript object that will be used
-                 in a GET /students Ajax call in the student-list.js script. -->
-            <wicket:child/>
-
-            <wicket:link>
-                <script src="js/student-list.js"></script>
-            </wicket:link>
+            <script>
+            $("#student-query").data("query", { "class": "SOPHOMORE" });
+            </script>
         </wicket:extend>
 
         <script src="js/headmaster-offline.js"></script>

@@ -99,13 +99,23 @@
         /*
          * Loads the array result of a JSON call into a web page table.
          * Essentially a decorator on loadArrayIntoTable that adds a JSON
-         * connection.
+         * connection. Two differences: an optional data argument can be used to
+         * supply service call parameters, and another optional callback
+         * argument can supply, well, a callback after the array has been
+         * loaded.
          */
-        loadJsonArrayIntoTable: function (uri, progressId, tableId, emptyId, createRow, data) {
+        loadJsonArrayIntoTable: function (uri, progressId, tableId, emptyId, createRow,
+                data, callback) {
             var progress = $("#" + progressId),
                 empty = $("#" + emptyId),
                 table = $("#" + tableId);
     
+            // Allow for no data but a callback.
+            if ($.isFunction(data) && !callback) {
+                callback = data;
+                data = null;
+            }
+
             progress.fadeIn();
             empty.fadeOut();
             table.fadeOut();
@@ -114,6 +124,9 @@
                 data || {},
                 function (array, textStatus, jqXHR) {
                     loadArrayIntoTable(array, tableId, emptyId, createRow);
+                    if ($.isFunction(callback)) {
+                        callback();
+                    }
                     progress.fadeOut();
                 }
             );
