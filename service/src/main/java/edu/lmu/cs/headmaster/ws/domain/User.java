@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -88,7 +89,9 @@ public class User implements Serializable {
     }
 
     public void setChallengeRequest(String challengeRequest) {
-        this.challengeRequest = challengeRequest;
+        // We do our encoding here so that it does not interfere with the
+        // database code.
+        this.challengeRequest = DigestUtils.sha512Hex(challengeRequest);
     }
 
     public Boolean isActive() {
