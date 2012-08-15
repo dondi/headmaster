@@ -25,6 +25,7 @@ public class UserDaoTest extends ApplicationContextTest {
 
         Assert.assertEquals(Long.valueOf(1000000L), user.getId());
         Assert.assertEquals("admin", user.getLogin());
+        // The test fixture does not have encoded passwords.
         Assert.assertEquals("password", user.getChallenge());
         Assert.assertEquals("admin@headmaster.test", user.getEmail());
         Assert.assertEquals(Boolean.TRUE, user.isActive());
@@ -40,6 +41,7 @@ public class UserDaoTest extends ApplicationContextTest {
 
         Assert.assertEquals(Long.valueOf(1000001L), user.getId());
         Assert.assertEquals("noroles", user.getLogin());
+        // The test fixture does not have encoded passwords.
         Assert.assertEquals("password-noroles", user.getChallenge());
         Assert.assertEquals("noroles@headmaster.test", user.getEmail());
         Assert.assertEquals(Boolean.TRUE, user.isActive());
@@ -61,6 +63,11 @@ public class UserDaoTest extends ApplicationContextTest {
         Assert.assertEquals(Long.valueOf(1L), createdUser.getId());
         Assert.assertEquals(userToCreate.getLogin(), createdUser.getLogin());
         Assert.assertEquals(userToCreate.getEmail(), createdUser.getEmail());
+        // We expect the password to be different, of course.
+        Assert.assertEquals(
+            "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86",
+            createdUser.getChallenge()
+        );
         Assert.assertEquals(2, createdUser.getRoles().size());
 
         // We do not make assumptions on which role comes first.
