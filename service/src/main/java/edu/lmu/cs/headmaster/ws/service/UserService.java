@@ -75,6 +75,6 @@ public interface UserService {
      */
     @PUT
     @Path("{id}")
-    Response createOrUpdateUser(@PathParam("id") Integer id, User user);
+    Response createOrUpdateUser(@PathParam("id") Long id, User user);
 
 }

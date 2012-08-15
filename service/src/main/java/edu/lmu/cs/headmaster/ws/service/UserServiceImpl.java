@@ -50,7 +50,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
-    public Response createOrUpdateUser(Integer id, User user) {
+    public Response createOrUpdateUser(Long id, User user) {
         validate(id.equals(user.getId()), Response.Status.BAD_REQUEST, USER_INCONSISTENT);
         mapRolesToUser(user);
         userDao.createOrUpdateUser(user);
