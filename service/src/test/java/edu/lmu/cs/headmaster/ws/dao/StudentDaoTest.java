@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.GPA;
+import edu.lmu.cs.headmaster.ws.domain.Major;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.types.Term;
 import edu.lmu.cs.headmaster.ws.util.ApplicationContextTest;
@@ -202,7 +203,12 @@ public class StudentDaoTest extends ApplicationContextTest {
         Student student = studentDao.getStudentById(1000001L);
 
         // Add a major and some minors.
-        student.getMajors().add("Biology");
+        Major major = new Major();
+        major.setCollegeOrSchool("Science");
+        major.setDegree("BS");
+        major.setDiscipline("Biology");
+
+        student.getMajors().add(major);
         student.getMinors().add("Physics");
         student.getMinors().add("Chemistry");
 

@@ -19,6 +19,7 @@
                 <value>edu.lmu.cs.headmaster.ws.domain.Event</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.GPA</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.Grant</value>
+                <value>edu.lmu.cs.headmaster.ws.domain.Major</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.Student</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.User</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.UserRole</value>

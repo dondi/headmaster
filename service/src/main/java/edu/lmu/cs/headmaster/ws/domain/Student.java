@@ -24,6 +24,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import edu.lmu.cs.headmaster.ws.types.ResidencyCode;
+import edu.lmu.cs.headmaster.ws.types.Sex;
 import edu.lmu.cs.headmaster.ws.types.Term;
 import edu.lmu.cs.headmaster.ws.util.DateTimeXmlAdapter;
 
@@ -43,15 +45,14 @@ public class Student {
     private String primaryEmail;
     private String secondaryEmail;
     private String campusBox;
-    private String college;
+    private Boolean compactSigned;
     private Boolean inLivingLearningCommunity;
     private String advisor;
     private Integer entryYear;
     private DateTime honorsEntryDate;
     private Integer expectedGraduationYear;
     private Boolean transferStudent;
-    private String degree;
-    private List<String> majors = new ArrayList<String>();
+    private List<Major> majors = new ArrayList<Major>();
     private List<String> minors = new ArrayList<String>();
     private Boolean hasStudiedAbroad;
     private Double highSchoolGpa;
@@ -59,6 +60,10 @@ public class Student {
     private Integer satVerbalScore;
     private Integer satMathScore;
     private Integer satWritingScore;
+    private String scholarship;
+    private Sex sex;
+    private String raceOrEthnicity;
+    private ResidencyCode residencyCode;
     private String address;
     private String city;
     private String state;
@@ -164,13 +169,12 @@ public class Student {
         this.campusBox = campusBox;
     }
 
-    @Lob
-    public String getCollege() {
-        return college;
+    public Boolean isCompactSigned() {
+        return compactSigned;
     }
 
-    public void setCollege(String college) {
-        this.college = college;
+    public void setCompactSigned(Boolean compactSigned) {
+        this.compactSigned = compactSigned;
     }
 
     public Boolean isInLivingLearningCommunity() {
@@ -224,24 +228,14 @@ public class Student {
         this.transferStudent = transferStudent;
     }
 
-    @Lob
-    public String getDegree() {
-        return degree;
-    }
-
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-
-    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @Lob
     @OrderColumn
-    public List<String> getMajors() {
+    public List<Major> getMajors() {
         return majors;
     }
 
-    public void setMajors(List<String> majors) {
+    public void setMajors(List<Major> majors) {
         this.majors = majors;
     }
 
@@ -303,6 +297,40 @@ public class Student {
 
     public void setSatWritingScore(Integer satWritingScore) {
         this.satWritingScore = satWritingScore;
+    }
+
+    @Lob
+    public String getScholarship() {
+        return scholarship;
+    }
+
+    public void setScholarship(String scholarship) {
+        this.scholarship = scholarship;
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    @Lob
+    public String getRaceOrEthnicity() {
+        return raceOrEthnicity;
+    }
+
+    public void setRaceOrEthnicity(String raceOrEthnicity) {
+        this.raceOrEthnicity = raceOrEthnicity;
+    }
+
+    public ResidencyCode getResidencyCode() {
+        return residencyCode;
+    }
+
+    public void setResidencyCode(ResidencyCode residencyCode) {
+        this.residencyCode = residencyCode;
     }
 
     @Lob

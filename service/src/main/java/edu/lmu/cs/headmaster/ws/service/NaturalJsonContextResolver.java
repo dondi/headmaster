@@ -13,6 +13,7 @@ import com.sun.jersey.api.json.JSONJAXBContext;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
+import edu.lmu.cs.headmaster.ws.domain.Major;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.domain.User;
 import edu.lmu.cs.headmaster.ws.domain.UserRole;
@@ -34,6 +35,7 @@ public class NaturalJsonContextResolver implements ContextResolver<JAXBContext> 
         Event.class,
         GPA.class,
         Grant.class,
+        Major.class,
         Role.class,
         Student.class,
         Term.class,
