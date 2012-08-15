@@ -83,8 +83,8 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertEquals(1, student.getMinors().size());
 
         // Majors and minors are manually ordered.
-        Assert.assertEquals("Computer Science", student.getMajors().get(0));
-        Assert.assertEquals("Mathematics", student.getMajors().get(1));
+        Assert.assertEquals("Computer Science", student.getMajors().get(0).getDiscipline());
+        Assert.assertEquals("Mathematics", student.getMajors().get(1).getDiscipline());
         Assert.assertEquals("Music", student.getMinors().get(0));
     }
 
@@ -219,7 +219,7 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertEquals(1, student.getMajors().size());
         Assert.assertEquals(2, student.getMinors().size());
 
-        Assert.assertEquals("Biology", student.getMajors().get(0));
+        Assert.assertEquals("Biology", student.getMajors().get(0).getDiscipline());
         Assert.assertEquals("Physics", student.getMinors().get(0));
         Assert.assertEquals("Chemistry", student.getMinors().get(1));
     }
