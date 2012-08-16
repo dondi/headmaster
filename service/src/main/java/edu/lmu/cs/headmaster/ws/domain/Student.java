@@ -135,6 +135,7 @@ public class Student {
         this.firstName = firstName;
     }
 
+    @Lob
     public String getMiddleName() {
         return middleName;
     }

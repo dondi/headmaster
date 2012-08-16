@@ -49,7 +49,7 @@ $(function () {
 
                 // Student name and graduation year.
                 $("#student-firstname").val(data.firstName || BLANK);
-                $("#student-middlename").val(data.middleInitial || BLANK);
+                $("#student-middlename").val(data.middleName || BLANK);
                 $("#student-lastname").val(data.lastName || BLANK);
                 $("#student-gradyear").val(data.expectedGraduationYear);
                 $("#student-active")
@@ -208,7 +208,7 @@ $(function () {
 
             // Student name and graduation year.
             firstName: $("#student-firstname").val(),
-            middleInitial: $("#student-middlename").val(),
+            middleName: $("#student-middlename").val(),
             lastName: $("#student-lastname").val(),
             expectedGraduationYear: $("#student-gradyear").val(),
             active: Headmaster.isChecked("student-active"),

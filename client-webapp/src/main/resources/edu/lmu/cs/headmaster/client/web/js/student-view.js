@@ -63,7 +63,7 @@ $(function () {
 
             $("#student-name").text(
                 data.firstName + " " +
-                (data.middleInitial ? data.middleInitial + " " : "") +
+                (data.middleName ? data.middleName + " " : "") +
                 data.lastName
             );
             $("#student-gradyear").text(data.expectedGraduationYear);
