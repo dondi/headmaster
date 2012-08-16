@@ -30,7 +30,9 @@ $(function () {
                 .append($("<td></td>").text(student.firstName + " " + student.lastName))
                 .append(
                     $("<td></td>").append(
-                        $('<input type="checkbox" class="rowcheck"/>').click(stopProp)
+                        $('<input type="checkbox" class="rowcheck" ' +
+                                (student.primaryEmail || student.secondaryEmail ?
+                                        "" : 'disabled="disabled"') + "/>").click(stopProp)
                     )
                 ).append($("<td></td>").append(
                         student.primaryEmail ? getEmailMarkup(student.primaryEmail) : null
