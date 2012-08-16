@@ -216,29 +216,11 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">
-                                            <wicket:message key="label.college">College</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-college"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
                                             <wicket:message key="label.advisor">Advisor</wicket:message>
                                         </label>
                                         <div class="controls">
                                             <input type="text" class="input-medium"
                                                     id="student-advisor"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.degree">Degree</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-degree"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -266,6 +248,29 @@
             
                             <div class="accordion-body collapse in" id="student-status-container">
                                 <div class="form-horizontal accordion-inner">
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.compact">
+                                                Compact Signed
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <label class="radio inline" for="student-compact-yes">
+                                                <input type="radio" name="compact"
+                                                        id="student-compact-yes"/>
+                                                <wicket:message key="label.radio.yes">
+                                                    Yes
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="student-compact-no">
+                                                <input type="radio" name="compact"
+                                                        id="student-compact-no" checked/>
+                                                <wicket:message key="label.radio.no">
+                                                    No
+                                                </wicket:message>
+                                            </label>
+                                        </div>
+                                    </div>
                                     <div class="control-group">
                                         <label class="control-label">
                                             <wicket:message key="label.inllc">
@@ -314,6 +319,22 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">
+                                            <wicket:message key="label.residencycode">
+                                                Residency Code
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <input type="text" class="input-medium"
+                                                    id="student-residencycode"/>
+                                            <span class="help-block">
+                                                <wicket:message key="instructions.residencycode">
+                                                    I, O, or C.
+                                                </wicket:message>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
                                             <wicket:message key="label.studyabroad">
                                                 Has Studied Abroad
                                             </wicket:message>
@@ -333,6 +354,52 @@
                                                     No
                                                 </wicket:message>
                                             </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <h3 class="accordion-toggle"
+                                        data-toggle="collapse"
+                                        data-target="#student-demographics-container"
+                                        data-parent="#student-data-accordion">
+                                    <wicket:message key="heading.demographics">Demographics</wicket:message>
+                                </h3>
+                            </div>
+            
+                            <div class="accordion-body collapse in" id="student-demographics-container">
+                                <div class="form-horizontal accordion-inner">
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.sex">Sex</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <label class="radio inline" for="student-sex-female">
+                                                <input type="radio" name="sex"
+                                                        id="student-sex-female"/>
+                                                <wicket:message key="label.sex.female">
+                                                    Female
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="student-sex-male">
+                                                <input type="radio" name="sex"
+                                                        id="student-sex-male" checked/>
+                                                <wicket:message key="label.sex.male">
+                                                    Male
+                                                </wicket:message>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.raceorethnicity">Race/Ethnicity</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <input type="text" class="input-medium"
+                                                    id="student-raceorethnicity"/>
                                         </div>
                                     </div>
                                 </div>
@@ -416,18 +483,29 @@
                                                     id="student-sat-writing"/>
                                         </div>
                                     </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.scholarship">Scholarship</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <input type="text" class="input-medium"
+                                                    id="student-scholarship"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="span7 accordion" id="student-list-accordion">
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <h3 class="accordion-toggle"
+                                <h2 class="accordion-toggle"
                                         data-toggle="collapse"
                                         data-target="#student-notes-container"
                                         data-parent="#student-data-accordion">
                                     <wicket:message key="heading.notes">Notes</wicket:message>
-                                </h3>
+                                </h2>
                             </div>
             
                             <div class="accordion-body collapse in" id="student-notes-container">
@@ -437,9 +515,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="span7 accordion" id="student-list-accordion">
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <h2 class="accordion-toggle"

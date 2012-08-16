@@ -95,7 +95,7 @@ $(function () {
             $("#student-compact").text(data.compactSigned ? YES : NO);
             $("#student-inllc").text(data.inLivingLearningCommunity ? YES : NO);
             $("#student-transfer").text(data.transferStudent ? YES : NO);
-            $("#student-residencycode").text(data.residencycode);
+            $("#student-residencycode").text(data.residencyCode);
             $("#student-studyabroad").text(data.hasStudiedAbroad ? YES : NO);
 
             // Demographics information.

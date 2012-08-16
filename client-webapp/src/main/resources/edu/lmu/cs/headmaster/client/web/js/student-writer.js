@@ -39,7 +39,10 @@ $(function () {
             function (data, textStatus, jqXHR) {
                 var createRowFromMajor = function (major) {
                     return $("<tr></tr>").append($("<td></td>")
-                            .text(major.degree + " " + major.discipline));
+                            .text(major.degree + " " + major.discipline))
+
+                            // Save the actual object as data on that row.
+                            .data("major", major);
                 },
     
                 createRowFromString = function (string) {
@@ -68,9 +71,7 @@ $(function () {
                 $("#student-phone-cell").val(data.cellPhone || BLANK);
 
                 // Academic information.
-                $("#student-college").val(data.college || BLANK);
                 $("#student-advisor").val(data.advisor || BLANK);
-                $("#student-degree").val(data.degree || BLANK);
                 $("#student-gpa").val(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
                 $("#student-status").val(data.academicStatus || BLANK);
 
@@ -79,6 +80,11 @@ $(function () {
                 Headmaster.loadArrayIntoTable(data.minors, "student-minors", "student-minors-empty", createRowFromString);
 
                 // Status information.
+                $("#student-compact-" + (data.compactSigned ? "yes" : "no"))
+                    .attr({ checked: "checked" });
+                $("#student-compact-" + (data.compactSigned ? "no" : "yes"))
+                    .removeAttr("checked");
+
                 $("#student-inllc-" + (data.inLivingLearningCommunity ? "yes" : "no"))
                     .attr({ checked: "checked" });
                 $("#student-inllc-" + (data.inLivingLearningCommunity ? "no" : "yes"))
@@ -89,10 +95,21 @@ $(function () {
                 $("#student-transfer-" + (data.transferStudent ? "no" : "yes"))
                     .removeAttr("checked");
 
+                // TODO This is better done as a select element.
+                $("#student-residencycode").val(data.residencyCode);
+
                 $("#student-studyabroad-" + (data.hasStudiedAbroad ? "yes" : "no"))
                     .attr({ checked: "checked" });
                 $("#student-studyabroad-" + (data.hasStudiedAbroad ? "no" : "yes"))
                     .removeAttr("checked");
+
+                // Demographics information.
+                $("#student-sex-" + (data.sex === "FEMALE" ? "female" : "male"))
+                    .attr({ checked: "checked" });
+                $("#student-sex-" + (data.sex === "FEMALE" ? "male" : "female"))
+                    .removeAttr("checked");
+
+                $("#student-raceorethnicity").val(data.raceOrEthnicity || BLANK);
 
                 // Entry information.
                 $("#student-entryyear").val(data.entryYear || BLANK);
@@ -103,6 +120,7 @@ $(function () {
                 $("#student-sat-verbal").val(data.satVerbalScore || BLANK);
                 $("#student-sat-math").val(data.satMathScore || BLANK);
                 $("#student-sat-writing").val(data.satWritingScore || BLANK);
+                $("#student-scholarship").val(data.scholarship || BLANK);
 
                 // Notes.
                 $("#student-notes").val(data.notes || BLANK);
@@ -225,9 +243,7 @@ $(function () {
             cellPhone: $("#student-phone-cell").val(),
 
             // Academic information.
-            college: $("#student-college").val(),
             advisor: $("#student-advisor").val(),
-            degree: $("#student-degree").val(),
             cumulativeGpa: $("#student-gpa").val(),
             academicStatus: $("#student-status").val(),
 
@@ -236,9 +252,15 @@ $(function () {
             minors: [],
 
             // Status information.
+            compactSigned: Headmaster.isChecked("student-compact-yes"),
             inLivingLearningCommunity: Headmaster.isChecked("student-inllc-yes"),
             transferStudent: Headmaster.isChecked("student-transfer-yes"),
             hasStudiedAbroad: Headmaster.isChecked("student-studyabroad-yes"),
+            residencyCode: $("#student-residencycode").val(),
+
+            // Demographics information.
+            sex: Headmaster.isChecked("student-sex-female") ? "FEMALE" : "MALE",
+            raceOrEthnicity: $("#student-raceorethnicity").val(),
 
             // Entry information.
             entryYear: $("#student-entryyear").val(),
@@ -248,6 +270,7 @@ $(function () {
             satVerbalScore: $("#student-sat-verbal").val(),
             satMathScore: $("#student-sat-math").val(),
             satWritingScore: $("#student-sat-writing").val(),
+            scholarship: $("#student-scholarship").val(),
 
             // Notes.
             notes: $("#student-notes").val(),
@@ -272,7 +295,7 @@ $(function () {
         Headmaster.loadTableIntoArray(
             studentData, "majors", $("#student-majors > tbody td"),
             function (td) {
-                return $(td).text();
+                return $(td).data("major");
             }
         );
 
