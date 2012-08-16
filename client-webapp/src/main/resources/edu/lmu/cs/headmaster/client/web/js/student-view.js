@@ -83,9 +83,7 @@ $(function () {
             $("#student-phone-cell").text(data.cellPhone || BLANK);
 
             // Academic information.
-            $("#student-college").text(data.college || BLANK);
             $("#student-advisor").text(data.advisor || BLANK);
-            $("#student-degree").text(data.degree || BLANK);
             $("#student-gpa").text(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
             $("#student-status").text(data.academicStatus || BLANK);
 
@@ -94,9 +92,15 @@ $(function () {
             Headmaster.loadArrayIntoTable(data.minors, "student-minors", "student-minors-empty", createRowFromString);
 
             // Status information.
+            $("#student-compact").text(data.compactSigned ? YES : NO);
             $("#student-inllc").text(data.inLivingLearningCommunity ? YES : NO);
             $("#student-transfer").text(data.transferStudent ? YES : NO);
+            $("#student-residencycode").text(data.residencycode);
             $("#student-studyabroad").text(data.hasStudiedAbroad ? YES : NO);
+
+            // Demographics information.
+            $("#student-sex").text(data.sex);
+            $("#student-raceorethnicity").text(data.raceOrEthnicity);
 
             // Entry information.
             $("#student-entryyear").text(data.entryYear || BLANK);
@@ -107,9 +111,10 @@ $(function () {
             $("#student-sat-verbal").text(data.satVerbalScore || BLANK);
             $("#student-sat-math").text(data.satMathScore || BLANK);
             $("#student-sat-writing").text(data.satWritingScore || BLANK);
+            $("#student-scholarship").text(data.scholarship || BLANK);
 
             // Notes.
-            $("#student-notes").text(data.notes || BLANK);
+            $("#student-notes").text(data.notes || UNSPECIFIED);
 
             // Grade information.
             Headmaster.loadArrayIntoTable(
@@ -137,7 +142,7 @@ $(function () {
             }
             $("#student-thesis-submissiondate").text(data.thesisSubmissionDate ?
                     Date.parse(data.thesisSubmissionDate).toString(DATE_FORMAT) : BLANK);
-            $("#student-thesis-notes").text(data.thesisNotes || BLANK);
+            $("#student-thesis-notes").text(data.thesisNotes || UNSPECIFIED);
         }
     );
 });
