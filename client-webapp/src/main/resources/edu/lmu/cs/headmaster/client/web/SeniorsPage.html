@@ -20,10 +20,13 @@
             $("#student-query")
                 .data("query", { "class": "SENIOR" })
                 .data("columns", function (student) {
-                    return "<td>" + student.thesisTerm + "</td>" +
-                            '<td><span class="badge badge-' +
-                            (student.thesisInMajor ? 'info">Yes' : 'warning">No') +
-                            "</span></td>";
+                    return [
+                        $("<td></td>").text(student.thesisTerm),
+                        $("<td></td>")
+                            .append($('<span class="badge badge-' +
+                                    (student.thesisInMajor ? 'info">Yes' : 'warning">No') +
+                                    "</span></td>"))
+                    ]
                 });
 
             // For seniors, we also want to include thesis information.
