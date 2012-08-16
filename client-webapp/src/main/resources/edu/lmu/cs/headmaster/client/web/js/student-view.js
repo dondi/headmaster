@@ -5,7 +5,16 @@ $(function () {
         UNSPECIFIED = "(unspecified)",
         BLANK = "",
         YES = "Yes",
-        NO = "No";
+        NO = "No",
+
+        /*
+         * Helper function for building email address links.
+         */
+        getEmailElement = function (email) {
+            return email ?
+                    $('<a class="email"></a>').attr({ href: "mailto:" + email }).text(email) :
+                    null;
+        };
 
     // Set up the edit button.
     $("#edit-button").attr({ href: "edit/" + studentId });
@@ -72,8 +81,8 @@ $(function () {
                 .text(data.active ? "Active" : "Inactive");
 
             // Contact information.
-            $("#student-email1").text(data.primaryEmail || BLANK);
-            $("#student-email2").text(data.secondaryEmail || BLANK);
+            $("#student-email1").append(getEmailElement(data.primaryEmail));
+            $("#student-email2").append(getEmailElement(data.secondaryEmail));
             $("#student-campus-box").text(data.campusBox || BLANK);
             $("#student-address").text(data.address || BLANK);
             $("#student-city").text(data.city || BLANK);
