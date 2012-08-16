@@ -6,11 +6,17 @@
     }
 }
 
-/* Some client-wise overrides. */
+/* Some client-wide overrides. */
 .message-empty {
     text-align: center;
 }
 
 .form-horizontal label, .form-inline label {
     font-weight: bold;
+}
+
+/* Unless otherwise indicated, most tables with headers will be sortable.
+   Override in more specific CSS rules if necessary. */
+table > thead > tr > th {
+    cursor: pointer;
 }

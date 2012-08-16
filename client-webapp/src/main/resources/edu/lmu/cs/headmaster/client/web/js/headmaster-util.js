@@ -3,7 +3,10 @@
  * Headmaster top-level object, if already defined.
  */
 (function () {
+        // Start with some "constants."
     var PARTIAL_ISO8601 = "yyyy-MM-dd",
+        KEY_ARRAY_SOURCE = "arraySource",
+        KEY_ARRAY_INDEX = "arrayIndex",
 
         /*
          * Utility function for toggling the visibility of two alternative
@@ -18,25 +21,163 @@
                 elementIfFalse.fadeIn();
             }
         },
-    
+
+        /*
+         * Fairly reusable HTML table sorter. The table parameter should be a jQuery-wrapped
+         * table element, and sortHeader is the th element sitting over the column to sort.
+         * For best results, use on tables that are loaded from arrays by the other functions
+         * in this module, because this preloads data that sortTable uses.  If you rolled your
+         * own table, store the table's model array as table.data(KEY_ARRAY_SOURCE) and the
+         * original array indices as tr.data(KEY_ARRAY_INDEX).  Note also the use of i elements
+         * with Bootstrap icon classes to indicate the current sort order.
+         *
+         * The refresh parameter indicates whether the sort order should be reused instead of
+         * advanced (i.e., table data may have changed and so a sort under the current settings
+         * needs to be redone).  Normally, a sort is triggered by a user clicking on a table
+         * header, and in this situation you want to change the sort order to the next one in
+         * the sequence.
+         */
+        sortTable = function (table, sortHeader, refresh) {
+            // Pull out the table's body and rows.
+            var tableBody = table.find("tbody"),
+                tableRows = tableBody.find("tr"),
+                arraySource = table.data(KEY_ARRAY_SOURCE),
+                tableRowArray = tableRows.get(),
+                columnIndex = table.find("thead > tr > th").get().indexOf(sortHeader[0]),
+
+                // The comparator functions.
+                ascendingColumnSort = function (row1, row2) {
+                    var columnSelector = "td:eq(" + columnIndex + ")",
+                        cellText1 = $(row1).find(columnSelector).text(),
+                        cellText2 = $(row2).find(columnSelector).text(),
+
+                        // Special prep based on data types.
+                        preprocessCell = function (cellText) {
+                            // If the cell does not coerce to a number,
+                            // check if it parses as a date. Return the
+                            // date if it does parse that way, and
+                            // otherwise convert to lowercase (for
+                            // case-insensitive string sorting).
+                            var possibleNumber = +cellText,
+                                possibleDate;
+                            if (isNaN(possibleNumber)) {
+                                possibleDate = Date.parse(cellText);
+                                return possibleDate ? possibleDate : cellText.toLowerCase();
+                            } else {
+                                return possibleNumber;
+                            }
+                        },
+
+                        value1 = preprocessCell(cellText1),
+                        value2 = preprocessCell(cellText2);
+
+                    // If the preprocessed values do not have the same type, revert to
+                    // using just the cell text.
+                    if (typeof value1 !== typeof value2) {
+                        value1 = cellText1.toLowerCase();
+                        value2 = cellText2.toLowerCase();
+                    }
+
+                    // Less-than/greater-than comparison unless both values are numbers.
+                    return (value1 < value2) ? -1 : ((value1 > value2) ? 1 : 0);
+                },
+
+                descendingColumnSort = function (row1, row2) {
+                    return -ascendingColumnSort(row1, row2);
+                },
+
+                originalDataSort = function (row1, row2) {
+                    // This sort is based on array *indices* in the original data.
+                    return +$(row1).data(KEY_ARRAY_INDEX) - $(row2).data(KEY_ARRAY_INDEX);
+                },
+
+                // Sorting operations by type.
+                sortOperations = {
+                    "sort-ascending": function () {
+                        tableRowArray.sort(ascendingColumnSort);
+                        return "icon-arrow-up";
+                    },
+                    
+                    "sort-descending": function () {
+                        tableRowArray.sort(descendingColumnSort);
+                        return "icon-arrow-down";
+                    },
+                    
+                    "sort-none": function () {
+                        tableRowArray.sort(originalDataSort);
+                        return null;
+                    }
+                },
+
+                // Temporary/transient variables.
+                i, max, newIconClass;
+
+            // Detach the table body element from the browser,
+            // and the table body's rows from the table body.
+            tableBody.detach().detach("tr");
+
+            // Determine the direction of the sort.  We cycle between no sort,
+            // ascending, and descending.
+            newIconClass = sortOperations[refresh ?
+                (sortHeader.find("i.icon-arrow-up").length ? "sort-ascending" :
+                        (sortHeader.find("i.icon-arrow-down").length ? "sort-descending" :
+                                "sort-none")) :
+                (sortHeader.find("i.icon-arrow-up").length ? "sort-descending" :
+                        (sortHeader.find("i.icon-arrow-down").length ? "sort-none" :
+                                "sort-ascending"))
+            ]();
+
+            // Reinstate the removed rows.
+            for (i = 0, max = tableRowArray.length; i < max; i += 1) {
+                tableBody.append(tableRowArray[i]);
+            }
+
+            // Clear all current sort states.
+            table.find("th").find("i.icon-arrow-up, i.icon-arrow-down").remove();
+            if (newIconClass) {
+                sortHeader.append($("<i></i>").addClass(newIconClass));
+            }
+
+            // Reattach the table body element.
+            tableBody.appendTo(table);
+        },
+
         /*
          * Loads an array into a web page table. The createRow parameter is a
          * function (object) which is expected to return a jQuery element for
          * the table row that corresponds to that object, or null if that result
          * should not be added to the table.
          * 
+         * By default, tables with thead > tr > th elements are sortable. To fix
+         * the row order, either define tables without thead > th elements or
+         * pass a truthy fixedOrder argument.
+         *
          * We define this function as a local variable so that it is easily
          * called by other functions in the final module.
          */
-        loadArrayIntoTable = function (arrayToLoad, tableId, emptyId, createRow) {
+        loadArrayIntoTable = function (arrayToLoad, tableId, emptyId, createRow, fixedOrder) {
             var table = $("#" + tableId),
                 empty = $("#" + emptyId),
-                tbody = table.find("tbody");
+                tbody = table.find("tbody"),
+                th = table.find("thead > tr > th");
     
             if (arrayToLoad && arrayToLoad.length) {
+                // We save the original array as data on the overall table element.
+                table.data(KEY_ARRAY_SOURCE, arrayToLoad);
+
+                // Ask the caller to create the table rows. Each row also gets
+                // the index of its corresponding array element saved under
+                // KEY_ARRAY_INDEX data.
                 $.each(arrayToLoad, function (index, item) {
-                    tbody.append(createRow(item));
+                    tbody.append(createRow(item).data(KEY_ARRAY_INDEX, index));
                 });
+
+                // Set up column sorting.
+                if (th.length && !fixedOrder) {
+                    th.click(function (event) {
+                        sortTable(table, $(this));
+                    });
+                }
             }
 
             toggleElements(tbody.find("tr").length, table, empty);
