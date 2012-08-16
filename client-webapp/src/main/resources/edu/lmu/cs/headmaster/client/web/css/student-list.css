@@ -1,4 +1,5 @@
-/* Some table width customization for students (second column displays email). */
+/* Some table width customization for students (second column displays email, third column displays
+   checkbox). */
 table {
     table-layout: fixed;
 }
@@ -7,8 +8,17 @@ table td {
     cursor: pointer;
 }
 
+table td:nth-child(2) {
+    text-align: center;
+}
+
 table th:nth-child(2) {
-    width: 25%;
+    width: 2em;
+}
+
+/* Our pull-right buttons need some space. */
+.btn.pull-right {
+    margin-left: 1ex;
 }
 
 /* Our use of alerts here is limited to messages for empty tables. */

@@ -125,7 +125,7 @@
                 function (array, textStatus, jqXHR) {
                     loadArrayIntoTable(array, tableId, emptyId, createRow);
                     if ($.isFunction(callback)) {
-                        callback();
+                        callback(array, textStatus, jqXHR);
                     }
                     progress.fadeOut();
                 }
