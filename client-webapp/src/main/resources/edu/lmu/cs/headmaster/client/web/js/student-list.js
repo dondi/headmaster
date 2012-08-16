@@ -11,10 +11,35 @@ $(function () {
         },
 
         /*
+         * UI feedback function that updates components that depend on others,
+         * such as the "Send Email to Checked" button (which depends on whether
+         * there are checked rows).
+         */
+        updateDependentElements = function () {
+            // We iterate because we want to break out.
+            var checkboxes = $("input.rowcheck"), i, max, jCheckbox;
+
+            for (i = 0, max = checkboxes.length; i < max; i += 1) {
+                jCheckbox = $(checkboxes[i]);
+
+                // Derive the email address(es) associated with that checkbox.
+                if (jCheckbox.attr("checked") === "checked") {
+                    // A single check does the trick.
+                    $("#email-checked-button").removeAttr("disabled").removeClass("disabled");
+                    return;
+                }
+            }
+
+            // If we reach here, nothing was checked.
+            $("#email-checked-button").attr({ disabled: "disabled" }).addClass("disabled");
+        },
+
+        /*
          * Convenience function for stopping "click-through" in row checkboxes.
          */
         stopProp = function (event) {
             event.stopPropagation();
+            updateDependentElements();
         };
 
     // Load up students based on the "query" data property of the #student-query
@@ -34,7 +59,7 @@ $(function () {
                                 (student.primaryEmail || student.secondaryEmail ?
                                         "" : 'disabled="disabled"') + "/>").click(stopProp)
                     )
-                ).append($("<td></td>").append(
+                ).append($('<td class="emailcol"></td>').append(
                         student.primaryEmail ? getEmailMarkup(student.primaryEmail) : null
                     ).append(
                         student.primaryEmail && student.secondaryEmail ? $("<br/>") : null
@@ -55,20 +80,42 @@ $(function () {
             if (addressList) {
                 $("#email-all-button").attr({ href: "mailto:" + addressList });
             } else {
-                $("#email-all-button").fadeOut();
+                $("#email-all-button, #email-checked-button").fadeOut();
             }
 
             // Set the student count.
             $("#student-list-count").text(studentArray.length);
+
+            // Update any elements whose state depends on others.
+            updateDependentElements();
         }
     );
 
     // Sending email to checked can't just be an anchor; it requires additional
     // logic.
     $("#email-checked-button").click(function () {
+        var checkedAddresses = "";
+
         // Gather the checked rows.
-        // Derive their email addresses.
-        // Issue to email link.
+        //
+        // FIXME For some reason jQuery cannot select the
+        // already-checked checkboxes---that would tighten this
+        // code up a bit.
+        $("input.rowcheck").each(function (index, checkbox) {
+            var jCheckbox = $(checkbox);
+
+            // Derive the email address(es) associated with that checkbox.
+            if (jCheckbox.attr("checked") === "checked") {
+                jCheckbox.parent().parent().find("td.emailcol > a").each(function (index, a) {
+                    checkedAddresses += (checkedAddresses ? "," : "") + $(a).text();
+                });
+            }
+        });
+
+        // Issue the email link, if we have addresses.
+        if (checkedAddresses) {
+            location = "mailto:" + checkedAddresses;
+        }
     });
 
 });
