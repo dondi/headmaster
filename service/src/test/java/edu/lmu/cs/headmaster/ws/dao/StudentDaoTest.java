@@ -35,7 +35,7 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertEquals(Integer.valueOf(2016), student.getExpectedGraduationYear());
 
         // The text fixture data has some empty values.
-        Assert.assertNull(student.getMiddleInitial());
+        Assert.assertNull(student.getMiddleName());
         Assert.assertNull(student.getEntryYear());
         Assert.assertEquals(0, student.getMajors().size());
         Assert.assertEquals(0, student.getMinors().size());

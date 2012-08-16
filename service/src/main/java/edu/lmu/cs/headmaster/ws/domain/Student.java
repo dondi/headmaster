@@ -41,7 +41,7 @@ public class Student {
     private String schoolId;
     private String lastName;
     private String firstName;
-    private String middleInitial;
+    private String middleName;
     private String primaryEmail;
     private String secondaryEmail;
     private String campusBox;
@@ -135,12 +135,12 @@ public class Student {
         this.firstName = firstName;
     }
 
-    public String getMiddleInitial() {
-        return middleInitial;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setMiddleInitial(String middleInitial) {
-        this.middleInitial = middleInitial;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     @Lob
