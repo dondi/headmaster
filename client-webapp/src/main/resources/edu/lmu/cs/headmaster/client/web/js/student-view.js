@@ -22,18 +22,19 @@ $(function () {
             "student-attendance",
             "student-attendance-empty",
             function (event) {
-                return $(
-                    "<tr><td>" +
-                    (event.dateTime ?
-                            Date.parse(event.dateTime).toString(DATE_FORMAT) :
-                            UNSPECIFIED) +
-                    "</td><td>" +
-                    (event.title || UNSPECIFIED) +
-                    "</td></tr>"
-                ).click(function () {
-                    // View that student if the row is clicked.
-                    location = "../events/" + event.id;
-                });
+                return $("<tr></tr>")
+                    .append(
+                        $("<td></td>").text(
+                            event.dateTime ?
+                                    Date.parse(event.dateTime).toString(DATE_FORMAT) :
+                                    UNSPECIFIED
+                        )
+                    ).append(
+                        $("<td></td>").text(event.title || UNSPECIFIED)
+                    ).click(function () {
+                        // View that student if the row is clicked.
+                        location = "../events/" + event.id;
+                    });
             }
         );
 
@@ -50,13 +51,19 @@ $(function () {
     $.getJSON(
         Headmaster.serviceUri("students/" + studentId),
         function (data, textStatus, jqXHR) {
-            var createRowFromString = function (string) {
-                return $("<tr><td>" + string + "</td></tr>");
-            };
+            var createRowFromMajor = function (major) {
+                    return $("<tr></tr>").append($("<td></td>")
+                            .text(major.degree + " " + major.discipline));
+                },
+    
+                createRowFromString = function (string) {
+                    return $("<tr></tr>").append($("<td></td>")
+                            .text(string));
+                };
 
             $("#student-name").text(
                 data.firstName + " " +
-                (data.middleInitial ? data.middleInitial + ". " : "") +
+                (data.middleInitial ? data.middleInitial + " " : "") +
                 data.lastName
             );
             $("#student-gradyear").text(data.expectedGraduationYear);
@@ -83,7 +90,7 @@ $(function () {
             $("#student-status").text(data.academicStatus || BLANK);
 
             // Majors and minors.
-            Headmaster.loadArrayIntoTable(data.majors, "student-majors", "student-majors-empty", createRowFromString);
+            Headmaster.loadArrayIntoTable(data.majors, "student-majors", "student-majors-empty", createRowFromMajor);
             Headmaster.loadArrayIntoTable(data.minors, "student-minors", "student-minors-empty", createRowFromString);
 
             // Status information.
@@ -108,13 +115,9 @@ $(function () {
             Headmaster.loadArrayIntoTable(
                 data.grades, "student-grades", "student-grades-empty",
                 function (gpa) {
-                    return $(
-                        "<tr><td>" +
-                        gpa.term + " " + gpa.year +
-                        "</td><td>" +
-                        gpa.gpa.toFixed(2) +
-                        "</td></tr>"
-                    );
+                    return $("<tr></tr>")
+                        .append($("<td></td>").text(gpa.term + " " + gpa.year))
+                        .append($("<td></td>").text(gpa.gpa.toFixed(2)));
                 }
             );
 
