@@ -24,15 +24,13 @@ $(function () {
                 tableId + "-empty",
 
                 function (event) {
-                    return $(
-                        "<tr><td>" +
-                        Date.parse(event.dateTime).toString(TABLE_FORMAT) +
-                        "</td><td>" +
-                        event.title +
-                        "</td></tr>"
-                    ).click(function () {
-                        location = event.id;
-                    })
+                    return $("<tr></tr>")
+                        .append($("<td></td>").text(
+                                Date.parse(event.dateTime).toString(TABLE_FORMAT)))
+                        .append($("<td></td>").text(event.title))
+                        .click(function () {
+                            location = event.id;
+                        });
                 },
 
                 {

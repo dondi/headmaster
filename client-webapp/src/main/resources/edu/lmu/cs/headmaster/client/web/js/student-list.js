@@ -5,42 +5,23 @@ $(function () {
          * Helper function for building email address links. Also builds up the
          * cumulative email list.
          */
-        getEmailMarkup = function (email) {
+        getEmailElement = function (email) {
             addressList += (addressList ? "," : "") + email;
-            return $('<a class="email"></a>').attr({ href: "mailto:" + email }).text(email);
-        },
-
-        /*
-         * Helper-helper function for building br-separated elements from an array. 
-         */
-        getListElements = function (array, property) {
-            var i, max, result = $("<div></div>");
-
-            if (array && array.length) {
-                for (i = 0, max = array.length; i < max; i += 1) {
-                    result
-                        .append(i > 0 ? $("<br/>") : null)
-                        .append($("<span></span>").text(array[i][property]));
-                }
-
-                return result;
-            } else {
-                return null;
-            }
+            return Headmaster.getEmailElement(email).addClass("email");
         },
 
         /*
          * Helper function for building elements indicating a student's college(s).
          */
         getCollegeElements = function (student) {
-            return getListElements(student.majors, "collegeOrSchool");
+            return Headmaster.loadArrayIntoUnorderedList(student.majors, "collegeOrSchool");
         },
 
         /*
          * Helper function for building elements indicating a student's major(s).
          */
         getMajorElements = function (student) {
-            return getListElements(student.majors, "discipline");
+            return Headmaster.loadArrayIntoUnorderedList(student.majors, "discipline");
         },
 
         /*
@@ -94,11 +75,11 @@ $(function () {
                     )
                 )
                 .append($('<td class="emailcol"></td>').append(
-                        student.primaryEmail ? getEmailMarkup(student.primaryEmail) : null
+                        student.primaryEmail ? getEmailElement(student.primaryEmail) : null
                     ).append(
                         student.primaryEmail && student.secondaryEmail ? $("<br/>") : null
                     ).append(
-                        student.secondaryEmail ? getEmailMarkup(student.secondaryEmail) : null
+                        student.secondaryEmail ? getEmailElement(student.secondaryEmail) : null
                     )
                 )
                 .append($("<td></td>").append(getCollegeElements(student)))
@@ -107,7 +88,7 @@ $(function () {
                         $("#student-query").data("columns")(student) : null)
                 .click(function () {
                     location = student.id;
-                })
+                });
         },
 
         $("#student-query").data("query"),
@@ -143,9 +124,11 @@ $(function () {
 
             // Derive the email address(es) associated with that checkbox.
             if (jCheckbox.attr("checked") === "checked") {
-                jCheckbox.parent().parent().find("td.emailcol > a").each(function (index, a) {
-                    checkedAddresses += (checkedAddresses ? "," : "") + $(a).text();
-                });
+                jCheckbox.parent().parent().find("td.emailcol > a.email").each(
+                    function (index, a) {
+                        checkedAddresses += (checkedAddresses ? "," : "") + $(a).text();
+                    }
+                );
             }
         });
 

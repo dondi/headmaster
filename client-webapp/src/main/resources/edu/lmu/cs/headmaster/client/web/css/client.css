@@ -20,3 +20,10 @@
 table > thead > tr > th {
     cursor: pointer;
 }
+
+/* Lists within tables do not have decorations. */
+table ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}

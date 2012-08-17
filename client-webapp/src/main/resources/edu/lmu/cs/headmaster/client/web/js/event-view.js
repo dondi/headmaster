@@ -20,15 +20,13 @@ $(function () {
             Headmaster.loadArrayIntoTable(
                 data.attendees, "event-attendees", "event-attendees-empty",
                 function (student) {
-                    return $(
-                        "<tr><td>" +
-                        student.firstName + " " +
-                        student.lastName +
-                        "</td></tr>"
-                    ).click(function () {
-                        // View that student if the row is clicked.
-                        location = "../students/" + student.id;
-                    });
+                    return $("<tr></tr>")
+                        .append($("<td></td>").text(
+                            student.firstName + " " + student.lastName))
+                        .click(function () {
+                            // View that student if the row is clicked.
+                            location = "../students/" + student.id;
+                        });
                 }
             );
         }

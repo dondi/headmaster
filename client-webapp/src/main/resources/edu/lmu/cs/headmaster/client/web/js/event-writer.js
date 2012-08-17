@@ -29,7 +29,7 @@ $(function () {
          * Creates a tr element representing an attending student.
          */
         createAttendeeTableRow = function (student) {
-            var td = $("<td>" + student.firstName + " " + student.lastName + "</td>"),
+            var td = $("<td></td>").text(student.firstName + " " + student.lastName),
                 tr = $("<tr></tr>");
     
             // Include a remove button.
@@ -41,7 +41,9 @@ $(function () {
                 });
         
             // Save the actual object as data on that row.
-            return tr.data("student", student).append(td);
+            return tr.data("student", student).append(td).click(function () {
+                window.open("../../students/" + student.id, "_blank");
+            });
         },
 
         /*
@@ -98,19 +100,17 @@ $(function () {
         Headmaster.serviceUri("students"), "q",
         function (student) {
             return isAttendee(student) ? null :
-                $(
-                    "<tr><td>" +
-                    student.firstName + " " + student.lastName +
-                    "</td></tr>"
-                ).click(function () {
-                    // Add the clicked student to the attendee table...
-                    $("#event-attendees > tbody")
-                        .append(createAttendeeTableRow(student));
-
-                    // ...then remove it from this one.
-                    $(this).remove();
-                    showOrHideStudentTables();
-                });
+                $("<tr></tr>")
+                    .append($("<td></td>").text(student.firstName + " " + student.lastName))
+                    .click(function () {
+                        // Add the clicked student to the attendee table...
+                        $("#event-attendees > tbody")
+                            .append(createAttendeeTableRow(student));
+    
+                        // ...then remove it from this one.
+                        $(this).remove();
+                        showOrHideStudentTables();
+                    });
         }
     );
 

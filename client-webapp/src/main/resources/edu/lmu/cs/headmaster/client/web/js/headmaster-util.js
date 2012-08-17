@@ -342,6 +342,32 @@
                     );
                 }, 250);
             });
+        },
+
+        /*
+         * Helper function for building an unordered list from an array. The
+         * actual text to place in each list item is taken from the given
+         * property for each member of the array argument.
+         */
+        loadArrayIntoUnorderedList: function (array, property) {
+            var i, max, result = $("<ul></ul>");
+
+            if (array && array.length) {
+                for (i = 0, max = array.length; i < max; i += 1) {
+                    result.append($("<li></li>").text(array[i][property]));
+                }
+
+                return result;
+            } else {
+                return null;
+            }
+        },
+
+        /*
+         * Helper function for building email address links.
+         */
+        getEmailElement: function (email) {
+            return $("<a></a>").attr({ href: "mailto:" + email }).text(email);
         }
 
     });
