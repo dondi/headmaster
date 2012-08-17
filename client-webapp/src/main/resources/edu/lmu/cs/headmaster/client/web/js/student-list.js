@@ -11,6 +11,39 @@ $(function () {
         },
 
         /*
+         * Helper-helper function for building br-separated elements from an array. 
+         */
+        getListElements = function (array, property) {
+            var i, max, result = $("<div></div>");
+
+            if (array && array.length) {
+                for (i = 0, max = array.length; i < max; i += 1) {
+                    result
+                        .append(i > 0 ? $("<br/>") : null)
+                        .append($("<span></span>").text(array[i][property]));
+                }
+
+                return result;
+            } else {
+                return null;
+            }
+        },
+
+        /*
+         * Helper function for building elements indicating a student's college(s).
+         */
+        getCollegeElements = function (student) {
+            return getListElements(student.majors, "collegeOrSchool");
+        },
+
+        /*
+         * Helper function for building elements indicating a student's major(s).
+         */
+        getMajorElements = function (student) {
+            return getListElements(student.majors, "discipline");
+        },
+
+        /*
          * UI feedback function that updates components that depend on others,
          * such as the "Send Email to Checked" button (which depends on whether
          * there are checked rows).
@@ -59,14 +92,18 @@ $(function () {
                                 (student.primaryEmail || student.secondaryEmail ?
                                         "" : 'disabled="disabled"') + "/>").click(stopProp)
                     )
-                ).append($('<td class="emailcol"></td>').append(
+                )
+                .append($('<td class="emailcol"></td>').append(
                         student.primaryEmail ? getEmailMarkup(student.primaryEmail) : null
                     ).append(
                         student.primaryEmail && student.secondaryEmail ? $("<br/>") : null
                     ).append(
                         student.secondaryEmail ? getEmailMarkup(student.secondaryEmail) : null
                     )
-                ).append($("#student-query").data("columns") ?
+                )
+                .append($("<td></td>").append(getCollegeElements(student)))
+                .append($("<td></td>").append(getMajorElements(student)))
+                .append($("#student-query").data("columns") ?
                         $("#student-query").data("columns")(student) : null)
                 .click(function () {
                     location = student.id;
