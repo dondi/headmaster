@@ -242,6 +242,7 @@ $(function () {
             // Contact information.
             primaryEmail: $("#student-email1").val(),
             secondaryEmail: $("#student-email2").val(),
+            schoolId: $("#student-schoolid").val(),
             campusBox: $("#student-campus-box").val(),
             address: $("#student-address").val(),
             city: $("#student-city").val(),
@@ -301,7 +302,7 @@ $(function () {
         // Gather array data. Empty arrays don't travel well, though, so
         // we eliminate those.
         Headmaster.loadTableIntoArray(
-            studentData, "majors", $("#student-majors > tbody td"),
+            studentData, "majors", $("#student-majors > tbody > tr"),
             function (td) {
                 return $(td).data("major");
             }
