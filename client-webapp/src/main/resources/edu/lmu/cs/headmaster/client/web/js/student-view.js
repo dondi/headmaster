@@ -60,16 +60,6 @@ $(function () {
     $.getJSON(
         Headmaster.serviceUri("students/" + studentId),
         function (data, textStatus, jqXHR) {
-            var createRowFromMajor = function (major) {
-                    return $("<tr></tr>").append($("<td></td>")
-                            .text(major.degree + " " + major.discipline));
-                },
-    
-                createRowFromString = function (string) {
-                    return $("<tr></tr>").append($("<td></td>")
-                            .text(string));
-                };
-
             $("#student-name").text(
                 data.firstName + " " +
                 (data.middleName ? data.middleName + " " : "") +
@@ -83,6 +73,7 @@ $(function () {
             // Contact information.
             $("#student-email1").append(getEmailElement(data.primaryEmail));
             $("#student-email2").append(getEmailElement(data.secondaryEmail));
+            $("#student-schoolid").text(data.schoolId || BLANK);
             $("#student-campus-box").text(data.campusBox || BLANK);
             $("#student-address").text(data.address || BLANK);
             $("#student-city").text(data.city || BLANK);
@@ -97,8 +88,25 @@ $(function () {
             $("#student-status").text(data.academicStatus || BLANK);
 
             // Majors and minors.
-            Headmaster.loadArrayIntoTable(data.majors, "student-majors", "student-majors-empty", createRowFromMajor);
-            Headmaster.loadArrayIntoTable(data.minors, "student-minors", "student-minors-empty", createRowFromString);
+            Headmaster.loadArrayIntoTable(
+                data.majors, "student-majors", "student-majors-empty",
+                function (major) {
+                    return $("<tr></tr>").append($("<td></td>")
+                        .text(
+                            (major.degree ? major.degree + " " : BLANK) +
+                            (major.discipline || BLANK)
+                        )
+                    );
+                }
+            );
+
+            Headmaster.loadArrayIntoTable(
+                data.minors, "student-minors", "student-minors-empty",
+                function (string) {
+                    return $("<tr></tr>").append($("<td></td>")
+                            .text(string));
+                }
+            );
 
             // Status information.
             $("#student-compact").text(data.compactSigned ? YES : NO);

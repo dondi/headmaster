@@ -74,6 +74,16 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">
+                                            <wicket:message key="label.schoolid">School ID</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-medium uneditable-input"
+                                                    id="student-schoolid">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
                                             <wicket:message key="label.campus-box">Campus Box</wicket:message>
                                         </label>
                                         <div class="controls">
@@ -139,80 +149,6 @@
                                         <div class="controls">
                                             <span class="input-medium uneditable-input"
                                                     id="student-phone-cell">
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h3 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-academics-container"
-                                        data-parent="#student-data-accordion">
-                                    <wicket:message key="heading.academics">Academics</wicket:message>
-                                </h3>
-                            </div>
-            
-                            <div class="accordion-body collapse in" id="student-academics-container">
-                                <div class="form-horizontal accordion-inner">
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.status">Academic Status</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-status">
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.majors">Major(s)</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <div class="alert alert-info hide message-empty" id="student-majors-empty">
-                                                <wicket:message key="prompt.empty.majors">(none)</wicket:message>
-                                            </div>
-                    
-                                            <table class="table table-striped hide" id="student-majors">
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.minors">Minor(s)</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <div class="alert alert-info hide message-empty" id="student-minors-empty">
-                                                <wicket:message key="prompt.empty.minors">(none)</wicket:message>
-                                            </div>
-                    
-                                            <table class="table table-striped hide" id="student-minors">
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.advisor">Advisor</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-advisor">
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.gpa">Cumulative GPA</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <span class="input-medium uneditable-input"
-                                                    id="student-gpa">
                                             </span>
                                         </div>
                                     </div>
@@ -448,6 +384,80 @@
                     </div>
 
                     <div class="span7 accordion" id="student-list-accordion">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <h2 class="accordion-toggle"
+                                        data-toggle="collapse"
+                                        data-target="#student-academics-container"
+                                        data-parent="#student-data-accordion">
+                                    <wicket:message key="heading.academics">Academics</wicket:message>
+                                </h2>
+                            </div>
+            
+                            <div class="accordion-body collapse in" id="student-academics-container">
+                                <div class="form-horizontal accordion-inner">
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.status">Academic Status</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-xlarge uneditable-input"
+                                                    id="student-status">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.majors">Major(s)</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <div class="alert alert-info hide message-empty" id="student-majors-empty">
+                                                <wicket:message key="prompt.empty.majors">(none)</wicket:message>
+                                            </div>
+                    
+                                            <table class="table table-striped hide" id="student-majors">
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.minors">Minor(s)</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <div class="alert alert-info hide message-empty" id="student-minors-empty">
+                                                <wicket:message key="prompt.empty.minors">(none)</wicket:message>
+                                            </div>
+                    
+                                            <table class="table table-striped hide" id="student-minors">
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.advisor">Advisor</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-xlarge uneditable-input"
+                                                    id="student-advisor">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.gpa">Cumulative GPA</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <span class="input-xlarge uneditable-input"
+                                                    id="student-gpa">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <h2 class="accordion-toggle"
