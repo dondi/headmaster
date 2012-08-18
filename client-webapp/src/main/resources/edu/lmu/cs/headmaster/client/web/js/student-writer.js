@@ -27,10 +27,36 @@ $(function () {
             $("#student-thesis-submissiondate")
                 .removeAttr(!thesisSubmitted ? "" : "disabled")
                 .attr(thesisSubmitted ? {} : { disabled: "disabled" });
+
+            // TODO Show/hide table elements vs. their empty indicators here
+            //      instead of in the load-up code.
+        },
+
+        /*
+         * Helper function for creating a row removal element for the given
+         * table row (tr).
+         */
+        createRemoveElement = function (tr) {
+            return $("<i></i>")
+                .addClass("icon-remove-sign pull-right")
+                .click(function () {
+                    tr.remove();
+                    updateDependentElements();
+                });
         };
 
     // Datepicker setup.
     $("#student-honorsentrydate, #student-thesis-submissiondate").datepicker();
+
+    // Majors and minors can be manually ordered---something that is doable more
+    // easily than with Bootstrap.
+    $("#student-majors > tbody, #student-minors > tbody").sortable({
+        // For the helper, we provide almost the same thing, but without the
+        // remove element.
+        helper: function (event, element) {
+            return $("<tr></tr>").append($("<td></td>").text(element.text()));
+        }
+    });
 
     // If supplied, load up the student with that ID.
     if (studentId) {
@@ -67,11 +93,12 @@ $(function () {
                 Headmaster.loadArrayIntoTable(
                     data.majors, "student-majors", "student-majors-empty",
                     function (major) {
-                        return $("<tr></tr>").append($("<td></td>")
-                            .text(
-                                    (major.degree ? major.degree + " " : BLANK) +
-                                    (major.discipline || BLANK)
-                                )
+                        var tr = $("<tr></tr>");
+                        return tr.append($("<td></td>")
+                                .text(
+                                        (major.degree ? major.degree + " " : BLANK) +
+                                        (major.discipline || BLANK)
+                                ).append(createRemoveElement(tr))
                             )
 
                             // Save the actual object as data on that row.
@@ -82,8 +109,10 @@ $(function () {
                 Headmaster.loadArrayIntoTable(
                     data.minors, "student-minors", "student-minors-empty",
                     function (string) {
-                        return $("<tr></tr>").append($("<td></td>")
-                                .text(string));
+                        var tr = $("<tr></tr>");
+                        return tr.append($("<td></td>")
+                                .text(string)
+                                .append(createRemoveElement(tr)));
                     }
                 );
 

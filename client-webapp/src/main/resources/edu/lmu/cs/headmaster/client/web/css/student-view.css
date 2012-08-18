@@ -32,3 +32,16 @@ input#student-active {
 #student-thesis-container .well {
     text-align: center;
 }
+
+/* These are for draggable objects in StudentWriterPage. */
+.ui-sortable-helper {
+    background-color: whitesmoke;
+    border: 1px solid lightgray;
+    border-radius: 2px;
+    box-shadow: 0 0 8px lightgray;
+    cursor: default;
+}
+
+.ui-sortable-helper > td {
+    border-style: none;
+}
