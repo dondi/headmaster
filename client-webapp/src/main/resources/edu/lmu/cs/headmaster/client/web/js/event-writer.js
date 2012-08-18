@@ -31,7 +31,7 @@ $(function () {
         createAttendeeTableRow = function (student) {
             var td = $("<td></td>").text(student.firstName + " " + student.lastName),
                 tr = $("<tr></tr>");
-    
+
             // Include a remove button.
             $('<i class="icon-remove-sign pull-right"></i>')
                 .appendTo(td)
