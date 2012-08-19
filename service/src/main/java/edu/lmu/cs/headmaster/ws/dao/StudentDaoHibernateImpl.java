@@ -52,7 +52,7 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     public List<String> getMatchingCollegesOrSchools(String query) {
         return (List<String>)getHibernateTemplate()
             .find(
-                "select distinct m.collegeOrSchool from Major m where lower(m.collegeOrSchool) like lower(?)",
+                "select distinct m.collegeOrSchool from Major m where lower(m.collegeOrSchool) like lower(?) order by m.collegeOrSchool",
                 "%" + query + "%"
             );
     }
@@ -62,7 +62,7 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     public List<String> getMatchingDegrees(String query) {
         return (List<String>)getHibernateTemplate()
             .find(
-                "select distinct m.degree from Major m where lower(m.degree) like lower(?)",
+                "select distinct m.degree from Major m where lower(m.degree) like lower(?) order by m.degree",
                 "%" + query + "%"
             );
     }
