@@ -48,18 +48,35 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<String> getMatchingCollegesOrSchools(String query) {
-        throw new UnsupportedOperationException("Not yet implemented.");
+        return (List<String>)getHibernateTemplate()
+            .find(
+                "select distinct m.collegeOrSchool from Major m where lower(m.collegeOrSchool) like lower(?)",
+                "%" + query + "%"
+            );
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<String> getMatchingDegrees(String query) {
-        throw new UnsupportedOperationException("Not yet implemented.");
+        return (List<String>)getHibernateTemplate()
+            .find(
+                "select distinct m.degree from Major m where lower(m.degree) like lower(?)",
+                "%" + query + "%"
+            );
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<String> getMatchingDisciplines(String query) {
-        throw new UnsupportedOperationException("Not yet implemented.");
+        // HQL does not do unions, so we drop to SQL here.
+        final String wildcard = "%" + query + "%";
+        return (List<String>)getSession()
+            .createSQLQuery("select distinct discipline from major where lower(discipline) like lower(:query1) union select distinct minors as discipline from student_minors where lower(minors) like lower(:query2) order by discipline")
+            .setString("query1", wildcard)
+            .setString("query2", wildcard)
+            .list();
     }
 
     @Override
