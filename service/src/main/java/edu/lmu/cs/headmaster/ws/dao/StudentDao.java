@@ -30,6 +30,25 @@ public interface StudentDao {
     List<Event> getStudentAttendanceById(Long id);
 
     /**
+     * Returns the currently-saved values for college or school that match the
+     * given query term.  Results are returned in alphabetical order.
+     */
+    List<String> getMatchingCollegesOrSchools(String query);
+
+    /**
+     * Returns the currently-saved values for degree that match the given query
+     * term.  Results are returned in alphabetical order.
+     */
+    List<String> getMatchingDegrees(String query);
+
+    /**
+     * Returns the currently-saved values for discipline (whether stored as a
+     * major or minor) that match the given query term.  Results are returned
+     * in alphabetical order.
+     */
+    List<String> getMatchingDisciplines(String query);
+
+    /**
      * Saves the given student, which should have a null id.
      */
     Student createStudent(Student student);

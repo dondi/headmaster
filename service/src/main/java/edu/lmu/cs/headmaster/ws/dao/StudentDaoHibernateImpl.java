@@ -48,6 +48,21 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     }
 
     @Override
+    public List<String> getMatchingCollegesOrSchools(String query) {
+        throw new UnsupportedOperationException("Not yet implemented.");
+    }
+
+    @Override
+    public List<String> getMatchingDegrees(String query) {
+        throw new UnsupportedOperationException("Not yet implemented.");
+    }
+
+    @Override
+    public List<String> getMatchingDisciplines(String query) {
+        throw new UnsupportedOperationException("Not yet implemented.");
+    }
+
+    @Override
     public Student createStudent(Student student) {
         getHibernateTemplate().save(student);
         return student;
@@ -55,7 +70,8 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
 
     @Override
     public void createOrUpdateStudent(Student student) {
-        getHibernateTemplate().saveOrUpdate(student);
+        // We do a merge to ensure orphan deletion.
+        getHibernateTemplate().merge(student);
     }
 
     /**

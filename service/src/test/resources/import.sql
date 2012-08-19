@@ -12,7 +12,7 @@ insert into student(id, firstname, lastname, active, expectedgraduationyear) val
 insert into student(id, firstname, lastname, active, expectedgraduationyear) values(1000004, 'Alan', 'Kay', true, 2014);
 
 insert into major(id, collegeorschool, degree, discipline) values(1000000, 'Engineering', 'BS', 'Computer Science');
-insert into major(id, collegeorschool, degree, discipline) values(1000001, 'Science','BS', 'Mathematics');
+insert into major(id, collegeorschool, degree, discipline) values(1000001, 'Science','BA', 'Mathematics');
 
 insert into student_major(student_id, majors_id, majors_order) values(1000002, 1000000, 0);
 insert into student_major(student_id, majors_id, majors_order) values(1000002, 1000001, 1);

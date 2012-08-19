@@ -164,6 +164,75 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
+    public void testGetMatchingCollegeOrSchool() {
+        // "en" should match both science and engineering.
+        List<String> results = studentDao.getMatchingCollegesOrSchools("en");
+        Assert.assertEquals(2, results.size());
+        Assert.assertEquals("Engineering", results.get(0));
+        Assert.assertEquals("Science", results.get(1));
+
+        // "sc" should match only science.
+        results = studentDao.getMatchingCollegesOrSchools("sc");
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals("Science", results.get(0));
+
+        // "eer" should match only engineering.
+        results = studentDao.getMatchingCollegesOrSchools("eer");
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals("Engineering", results.get(0));
+
+        // "zatoichi" should match nothing.
+        results = studentDao.getMatchingCollegesOrSchools("zatoichi");
+        Assert.assertEquals(0, results.size());
+    }
+
+    @Test
+    public void testGetMatchingDegree() {
+        // "b" should match both BA and BS.
+        List<String> results = studentDao.getMatchingDegrees("b");
+        Assert.assertEquals(2, results.size());
+        Assert.assertEquals("BA", results.get(0));
+        Assert.assertEquals("BS", results.get(1));
+
+        // "s" should match only BS.
+        results = studentDao.getMatchingDegrees("s");
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals("BS", results.get(0));
+
+        // "a" should match only BA.
+        results = studentDao.getMatchingDegrees("a");
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals("BA", results.get(0));
+
+        // "bazinga" should match nothing.
+        results = studentDao.getMatchingDegrees("bazinga");
+        Assert.assertEquals(0, results.size());
+    }
+
+    @Test
+    public void testGetMatchingDiscipline() {
+        // "ic" should match both Mathematics and Music.
+        List<String> results = studentDao.getMatchingDisciplines("ic");
+        Assert.assertEquals(2, results.size());
+        Assert.assertEquals("Mathematics", results.get(0));
+        Assert.assertEquals("Music", results.get(1));
+
+        // "comp" should match only Computer Science.
+        results = studentDao.getMatchingDisciplines("comp");
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals("Computer Science", results.get(0));
+
+        // "us" should match only Music.
+        results = studentDao.getMatchingDisciplines("us");
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals("Music", results.get(0));
+
+        // "cucaracha" should match nothing.
+        results = studentDao.getMatchingDisciplines("cucaracha");
+        Assert.assertEquals(0, results.size());
+    }
+
+    @Test
     public void testCreateOrUpdateStudentGrades() {
         // Build the grade list.
         List<GPA> grades = new ArrayList<GPA>();
