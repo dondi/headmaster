@@ -12,7 +12,11 @@ $(function () {
          */
         updateDependentElements = function () {
             var inMajor = Headmaster.isChecked("student-thesis-inmajor-yes"),
-                thesisSubmitted = Headmaster.isChecked("student-thesis-submitted-yes");
+                thesisSubmitted = Headmaster.isChecked("student-thesis-submitted-yes"),
+
+                updateTableVisibility = function (table, empty) {
+                    Headmaster.toggleElements(table.find("tbody > tr").length, table, empty);
+                };
 
             $("#student-thesis-course-container *")
                 .removeClass(inMajor ? "disabled" : "")
@@ -28,8 +32,12 @@ $(function () {
                 .removeAttr(!thesisSubmitted ? "" : "disabled")
                 .attr(thesisSubmitted ? {} : { disabled: "disabled" });
 
-            // TODO Show/hide table elements vs. their empty indicators here
-            //      instead of in the load-up code.
+            // Show/hide table elements vs. their empty indicators.
+            updateTableVisibility($("#student-majors"), $("#student-majors-empty"));
+            updateTableVisibility($("#student-minors"), $("#student-minors-empty"));
+            updateTableVisibility($("#student-attendance"), $("#student-attendance-empty"));
+            updateTableVisibility($("#student-grades"), $("#student-grades-empty"));
+            updateTableVisibility($("#student-grants"), $("#student-grants-empty"));
         },
 
         /*
@@ -240,11 +248,6 @@ $(function () {
         // Update dependent elements in the case that there is no id.
         updateDependentElements();
         $(".progress").fadeOut();
-        Headmaster.toggleElements(false, $("#student-majors"), $("#student-majors-empty"));
-        Headmaster.toggleElements(false, $("#student-minors"), $("#student-minors-empty"));
-        Headmaster.toggleElements(false, $("#student-attendance"), $("#student-attendance-empty"));
-        Headmaster.toggleElements(false, $("#student-grades"), $("#student-grades-empty"));
-        Headmaster.toggleElements(false, $("#student-grants"), $("#student-grants-empty"));
     }
 
     // Set up event handling so that the above function gets called when necessary.
