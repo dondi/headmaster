@@ -164,7 +164,7 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
-    public void testGetMatchingCollegeOrSchool() {
+    public void testGetMatchingCollegesOrSchools() {
         // "en" should match both science and engineering.
         List<String> results = studentDao.getMatchingCollegesOrSchools("en");
         Assert.assertEquals(2, results.size());
@@ -187,7 +187,7 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
-    public void testGetMatchingDegree() {
+    public void testGetMatchingDegrees() {
         // "b" should match both BA and BS.
         List<String> results = studentDao.getMatchingDegrees("b");
         Assert.assertEquals(2, results.size());
@@ -210,7 +210,7 @@ public class StudentDaoTest extends ApplicationContextTest {
     }
 
     @Test
-    public void testGetMatchingDiscipline() {
+    public void testGetMatchingDisciplines() {
         // "ic" should match both Mathematics and Music.
         List<String> results = studentDao.getMatchingDisciplines("ic");
         Assert.assertEquals(2, results.size());
