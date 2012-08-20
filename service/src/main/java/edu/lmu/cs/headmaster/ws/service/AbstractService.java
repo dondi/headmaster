@@ -159,8 +159,9 @@ public class AbstractService {
      */
     protected String preprocessQuery(String q, int skip, int max, int minimumSkip, int maximumSkip) {
         try {
-            validate(q != null, Response.Status.BAD_REQUEST, QUERY_REQUIRED);
-            String query = StringUtils.trimToNull(URLDecoder.decode(q, "UTF-8"));
+            // We trim before checking validity.
+            String query = StringUtils.trimToNull(q != null ? URLDecoder.decode(q, "UTF-8") : null);
+            validate(query != null, Response.Status.BAD_REQUEST, QUERY_REQUIRED);
             validatePagination(skip, max, minimumSkip, maximumSkip);
             return query;
         } catch (UnsupportedEncodingException e) {

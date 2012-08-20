@@ -116,7 +116,7 @@
     <dependency>
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>8.4-702.jdbc4</version>
+      <version>9.1-901.jdbc4</version>
     </dependency>
     <dependency>
       <groupId>commons-beanutils</groupId>
@@ -161,7 +161,7 @@
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-json</artifactId>
-      <version>1.5</version>
+      <version>${jersey.version}</version>
     </dependency>
     <dependency>
       <groupId>joda-time</groupId>
@@ -278,9 +278,9 @@
   </reporting>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>3.0.5.RELEASE</spring.version>
-    <jersey.version>1.5</jersey.version>
-    <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+    <spring.version>3.1.2.RELEASE</spring.version>
+    <jersey.version>1.13</jersey.version>
+    <netbeans.hint.deploy.server>Tomcat70</netbeans.hint.deploy.server>
   </properties>
 
 </project>

@@ -53,7 +53,7 @@ public class TermServiceTest extends ServiceTest {
     }
 
     @Test
-    public void testGetMatchingCollegeOrSchool() {
+    public void testGetMatchingCollegesOrSchools() {
         // "en" should match both science and engineering.
         List<String> results = ws.path("terms/colleges-or-schools")
         		.queryParam("q", "en")
@@ -88,7 +88,7 @@ public class TermServiceTest extends ServiceTest {
     }
 
     @Test
-    public void testGetMatchingDegree() {
+    public void testGetMatchingDegrees() {
         // "b" should match both BA and BS.
         List<String> results = ws.path("terms/degrees")
                 .queryParam("q", "b")
@@ -123,9 +123,9 @@ public class TermServiceTest extends ServiceTest {
     }
 
     @Test
-    public void testGetMatchingDiscipline() {
+    public void testGetMatchingDisciplines() {
         // "ic" should match both Mathematics and Music.
-        List<String> results = ws.path("terms/degrees")
+        List<String> results = ws.path("terms/disciplines")
                 .queryParam("q", "ic")
                 .get(new GenericType<List<String>>() {});
 
@@ -141,14 +141,14 @@ public class TermServiceTest extends ServiceTest {
         Assert.assertEquals("Computer Science", results.get(0));
 
         // "us" should match only Music.
-        results = ws.path("terms/degrees")
+        results = ws.path("terms/disciplines")
                 .queryParam("q", "us")
                 .get(new GenericType<List<String>>() {});
         Assert.assertEquals(1, results.size());
         Assert.assertEquals("Music", results.get(0));
 
         // "cucaracha" should match nothing.
-        results = ws.path("terms/degrees")
+        results = ws.path("terms/disciplines")
                 .queryParam("q", "cucaracha")
                 .get(new GenericType<List<String>>() {});
         Assert.assertEquals(0, results.size());

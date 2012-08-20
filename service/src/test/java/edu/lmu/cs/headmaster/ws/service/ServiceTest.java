@@ -4,6 +4,8 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.sun.jersey.test.framework.AppDescriptor;
 import com.sun.jersey.test.framework.JerseyTest;
@@ -27,6 +29,7 @@ public abstract class ServiceTest extends JerseyTest {
         // The test web app descriptor nearly replicates web.xml except for the
         // Spring context and a container request filter.
         return new WebAppDescriptor.Builder("edu.lmu.cs.headmaster.ws.service")
+            .clientConfig(createClientConfig())
             .contextParam("contextConfigLocation", "classpath:testContext.xml")
             .contextListenerClass(ContextLoaderListener.class)
             .requestListenerClass(RequestContextListener.class)
@@ -44,6 +47,15 @@ public abstract class ServiceTest extends JerseyTest {
                 "edu.lmu.cs.headmaster.ws.service.SecurityContextContainerRequestFilter"
             )
             .contextPath("headmaster-test").build();
+    }
+
+    /**
+     * Makes sure that our string list body reader/writer gets in there...
+     */
+    protected ClientConfig createClientConfig() {
+        final ClientConfig config = new DefaultClientConfig();
+        config.getClasses().add(StringListMessageBodyProvider.class);
+        return config;
     }
 
 }

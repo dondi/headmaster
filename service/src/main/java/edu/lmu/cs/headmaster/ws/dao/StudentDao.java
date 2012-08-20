@@ -31,22 +31,26 @@ public interface StudentDao {
 
     /**
      * Returns the currently-saved values for college or school that match the
-     * given query term.  Results are returned in alphabetical order.
+     * given query term, skipping the first <code>skip</code> results and
+     * returning at most <code>max</code> results. Results are returned in
+     * alphabetical order.
      */
-    List<String> getMatchingCollegesOrSchools(String query);
+    List<String> getMatchingCollegesOrSchools(String query, int skip, int max);
 
     /**
      * Returns the currently-saved values for degree that match the given query
-     * term.  Results are returned in alphabetical order.
+     * term, skipping the first <code>skip</code> results and returning at most
+     * <code>max</code> results. Results are returned in alphabetical order.
      */
-    List<String> getMatchingDegrees(String query);
+    List<String> getMatchingDegrees(String query, int skip, int max);
 
     /**
      * Returns the currently-saved values for discipline (whether stored as a
-     * major or minor) that match the given query term.  Results are returned
-     * in alphabetical order.
+     * major or minor) that match the given query term, skipping the first
+     * <code>skip</code> results and returning at most <code>max</code> results.
+     * Results are returned in alphabetical order.
      */
-    List<String> getMatchingDisciplines(String query);
+    List<String> getMatchingDisciplines(String query, int skip, int max);
 
     /**
      * Saves the given student, which should have a null id.

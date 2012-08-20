@@ -49,33 +49,39 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<String> getMatchingCollegesOrSchools(String query) {
-        return (List<String>)getHibernateTemplate()
-            .find(
-                "select distinct m.collegeOrSchool from Major m where lower(m.collegeOrSchool) like lower(?) order by m.collegeOrSchool",
-                "%" + query + "%"
-            );
+    public List<String> getMatchingCollegesOrSchools(String query, int skip, int max) {
+        return (List<String>)getSession()
+            .createQuery(
+                "select distinct m.collegeOrSchool from Major m where lower(m.collegeOrSchool) like lower(:query) order by m.collegeOrSchool"
+            ).setString("query", "%" + query + "%")
+            .setFirstResult(skip)
+            .setMaxResults(max)
+            .list();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<String> getMatchingDegrees(String query) {
-        return (List<String>)getHibernateTemplate()
-            .find(
-                "select distinct m.degree from Major m where lower(m.degree) like lower(?) order by m.degree",
-                "%" + query + "%"
-            );
+    public List<String> getMatchingDegrees(String query, int skip, int max) {
+        return (List<String>)getSession()
+            .createQuery(
+                "select distinct m.degree from Major m where lower(m.degree) like lower(:query) order by m.degree"
+            ).setString("query", "%" + query + "%")
+            .setFirstResult(skip)
+            .setMaxResults(max)
+            .list();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<String> getMatchingDisciplines(String query) {
+    public List<String> getMatchingDisciplines(String query, int skip, int max) {
         // HQL does not do unions, so we drop to SQL here.
         final String wildcard = "%" + query + "%";
         return (List<String>)getSession()
             .createSQLQuery("select distinct discipline from major where lower(discipline) like lower(:query1) union select distinct minors as discipline from student_minors where lower(minors) like lower(:query2) order by discipline")
             .setString("query1", wildcard)
             .setString("query2", wildcard)
+            .setFirstResult(skip)
+            .setMaxResults(max)
             .list();
     }
 
