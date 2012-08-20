@@ -1,4 +1,4 @@
-package edu.lmu.cs.headmaster.ws.service;
+package edu.lmu.cs.headmaster.ws.resource;
 
 import junit.framework.Assert;
 
@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.sun.jersey.api.client.ClientResponse;
 
 import edu.lmu.cs.headmaster.ws.domain.User;
+import edu.lmu.cs.headmaster.ws.resource.UserResource;
 import edu.lmu.cs.headmaster.ws.types.Role;
 import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 

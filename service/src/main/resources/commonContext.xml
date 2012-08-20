@@ -40,24 +40,24 @@
     </bean>
 
     <bean id="userResource"
-        class="edu.lmu.cs.headmaster.ws.service.UserResourceImpl">
+        class="edu.lmu.cs.headmaster.ws.resource.UserResourceImpl">
         <constructor-arg ref="userDao"/>
     </bean>
 
     <bean id="studentResource"
-        class="edu.lmu.cs.headmaster.ws.service.StudentResourceImpl">
+        class="edu.lmu.cs.headmaster.ws.resource.StudentResourceImpl">
         <constructor-arg ref="userDao"/>
         <constructor-arg ref="studentDao"/>
     </bean>
 
     <bean id="eventResource"
-        class="edu.lmu.cs.headmaster.ws.service.EventResourceImpl">
+        class="edu.lmu.cs.headmaster.ws.resource.EventResourceImpl">
         <constructor-arg ref="userDao"/>
         <constructor-arg ref="eventDao"/>
     </bean>
 
     <bean id="termResource"
-        class="edu.lmu.cs.headmaster.ws.service.TermResourceImpl">
+        class="edu.lmu.cs.headmaster.ws.resource.TermResourceImpl">
         <constructor-arg ref="userDao"/>
         <constructor-arg ref="studentDao"/>
     </bean>

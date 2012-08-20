@@ -1,4 +1,4 @@
-package edu.lmu.cs.headmaster.ws.service;
+package edu.lmu.cs.headmaster.ws.resource;
 
 import java.io.IOException;
 import java.io.InputStream;

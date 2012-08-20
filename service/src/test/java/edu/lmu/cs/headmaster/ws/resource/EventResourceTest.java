@@ -1,4 +1,4 @@
-package edu.lmu.cs.headmaster.ws.service;
+package edu.lmu.cs.headmaster.ws.resource;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import com.sun.jersey.api.client.GenericType;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.resource.EventResource;
 import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 
 /**

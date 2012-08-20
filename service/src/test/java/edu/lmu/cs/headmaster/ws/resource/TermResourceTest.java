@@ -1,4 +1,4 @@
-package edu.lmu.cs.headmaster.ws.service;
+package edu.lmu.cs.headmaster.ws.resource;
 
 import java.util.List;
 
@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
+
+import edu.lmu.cs.headmaster.ws.resource.AbstractResource;
 
 /**
  * Tests the term web resource.

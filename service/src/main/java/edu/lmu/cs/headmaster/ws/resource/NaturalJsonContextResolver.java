@@ -1,4 +1,4 @@
-package edu.lmu.cs.headmaster.ws.service;
+package edu.lmu.cs.headmaster.ws.resource;
 
 import java.util.Arrays;
 import java.util.List;
