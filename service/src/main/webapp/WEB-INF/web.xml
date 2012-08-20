@@ -6,7 +6,7 @@
     http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     version="2.5">
 
-    <display-name>Headmaster Web Service</display-name>
+    <display-name>Headmaster Web Resource</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -32,7 +32,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>edu.lmu.cs.headmaster.ws.service</param-value>
+            <param-value>edu.lmu.cs.headmaster.ws.resource</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -46,8 +46,8 @@
     </servlet-mapping>
 
     <!--
-        Allow access only to valid users.  We're not restricting access to services by roles here
-        in the web.xml.  Instead, we will be using authorization annotations within the service
+        Allow access only to valid users.  We're not restricting access to resources by roles here
+        in the web.xml.  Instead, we will be using authorization annotations within the resource
         classes.
     -->
     <security-constraint>
@@ -65,7 +65,7 @@
     </security-constraint>
 
     <!--
-        Basic Auth is okay here because the web services are only being called by the various web
+        Basic Auth is okay here because the web resources are only being called by the various web
         applications' servers and are not accessible by users (of the webapp).  Of course, this
         could be changed to DIGEST or CLIENT_CERT later.
     -->
