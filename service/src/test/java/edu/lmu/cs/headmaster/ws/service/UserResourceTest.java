@@ -11,18 +11,18 @@ import edu.lmu.cs.headmaster.ws.types.Role;
 import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 
 /**
- * Tests the user web service.
+ * Tests the user web resource.
  */
-public class UserServiceTest extends ServiceTest {
+public class UserResourceTest extends ResourceTest {
 
     @Test
     public void testGetUserByDifferentUser() {
         // Users may only access themselves.  The test fixtures logs in as "testuser".
-        ClientResponse response = ws.path("users/login/admin").get(ClientResponse.class);
+        ClientResponse response = wr.path("users/login/admin").get(ClientResponse.class);
 
         // We should get a 404, so as not to give away an existing user.
         Assert.assertEquals(404, response.getStatus());
-        Assert.assertEquals("404 " + UserService.USER_NOT_FOUND, response.getEntity(String.class));
+        Assert.assertEquals("404 " + UserResource.USER_NOT_FOUND, response.getEntity(String.class));
     }
 
     @Test
@@ -31,11 +31,11 @@ public class UserServiceTest extends ServiceTest {
         // happen in practice because the user gets logged in first, which will
         // not happen unless they exist. Still, the test fixture lies outside
         // these rules, so we try this here anyway.
-        ClientResponse response = ws.path("users/login/testuser").get(ClientResponse.class);
+        ClientResponse response = wr.path("users/login/testuser").get(ClientResponse.class);
 
         // This is a classic 404.
         Assert.assertEquals(404, response.getStatus());
-        Assert.assertEquals("404 " + UserService.USER_NOT_FOUND, response.getEntity(String.class));
+        Assert.assertEquals("404 " + UserResource.USER_NOT_FOUND, response.getEntity(String.class));
     }
 
     @Test
@@ -45,10 +45,10 @@ public class UserServiceTest extends ServiceTest {
         // *that* is the job of other unit tests).
         User user = DomainObjectUtils.createUserObject("testuser", "testuser@headmaster.test",
                 "testpassword", Role.STUDENT);
-        ws.path("users").post(user);
+        wr.path("users").post(user);
 
         // Now we test.
-        User responseUser = ws.path("users/login/testuser")
+        User responseUser = wr.path("users/login/testuser")
                 .get(ClientResponse.class)
                 .getEntity(User.class);
         Assert.assertEquals(user.getLogin(), responseUser.getLogin());
@@ -74,12 +74,12 @@ public class UserServiceTest extends ServiceTest {
                     Role.FACULTY, Role.STAFF);
 
         // Now, save it.  We should get a 201 with a location.
-        ClientResponse response = ws.path("users").post(ClientResponse.class, user);
+        ClientResponse response = wr.path("users").post(ClientResponse.class, user);
         Assert.assertEquals(201, response.getStatus());
 
         // Per our database fixture, we know the new user ID (and therefore location) to expect.
         Assert.assertEquals(1, response.getHeaders().get("Location").size());
-        Assert.assertEquals(ws.getURI() + "/users/1", response.getHeaders().getFirst("Location"));
+        Assert.assertEquals(wr.getURI() + "/users/1", response.getHeaders().getFirst("Location"));
     }
 
     @Test
@@ -90,12 +90,12 @@ public class UserServiceTest extends ServiceTest {
         user.setId(78910L);
 
         // This time, we should not be able to save the user: status 400.
-        ClientResponse response = ws.path("users").post(ClientResponse.class, user);
+        ClientResponse response = wr.path("users").post(ClientResponse.class, user);
 
         // We expect error 400, USER_OVERSPECIFIED.
         Assert.assertEquals(400, response.getStatus());
         Assert.assertEquals(
-            "400 " + UserService.USER_OVERSPECIFIED,
+            "400 " + UserResource.USER_OVERSPECIFIED,
             response.getEntity(String.class)
         );
     }

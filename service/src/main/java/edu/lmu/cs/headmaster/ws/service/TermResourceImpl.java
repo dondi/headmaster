@@ -8,14 +8,14 @@ import edu.lmu.cs.headmaster.ws.dao.StudentDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 
 /**
- * The sole implementation of the term service.
+ * The sole implementation of the term resource.
  */
 @Path("/terms")
-public class TermServiceImpl extends AbstractService implements TermService {
+public class TermResourceImpl extends AbstractResource implements TermResource {
 
     private StudentDao studentDao;
 
-    protected TermServiceImpl(UserDao userDao, StudentDao studentDao) {
+    protected TermResourceImpl(UserDao userDao, StudentDao studentDao) {
         super(userDao);
         this.studentDao = studentDao;
     }

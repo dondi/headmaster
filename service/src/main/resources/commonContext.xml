@@ -39,25 +39,25 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="userService"
-        class="edu.lmu.cs.headmaster.ws.service.UserServiceImpl">
+    <bean id="userResource"
+        class="edu.lmu.cs.headmaster.ws.service.UserResourceImpl">
         <constructor-arg ref="userDao"/>
     </bean>
 
-    <bean id="studentService"
-        class="edu.lmu.cs.headmaster.ws.service.StudentServiceImpl">
+    <bean id="studentResource"
+        class="edu.lmu.cs.headmaster.ws.service.StudentResourceImpl">
         <constructor-arg ref="userDao"/>
         <constructor-arg ref="studentDao"/>
     </bean>
 
-    <bean id="eventService"
-        class="edu.lmu.cs.headmaster.ws.service.EventServiceImpl">
+    <bean id="eventResource"
+        class="edu.lmu.cs.headmaster.ws.service.EventResourceImpl">
         <constructor-arg ref="userDao"/>
         <constructor-arg ref="eventDao"/>
     </bean>
 
-    <bean id="termService"
-        class="edu.lmu.cs.headmaster.ws.service.TermServiceImpl">
+    <bean id="termResource"
+        class="edu.lmu.cs.headmaster.ws.service.TermResourceImpl">
         <constructor-arg ref="userDao"/>
         <constructor-arg ref="studentDao"/>
     </bean>

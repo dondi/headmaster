@@ -20,14 +20,14 @@ import edu.lmu.cs.headmaster.ws.types.ClassYear;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
- * The JAX-RS service for operating on student resources.
+ * The JAX-RS interface for operating on student resources.
  */
-@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public interface StudentService {
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public interface StudentResource {
     
     /**
-     * Possible service error messages.
+     * Possible resource error messages.
      */
     String STUDENT_OVERSPECIFIED = "student.overspecified";
     String STUDENT_INCONSISTENT = "student.inconsistent";

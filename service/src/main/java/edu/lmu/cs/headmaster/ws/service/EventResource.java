@@ -18,14 +18,14 @@ import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
- * The JAX-RS service for operating on event resources.
+ * The JAX-RS interface for operating on event resources.
  */
-@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public interface EventService {
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public interface EventResource {
 
     /**
-     * Possible service error messages.
+     * Possible resource error messages.
      */
     String EVENT_OVERSPECIFIED = "event.overspecified";
     String EVENT_INCONSISTENT = "event.inconsistent";

@@ -12,16 +12,16 @@ import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
 
 /**
- * Base class for all other service test classes to extend. It defines a shared
- * resource object for subclass convenience.
+ * Base class for all other resource test classes to extend. It defines a shared
+ * web resource object for subclass convenience.
  */
-public abstract class ServiceTest extends JerseyTest {
+public abstract class ResourceTest extends JerseyTest {
 
-    protected WebResource ws;
+    protected WebResource wr;
 
-    public ServiceTest() {
+    public ResourceTest() {
         super();
-        ws = resource();
+        wr = resource();
     }
 
     @Override

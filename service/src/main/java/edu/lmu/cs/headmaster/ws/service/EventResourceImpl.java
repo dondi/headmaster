@@ -13,17 +13,17 @@ import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 
 /**
- * The sole implementation of the event service.
+ * The sole implementation of the event resource.
  */
 @Path("/events")
-public class EventServiceImpl extends AbstractService implements EventService {
+public class EventResourceImpl extends AbstractResource implements EventResource {
 
     private EventDao eventDao;
 
     /**
-     * Creates an event service with the injected daos.
+     * Creates an event resource with the injected daos.
      */
-    public EventServiceImpl(UserDao userDao, EventDao eventDao) {
+    public EventResourceImpl(UserDao userDao, EventDao eventDao) {
         super(userDao);
         this.eventDao = eventDao;
     }

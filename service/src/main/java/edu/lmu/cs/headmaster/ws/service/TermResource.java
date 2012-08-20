@@ -10,11 +10,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
- * The JAX-RS service for accessing "terms" in the database---i.e.,
+ * The JAX-RS resource for accessing "terms" in the database---i.e.,
  * currently-stored values for certain fields.
  */
 @Produces({MediaType.APPLICATION_JSON})
-public interface TermService {
+public interface TermResource {
 
     /**
      * Returns the currently-saved values for college or school that match the

@@ -15,17 +15,17 @@ import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.types.ClassYear;
 
 /**
- * The sole implementation of the student service.
+ * The sole implementation of the student resource.
  */
 @Path("/students")
-public class StudentServiceImpl extends AbstractService implements StudentService {
+public class StudentResourceImpl extends AbstractResource implements StudentResource {
 
     private StudentDao studentDao;
     
     /**
-     * Creates a student service with the injected dao.
+     * Creates a student resource with the injected dao.
      */
-    public StudentServiceImpl(UserDao userDao, StudentDao studentDao) {
+    public StudentResourceImpl(UserDao userDao, StudentDao studentDao) {
         super(userDao);
         this.studentDao = studentDao;
     }

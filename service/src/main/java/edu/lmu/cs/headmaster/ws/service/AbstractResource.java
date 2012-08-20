@@ -17,12 +17,12 @@ import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
- * A base class for the services, supplying error keys, a logger, a validation method, and fields
+ * A base class for the resources, supplying error keys, a logger, a validation method, and fields
  * for JAX-RS context objects.
  */
-public class AbstractService {
+public class AbstractResource {
 
-    // Error keys.  No service returns user-displayable text, since that is the responsibility
+    // Error keys.  No resource returns user-displayable text, since that is the responsibility
     // of a client.  Instead, the services provide mnemonic error keys.  We've purposely
     // refrained from using a properties file (they're not key-value pairs), a separate enum
     // (we'd need long references or static imports), or injection (they're not variables,
@@ -37,19 +37,19 @@ public class AbstractService {
 
     protected Logger logger = Logger.getLogger(getClass());
 
-    // URI information automatically injected by JAX-RS framework on each service call.
+    // URI information automatically injected by JAX-RS framework on each resource call.
     @Context
     protected UriInfo uriInfo;
 
-    // Security context automatically injected by JAX-RS framework on each service call.
+    // Security context automatically injected by JAX-RS framework on each resource call.
     @Context
     protected SecurityContext securityContext;
 
     // A dao for security checking.
     protected UserDao userDao;
 
-    // Every service needs a user dao.
-    protected AbstractService(UserDao userDao) {
+    // Every resource needs a user dao.
+    protected AbstractResource(UserDao userDao) {
         this.userDao = userDao;
     }
 
@@ -104,7 +104,7 @@ public class AbstractService {
      * application logs.
      */
     protected void logServiceCall() {
-        // Sometimes there is no uriInfo, such as when the service call is
+        // Sometimes there is no uriInfo, such as when the resource call is
         // invoked directly as a Java method.
         if (logger.isDebugEnabled() && (uriInfo != null)) {
             logger.debug("Invoking " + uriInfo.getAbsolutePath());

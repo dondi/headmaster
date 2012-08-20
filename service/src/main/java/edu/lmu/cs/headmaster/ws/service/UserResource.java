@@ -15,14 +15,14 @@ import javax.ws.rs.core.Response;
 import edu.lmu.cs.headmaster.ws.domain.User;
 
 /**
- * JAX-RS user service.
+ * JAX-RS user resource.
  */
-@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public interface UserService {
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public interface UserResource {
 
     /**
-     * Possible service error messages.
+     * Possible resource error messages.
      */
     String USER_NOT_FOUND = "user.not.found";
     String USER_OVERSPECIFIED = "user.overspecified";

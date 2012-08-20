@@ -11,15 +11,15 @@ import edu.lmu.cs.headmaster.ws.domain.User;
 import edu.lmu.cs.headmaster.ws.domain.UserRole;
 
 /**
- * The sole implementation of the user service.
+ * The sole implementation of the user resource.
  */
 @Path("/users")
-public class UserServiceImpl extends AbstractService implements UserService {
+public class UserResourceImpl extends AbstractResource implements UserResource {
 
     /**
-     * Constructs the service.
+     * Constructs the resource.
      */
-    public UserServiceImpl(UserDao userDao) {
+    public UserResourceImpl(UserDao userDao) {
         super(userDao);
     }
 
@@ -59,7 +59,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     /**
      * The reverse mapping of user roles to the user does not come through the
-     * service because it is marked XML-transient, so we set them manually here.
+     * resource because it is marked XML-transient, so we set them manually
+     * here.
      */
     private void mapRolesToUser(User user) {
         for (UserRole userRole: user.getRoles()) {

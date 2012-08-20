@@ -15,18 +15,18 @@ import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.types.Term;
 
 /**
- * Tests the student web service.
+ * Tests the student web resource.
  */
-public class StudentServiceTest extends ServiceTest {
+public class StudentResourceTest extends ResourceTest {
 
     @Test
     public void testGetStudentsNoQuery() {
-        ClientResponse clientResponse = ws.path("students").get(ClientResponse.class);
+        ClientResponse clientResponse = wr.path("students").get(ClientResponse.class);
 
         // We expect error 400, QUERY_REQUIRED.
         Assert.assertEquals(400, clientResponse.getStatus());
         Assert.assertEquals(
-            "400 " + AbstractService.QUERY_REQUIRED,
+            "400 " + AbstractResource.QUERY_REQUIRED,
             clientResponse.getEntity(String.class)
         );
     }
@@ -35,7 +35,7 @@ public class StudentServiceTest extends ServiceTest {
     public void testGetStudentsClassYearMutualExclusion() {
         // The GET /students parameter "class" is mutually exclusive with
         // "classFrom" and "classTo."
-        ClientResponse clientResponse = ws.path("students")
+        ClientResponse clientResponse = wr.path("students")
                 .queryParam("class", "FRESHMAN")
                 .queryParam("classFrom", "2012")
                 .get(ClientResponse.class);
@@ -43,11 +43,11 @@ public class StudentServiceTest extends ServiceTest {
         // We expect error 400, ARGUMENT_CONFLICT.
         Assert.assertEquals(400, clientResponse.getStatus());
         Assert.assertEquals(
-            "400 " + AbstractService.ARGUMENT_CONFLICT,
+            "400 " + AbstractResource.ARGUMENT_CONFLICT,
             clientResponse.getEntity(String.class)
         );
 
-        clientResponse = ws.path("students")
+        clientResponse = wr.path("students")
                 .queryParam("class", "FRESHMAN")
                 .queryParam("classTo", "2012")
                 .get(ClientResponse.class);
@@ -55,11 +55,11 @@ public class StudentServiceTest extends ServiceTest {
         // Still error 400, ARGUMENT_CONFLICT.
         Assert.assertEquals(400, clientResponse.getStatus());
         Assert.assertEquals(
-            "400 " + AbstractService.ARGUMENT_CONFLICT,
+            "400 " + AbstractResource.ARGUMENT_CONFLICT,
             clientResponse.getEntity(String.class)
         );
 
-        clientResponse = ws.path("students")
+        clientResponse = wr.path("students")
                 .queryParam("class", "FRESHMAN")
                 .queryParam("classFrom", "2012")
                 .queryParam("classTo", "2016")
@@ -68,7 +68,7 @@ public class StudentServiceTest extends ServiceTest {
         // Still more error 400, ARGUMENT_CONFLICT.
         Assert.assertEquals(400, clientResponse.getStatus());
         Assert.assertEquals(
-            "400 " + AbstractService.ARGUMENT_CONFLICT,
+            "400 " + AbstractResource.ARGUMENT_CONFLICT,
             clientResponse.getEntity(String.class)
         );
     }
@@ -78,7 +78,7 @@ public class StudentServiceTest extends ServiceTest {
     @Test
     public void testGetStudentById() {
         // Grab a test fixture student.
-        Student student = ws.path("students/1000000").get(Student.class);
+        Student student = wr.path("students/1000000").get(Student.class);
         Assert.assertEquals(Long.valueOf(1000000L), student.getId());
         Assert.assertEquals("Berners-Lee", student.getLastName());
         Assert.assertEquals("Tim", student.getFirstName());
@@ -98,7 +98,7 @@ public class StudentServiceTest extends ServiceTest {
     public void testGetStudentAttendanceById() {
         // Verify that the text fixture event attendance comes out correctly.
         for (long l = 1000000L; l < 1000003L; l++) {
-            List<Event> events = ws.path("students/" + l + "/attendance")
+            List<Event> events = wr.path("students/" + l + "/attendance")
                     .get(new GenericType<List<Event>>(){});
             Assert.assertEquals(1, events.size());
             Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
@@ -110,7 +110,7 @@ public class StudentServiceTest extends ServiceTest {
     @Test
     public void testGetStudentAttendanceByIdForStudentWithNoEvents() {
         // We get a non-null but empty list for a student without events.
-        List<Event> events = ws.path("students/1000003/attendance")
+        List<Event> events = wr.path("students/1000003/attendance")
                 .get(new GenericType<List<Event>>(){});
         Assert.assertNotNull(events);
         Assert.assertEquals(0, events.size());
@@ -119,17 +119,17 @@ public class StudentServiceTest extends ServiceTest {
     @Test
     public void testGetStudentAttendanceByIdForNonexistentStudent() {
         // We expect a 404 when the student does not exist.
-        ClientResponse clientResponse = ws.path("students/2000000/attendance")
+        ClientResponse clientResponse = wr.path("students/2000000/attendance")
                 .get(ClientResponse.class);
         Assert.assertEquals(404, clientResponse.getStatus());
-        Assert.assertEquals("404 " + StudentService.STUDENT_NOT_FOUND,
+        Assert.assertEquals("404 " + StudentResource.STUDENT_NOT_FOUND,
                 clientResponse.getEntity(String.class));
     }
 
     @Test
     public void testGetStudentByIdGrades() {
         // This test fixture student is supposed to have grades.
-        List<GPA> grades = ws.path("students/1000002").get(Student.class).getGrades();
+        List<GPA> grades = wr.path("students/1000002").get(Student.class).getGrades();
         Assert.assertEquals(2, grades.size());
 
         // We expect grades to be sorted by year then term.
@@ -160,16 +160,16 @@ public class StudentServiceTest extends ServiceTest {
         grades.add(gpa);
 
         // We leave the correctness of the GET to other unit tests.
-        Student student = ws.path("students/1000000").get(Student.class);
+        Student student = wr.path("students/1000000").get(Student.class);
         student.setGrades(grades);
 
         // Now, save the student.  We should get a 204.
-        ClientResponse response = ws.path("students/1000000")
+        ClientResponse response = wr.path("students/1000000")
                 .put(ClientResponse.class, student);
         Assert.assertEquals(204, response.getStatus());
 
         // We check that the grades were indeed saved.
-        grades = ws.path("students/1000000").get(Student.class).getGrades();
+        grades = wr.path("students/1000000").get(Student.class).getGrades();
         Assert.assertEquals(2, grades.size());
         Assert.assertEquals(Term.FALL, grades.get(0).getTerm());
         Assert.assertEquals(2013, grades.get(0).getYear());

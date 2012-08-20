@@ -15,13 +15,13 @@ import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 
 /**
- * Tests the event web service.
+ * Tests the event web resource.
  */
-public class EventServiceTest extends ServiceTest {
+public class EventResourceTest extends ResourceTest {
 
     @Test
     public void testGetEventById() {
-        Event event = ws.path("events/1000000").get(ClientResponse.class).getEntity(Event.class);
+        Event event = wr.path("events/1000000").get(ClientResponse.class).getEntity(Event.class);
         Assert.assertEquals(Long.valueOf(1000000L), event.getId());
         Assert.assertEquals("Summit", event.getTitle());
         Assert.assertEquals("The big one", event.getDescription());
@@ -39,12 +39,12 @@ public class EventServiceTest extends ServiceTest {
     @Test
     public void testNonExistentEventById() {
         // The fixture should not have this event.
-        ClientResponse response = ws.path("events/999999").get(ClientResponse.class);
+        ClientResponse response = wr.path("events/999999").get(ClientResponse.class);
 
         // We expect error 404, EVENT_NOT_FOUND.
         Assert.assertEquals(404, response.getStatus());
         Assert.assertEquals(
-            "404 " + EventService.EVENT_NOT_FOUND,
+            "404 " + EventResource.EVENT_NOT_FOUND,
             response.getEntity(String.class)
         );
     }
@@ -52,7 +52,7 @@ public class EventServiceTest extends ServiceTest {
     @Test
     public void testGetEventsBadQuery() {
         // The free-text and date range queries are (currently) mutually exclusive.
-        ClientResponse response = ws.path("events")
+        ClientResponse response = wr.path("events")
                 .queryParam("q", "whatever")
                 .queryParam("from", "2012-06-01")
                 .queryParam("to", "2012-12-01")
@@ -61,30 +61,30 @@ public class EventServiceTest extends ServiceTest {
         // We expect error 400, EVENT_QUERY_PARAMETERS_BAD.
         Assert.assertEquals(400, response.getStatus());
         Assert.assertEquals(
-            "400 " + EventService.EVENT_QUERY_PARAMETERS_BAD,
+            "400 " + EventResource.EVENT_QUERY_PARAMETERS_BAD,
             response.getEntity(String.class)
         );
 
         // Another combination: null q but incomplete dates.
-        response = ws.path("events")
+        response = wr.path("events")
                 .queryParam("to", "2012-12-01")
                 .get(ClientResponse.class);
 
         // We expect error 400, EVENT_QUERY_PARAMETERS_BAD.
         Assert.assertEquals(400, response.getStatus());
         Assert.assertEquals(
-            "400 " + EventService.EVENT_QUERY_PARAMETERS_BAD,
+            "400 " + EventResource.EVENT_QUERY_PARAMETERS_BAD,
             response.getEntity(String.class)
         );
 
         // One more: no parameters.
-        response = ws.path("events")
+        response = wr.path("events")
                 .get(ClientResponse.class);
 
         // We expect error 400, EVENT_QUERY_PARAMETERS_BAD.
         Assert.assertEquals(400, response.getStatus());
         Assert.assertEquals(
-            "400 " + EventService.EVENT_QUERY_PARAMETERS_BAD,
+            "400 " + EventResource.EVENT_QUERY_PARAMETERS_BAD,
             response.getEntity(String.class)
         );
     }
@@ -92,7 +92,7 @@ public class EventServiceTest extends ServiceTest {
     @Test
     public void testGetEventsByDate() {
         // Supply a date range that encloses the known event(s) in the fixture.
-        List<Event> events = ws.path("events")
+        List<Event> events = wr.path("events")
                 .queryParam("from", "2012-06-01")
                 .queryParam("to", "2012-07-31T23:59:59")
                 .get(new GenericType<List<Event>>(){});
@@ -102,7 +102,7 @@ public class EventServiceTest extends ServiceTest {
         Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
 
         // Now supply a date range that is entirely before the fixture event(s);
-        events = ws.path("events")
+        events = wr.path("events")
                 .queryParam("from", "2012-01-01")
                 .queryParam("to", "2012-06-30T23:59:59")
                 .get(new GenericType<List<Event>>(){});
@@ -111,7 +111,7 @@ public class EventServiceTest extends ServiceTest {
         Assert.assertEquals(0, events.size());
 
         // Finally, we go entirely after the fixture event(s).
-        events = ws.path("events")
+        events = wr.path("events")
                 .queryParam("from", "2012-08-01T13:00:00-08:00")
                 .queryParam("to", "2012-09-30T23:59:59-07:00")
                 .get(new GenericType<List<Event>>(){});
@@ -124,7 +124,7 @@ public class EventServiceTest extends ServiceTest {
     public void testGetEventsByTerm() {
         // Use a text query that can be found in the event title. We
         // intentionally mix case to validate the case insensitivity.
-        List<Event> events = ws.path("events")
+        List<Event> events = wr.path("events")
                 .queryParam("q", "MmIt")
                 .get(new GenericType<List<Event>>(){});
 
@@ -133,7 +133,7 @@ public class EventServiceTest extends ServiceTest {
         Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
 
         // Do another one with a term in the description.
-        events = ws.path("events")
+        events = wr.path("events")
                 .queryParam("q", "The big")
                 .get(new GenericType<List<Event>>(){});
 
@@ -142,7 +142,7 @@ public class EventServiceTest extends ServiceTest {
         Assert.assertEquals(Long.valueOf(1000000L), events.get(0).getId());
 
         // Finally, we go with a term that should not match anything.
-        events = ws.path("events")
+        events = wr.path("events")
                 .queryParam("q", "blarg")
                 .get(new GenericType<List<Event>>(){});
 
@@ -158,12 +158,12 @@ public class EventServiceTest extends ServiceTest {
         );
 
         // Now, save it.  We should get a 201 with a location.
-        ClientResponse response = ws.path("events").post(ClientResponse.class, eventToCreate);
+        ClientResponse response = wr.path("events").post(ClientResponse.class, eventToCreate);
         Assert.assertEquals(201, response.getStatus());
 
         // Per our database fixture, we know the new user ID (and therefore location) to expect.
         Assert.assertEquals(1, response.getHeaders().get("Location").size());
-        Assert.assertEquals(ws.getURI() + "/events/1", response.getHeaders().getFirst("Location"));
+        Assert.assertEquals(wr.getURI() + "/events/1", response.getHeaders().getFirst("Location"));
     }
 
     @Test
@@ -175,12 +175,12 @@ public class EventServiceTest extends ServiceTest {
         eventToCreate.setId(80789L);
 
         // This time, we should not be able to save the event: status 400.
-        ClientResponse response = ws.path("events").post(ClientResponse.class, eventToCreate);
+        ClientResponse response = wr.path("events").post(ClientResponse.class, eventToCreate);
 
         // We expect error 400, EVENT_OVERSPECIFIED.
         Assert.assertEquals(400, response.getStatus());
         Assert.assertEquals(
-            "400 " + EventService.EVENT_OVERSPECIFIED,
+            "400 " + EventResource.EVENT_OVERSPECIFIED,
             response.getEntity(String.class)
         );
     }
