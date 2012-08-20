@@ -45,3 +45,8 @@ input#student-active {
 .ui-sortable-helper > td {
     border-style: none;
 }
+
+/* Now the delete icons in StudentWriterPage. */
+table > tbody > tr > td > i.icon-remove-sign.pull-right {
+    cursor: crosshair;
+}
