@@ -270,18 +270,24 @@ $(function () {
             discipline: $("#student-majors-discipline").val()
         };
 
-       // Add a row for that major to the table.
+        // Add a row for that major to the table.
         $("#student-majors > tbody").append(createMajorTableRow(major));
         updateDependentElements();
+
+        // Clear the add section.
+        $("#student-majors-container > input").val("");
     });
 
     $("#student-minors-add-button").click(function (event) {
         // Create a new minor (really just a string) then add it to the minors table.
         var minor = $("#student-minors-discipline").val();
 
-       // Add a row for that minor to the table.
+        // Add a row for that minor to the table.
         $("#student-minors > tbody").append(createMinorTableRow(minor));
         updateDependentElements();
+
+        // Clear the add section.
+        $("#student-minors-container > input").val("");
     });
 
     $("#student-cancel").click(function (event) {
