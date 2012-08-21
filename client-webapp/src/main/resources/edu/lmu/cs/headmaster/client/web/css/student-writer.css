@@ -22,8 +22,8 @@ input#student-active {
     border-style: none;
 }
 
-/* Now the delete icons in StudentWriterPage. */
-table > tbody > tr > td > i.icon-remove-sign.pull-right {
+/* Now the clickable icons in StudentWriterPage. */
+table > tbody > tr > td > i.pull-right {
     cursor: crosshair;
 }
 

@@ -54,15 +54,100 @@ $(function () {
         },
 
         /*
+         * Helper function that provides the standardized text representation
+         * for a major.
+         */
+        getMajorAsText = function (major) {
+            return (major.degree ? major.degree + " " : BLANK) +
+                    (major.discipline || BLANK) +
+                    (major.collegeOrSchool ? ", " + major.collegeOrSchool : BLANK);
+        },
+
+        /*
+         * Helper function that changes a major table row from a read-only to an
+         * editable one.
+         */
+        makeMajorTableRowEditable = function (tr) {
+            tr.click(function () {
+                // The center of it all: the current model object for the major.
+                var major = tr.data("major"),
+    
+                    // Create the editable elements.
+                    rowCollegeOrSchool = $("<input/>")
+                        .attr({ type: "text" })
+                        .addClass("input-small")
+                        .val(major.collegeOrSchool),
+    
+                    rowDegree = $("<input/>")
+                        .attr({ type: "text" })
+                        .addClass("input-mini")
+                        .val(major.degree),
+    
+                    rowDiscipline = $("<input/>")
+                        .attr({ type: "text" })
+                        .addClass("input-medium")
+                        .val(major.discipline),
+    
+                    td = tr.find("td"),
+    
+
+                    // Get this row back to its pre-editable state.  We also stop propagation on
+                    // the event that triggered the restore so that we don't cycle back to being
+                    // editable.
+                    updateMajorTableRow = function (event) {
+                        td.empty().removeClass("form-inline")
+                            .text(getMajorAsText(major))
+                            .append(createRemoveElement(tr));
+                        makeMajorTableRowEditable(tr);
+                        event.stopPropagation();
+                    };
+
+                // Clear what was there...
+                td.empty()
+                    // ...then add the new elements.
+                    .addClass("form-inline")
+                    .append(rowCollegeOrSchool)
+                    .append(rowDegree)
+                    .append(rowDiscipline)
+                    // Finally, the buttons.
+                    .append(
+                        $("<i></i>")
+                            .addClass("icon-ok-circle pull-right")
+                            .click(function (event) {
+                                // Finalize the edit.  Note how this preserves the major's
+                                // id, which is exactly how we want it to work.
+                                major.collegeOrSchool = rowCollegeOrSchool.val();
+                                major.degree = rowDegree.val();
+                                major.discipline = rowDiscipline.val();
+                                updateMajorTableRow(event);
+                            })
+                    )
+                    .append(
+                        $("<i></i>")
+                            .addClass("icon-ban-circle pull-right")
+                            .click(function (event) {
+                                // No harm no foul---revert everything.
+                                updateMajorTableRow(event);
+                            })
+                    );
+
+                // Finally, disengage this very handler.
+                tr.unbind("click");
+            });
+        },
+
+        /*
          * Helper function for creating a table row displaying a major.
          */
         createMajorTableRow = function (major) {
             var tr = $("<tr></tr>");
+
+            // Support in-place edits.
+            makeMajorTableRowEditable(tr);
+
             return tr.append($("<td></td>")
-                    .text(
-                            (major.degree ? major.degree + " " : BLANK) +
-                            (major.discipline || BLANK)
-                    ).append(createRemoveElement(tr))
+                    .text(getMajorAsText(major))
+                    .append(createRemoveElement(tr))
                 )
 
                 // Save the actual object as data on that row.
