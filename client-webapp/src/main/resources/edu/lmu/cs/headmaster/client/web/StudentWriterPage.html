@@ -457,10 +457,30 @@
                                                     id="student-status"/>
                                         </div>
                                     </div>
+                                    <!-- Section for adding/editing majors.  Unfortunately,
+                                         placeholders cannot be externalized. -->
                                     <div class="control-group">
                                         <label class="control-label">
                                             <wicket:message key="label.majors">Major(s)</wicket:message>
                                         </label>
+                                        <div class="controls well form-inline"
+                                                id="student-majors-container">
+                                            <input type="text" class="input-small"
+                                                    placeholder="College/School"
+                                                    id="student-majors-college-or-school"/>
+                                            <input type="text" class="input-mini"
+                                                    placeholder="Degree"
+                                                    id="student-majors-degree"/>
+                                            <input type="text" class="input-medium"
+                                                    placeholder="Discipline"
+                                                    id="student-majors-discipline"/>
+                                            <button class="btn btn-small btn-info"
+                                                    id="student-majors-add-button">
+                                                <wicket:message key="button.add">Add</wicket:message>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
                                         <div class="controls">
                                             <div class="alert alert-info hide message-empty"
                                                     id="student-majors-empty">
@@ -473,28 +493,24 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <!-- Section for adding/editing majors.  Unfortunately,
+                                    <!-- Section for adding/editing minors.  Unfortunately,
                                          placeholders cannot be externalized. -->
-                                    <div class="control-group well form-inline"
-                                            id="student-majors-container">
-                                        <input type="text" class="input-medium"
-                                                placeholder="College or School"
-                                                id="student-majors-college-or-school"/>
-                                        <input type="text" class="input-mini"
-                                                placeholder="Degree"
-                                                id="student-majors-degree"/>
-                                        <input type="text" class="input-large"
-                                                placeholder="Discipline"
-                                                id="student-majors-discipline"/>
-                                        <button class="btn btn-small btn-info"
-                                                id="student-majors-add-button">
-                                            <wicket:message key="button.add">Add</wicket:message>
-                                        </button>
-                                    </div>
                                     <div class="control-group">
                                         <label class="control-label">
                                             <wicket:message key="label.minors">Minor(s)</wicket:message>
                                         </label>
+                                        <div class="controls well form-inline"
+                                                id="student-minors-container">
+                                            <input type="text" class="input-xlarge"
+                                                    placeholder="Discipline"
+                                                    id="student-minors-discipline"/>
+                                            <button class="btn btn-small btn-info"
+                                                    id="student-minors-add-button">
+                                                <wicket:message key="button.add">Add</wicket:message>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
                                         <div class="controls">
                                             <div class="alert alert-info hide message-empty"
                                                     id="student-minors-empty">
@@ -506,18 +522,6 @@
                                                 <tbody></tbody>
                                             </table>
                                         </div>
-                                    </div>
-                                    <!-- Section for adding/editing minors.  Unfortunately,
-                                         placeholders cannot be externalized. -->
-                                    <div class="control-group well form-inline"
-                                            id="student-minors-container">
-                                        <input type="text" class="input-xlarge"
-                                                placeholder="Discipline"
-                                                id="student-minors-discipline"/>
-                                        <button class="btn btn-small btn-info"
-                                                id="student-minors-add-button">
-                                            <wicket:message key="button.add">Add</wicket:message>
-                                        </button>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">

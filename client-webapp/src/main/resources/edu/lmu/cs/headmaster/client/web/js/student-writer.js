@@ -64,6 +64,28 @@ $(function () {
         },
 
         /*
+         * Helper function for creating the standard in-place editing controls.
+         */
+        addEditableRowIcons = function (td, confirmFunction, restoreFunction) {
+            td.append(
+                $("<i></i>")
+                    .addClass("icon-ok-circle pull-right")
+                    .click(function (event) {
+                        // Finalize the edit.
+                        confirmFunction();
+                        restoreFunction(event);
+                    })
+            ).append(
+                $("<i></i>")
+                    .addClass("icon-ban-circle pull-right")
+                    .click(function (event) {
+                        // No harm no foul---just restore the row.
+                        restoreFunction(event);
+                    })
+            );
+        },
+
+        /*
          * Helper function that changes a major table row from a read-only to an
          * editable one.
          */
@@ -89,12 +111,11 @@ $(function () {
                         .val(major.discipline),
     
                     td = tr.find("td"),
-    
 
                     // Get this row back to its pre-editable state.  We also stop propagation on
                     // the event that triggered the restore so that we don't cycle back to being
                     // editable.
-                    updateMajorTableRow = function (event) {
+                    restoreMajorTableRow = function (event) {
                         td.empty().removeClass("form-inline")
                             .text(getMajorAsText(major))
                             .append(createRemoveElement(tr));
@@ -108,28 +129,20 @@ $(function () {
                     .addClass("form-inline")
                     .append(rowCollegeOrSchool)
                     .append(rowDegree)
-                    .append(rowDiscipline)
-                    // Finally, the buttons.
-                    .append(
-                        $("<i></i>")
-                            .addClass("icon-ok-circle pull-right")
-                            .click(function (event) {
-                                // Finalize the edit.  Note how this preserves the major's
-                                // id, which is exactly how we want it to work.
-                                major.collegeOrSchool = rowCollegeOrSchool.val();
-                                major.degree = rowDegree.val();
-                                major.discipline = rowDiscipline.val();
-                                updateMajorTableRow(event);
-                            })
-                    )
-                    .append(
-                        $("<i></i>")
-                            .addClass("icon-ban-circle pull-right")
-                            .click(function (event) {
-                                // No harm no foul---revert everything.
-                                updateMajorTableRow(event);
-                            })
-                    );
+                    .append(rowDiscipline);
+
+                // Finally, the buttons.
+                addEditableRowIcons(
+                    td,
+                    function () {
+                        // Finalize the edit.  Note how this preserves the major's
+                        // id, which is exactly how we want it to work.
+                        major.collegeOrSchool = rowCollegeOrSchool.val();
+                        major.degree = rowDegree.val();
+                        major.discipline = rowDiscipline.val();
+                    },
+                    restoreMajorTableRow
+                );
 
                 // Finally, disengage this very handler.
                 tr.unbind("click");
@@ -152,13 +165,63 @@ $(function () {
 
                 // Save the actual object as data on that row.
                 .data("major", major);
-        }
+        },
+
+        /*
+         * Helper function that changes a minor table row from a read-only to an
+         * editable one.  Much less involved than the one for majors.
+         */
+        makeMinorTableRowEditable = function (tr) {
+            tr.click(function () {
+                var td = tr.find("td"),
+                    minor = td.text(),
+    
+                    // Create the editable element.
+                    rowDiscipline = $("<input/>")
+                        .attr({ type: "text" })
+                        .addClass("input-xlarge")
+                        .val(minor),
+
+                    // Get this row back to its pre-editable state.  We also stop propagation on
+                    // the event that triggered the restore so that we don't cycle back to being
+                    // editable.
+                    restoreMinorTableRow = function (event) {
+                        td.empty().removeClass("form-inline")
+                            .text(minor)
+                            .append(createRemoveElement(tr));
+                        makeMinorTableRowEditable(tr);
+                        event.stopPropagation();
+                    };
+
+                // Clear what was there...
+                td.empty()
+                    // ...then add the editable element.
+                    .addClass("form-inline")
+                    .append(rowDiscipline);
+
+                // Finally, the buttons.
+                addEditableRowIcons(
+                    td,
+                    function () {
+                        minor = rowDiscipline.val();
+                    },
+                    restoreMinorTableRow
+                );
+
+                // Finally, disengage this very handler.
+                tr.unbind("click");
+            });
+        },
 
         /*
          * Helper function for creating a table row displaying a minor.
          */
         createMinorTableRow = function (string) {
             var tr = $("<tr></tr>");
+
+            // Support in-place edits.
+            makeMinorTableRowEditable(tr);
+
             return tr.append($("<td></td>")
                     .text(string)
                     .append(createRemoveElement(tr)));

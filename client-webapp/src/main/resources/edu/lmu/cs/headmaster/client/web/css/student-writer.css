@@ -31,3 +31,8 @@ table > tbody > tr > td > i.pull-right {
 #student-majors-container, #student-minors-container {
     text-align: center;
 }
+
+/* Small font tweak to fit its placeholder text. */
+#student-majors-college-or-school {
+    font-size: 95%;
+}
