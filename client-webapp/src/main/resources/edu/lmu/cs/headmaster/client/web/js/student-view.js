@@ -14,6 +14,16 @@ $(function () {
             return email ?
                     $('<a class="email"></a>').attr({ href: "mailto:" + email }).text(email) :
                     null;
+        },
+
+        /*
+         * Helper function that provides the standardized text representation
+         * for a major.
+         */
+        getMajorAsText = function (major) {
+            return (major.degree ? major.degree + " " : BLANK) +
+                    (major.discipline || BLANK) +
+                    (major.collegeOrSchool ? ", " + major.collegeOrSchool : BLANK);
         };
 
     // Set up the edit button.
@@ -92,11 +102,8 @@ $(function () {
                 data.majors, "student-majors", "student-majors-empty",
                 function (major) {
                     return $("<tr></tr>").append($("<td></td>")
-                        .text(
-                            (major.degree ? major.degree + " " : BLANK) +
-                            (major.discipline || BLANK)
-                        )
-                    );
+                            .text(getMajorAsText(major))
+                        );
                 }
             );
 
