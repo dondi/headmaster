@@ -9,7 +9,7 @@
         <title>Headmaster: Student Entry UI</title>
 
         <link rel="stylesheet"
-                href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css"/>
+                href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="lib/bootstrap-datepicker/datepicker.css"/>
 
         <link rel="stylesheet" href="css/client.css"/>
@@ -471,6 +471,28 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <!-- Section for adding/editing majors.  Unfortunately,
+                                         placeholders cannot be externalized. -->
+                                    <div class="control-group well form-inline"
+                                            id="student-majors-container">
+                                        <input type="text" class="input-medium"
+                                                placeholder="College or School"
+                                                id="student-majors-college"/>
+                                        <input type="text" class="input-small"
+                                                placeholder="Degree"
+                                                id="student-majors-degree"/>
+                                        <input type="text" class="input-large"
+                                                placeholder="Discipline"
+                                                id="student-majors-discipline"/>
+                                        <button class="btn btn-small btn-info"
+                                                id="student-majors-add-button">
+                                            <wicket:message key="button.add">Add</wicket:message>
+                                        </button>
+                                        <button class="btn btn-small"
+                                                id="student-majors-clear-button">
+                                            <wicket:message key="button.add">Clear</wicket:message>
+                                        </button>
+                                    </div>
                                     <div class="control-group">
                                         <label class="control-label">
                                             <wicket:message key="label.minors">Minor(s)</wicket:message>
@@ -484,6 +506,22 @@
                                                 <tbody></tbody>
                                             </table>
                                         </div>
+                                    </div>
+                                    <!-- Section for adding/editing minors.  Unfortunately,
+                                         placeholders cannot be externalized. -->
+                                    <div class="control-group well form-inline"
+                                            id="student-minors-container">
+                                        <input type="text" class="input-xlarge"
+                                                placeholder="Discipline"
+                                                id="student-minors-discipline"/>
+                                        <button class="btn btn-small btn-info"
+                                                id="student-minors-add-button">
+                                            <wicket:message key="button.add">Add</wicket:message>
+                                        </button>
+                                        <button class="btn btn-small"
+                                                id="student-minors-clear-button">
+                                            <wicket:message key="button.add">Clear</wicket:message>
+                                        </button>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">
@@ -790,18 +828,7 @@
 
         <script src="lib/date.js"></script>
         <script src="js/headmaster-util.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-transition.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-alert.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-modal.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-dropdown.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-scrollspy.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-tab.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-tooltip.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-popover.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-button.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-collapse.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-carousel.js"></script>
-        <script src="http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap-typeahead.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/js/bootstrap.min.js"></script>
         <script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
     </body>
 </html>
