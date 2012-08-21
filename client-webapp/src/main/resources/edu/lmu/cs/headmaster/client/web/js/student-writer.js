@@ -51,6 +51,32 @@ $(function () {
                     tr.remove();
                     updateDependentElements();
                 });
+        },
+
+        /*
+         * Helper function for creating a table row displaying a major.
+         */
+        createMajorTableRow = function (major) {
+            var tr = $("<tr></tr>");
+            return tr.append($("<td></td>")
+                    .text(
+                            (major.degree ? major.degree + " " : BLANK) +
+                            (major.discipline || BLANK)
+                    ).append(createRemoveElement(tr))
+                )
+
+                // Save the actual object as data on that row.
+                .data("major", major);
+        }
+
+        /*
+         * Helper function for creating a table row displaying a minor.
+         */
+        createMinorTableRow = function (string) {
+            var tr = $("<tr></tr>");
+            return tr.append($("<td></td>")
+                    .text(string)
+                    .append(createRemoveElement(tr)));
         };
 
     // Datepicker setup.
@@ -99,29 +125,11 @@ $(function () {
 
                 // Majors and minors.
                 Headmaster.loadArrayIntoTable(
-                    data.majors, "student-majors", "student-majors-empty",
-                    function (major) {
-                        var tr = $("<tr></tr>");
-                        return tr.append($("<td></td>")
-                                .text(
-                                        (major.degree ? major.degree + " " : BLANK) +
-                                        (major.discipline || BLANK)
-                                ).append(createRemoveElement(tr))
-                            )
-
-                            // Save the actual object as data on that row.
-                            .data("major", major);
-                    }
+                    data.majors, "student-majors", "student-majors-empty", createMajorTableRow
                 );
 
                 Headmaster.loadArrayIntoTable(
-                    data.minors, "student-minors", "student-minors-empty",
-                    function (string) {
-                        var tr = $("<tr></tr>");
-                        return tr.append($("<td></td>")
-                                .text(string)
-                                .append(createRemoveElement(tr)));
-                    }
+                    data.minors, "student-minors", "student-minors-empty", createMinorTableRow
                 );
 
                 // Status information.
@@ -226,7 +234,7 @@ $(function () {
                                 ).append(
                                     $("<td></td>").text(event.title || UNSPECIFIED)
                                 ).click(function () {
-                                    // View that student if the row is clicked.
+                                    // View that event if the row is clicked.
                                     location = "../../events/" + event.id;
                                 });
                         }
@@ -254,6 +262,28 @@ $(function () {
     $('input[type="radio"]').click(updateDependentElements);
 
     // Button click handling.
+    $("#student-majors-add-button").click(function (event) {
+        // Create a new major from the fields then add it to the majors table.
+        var major = {
+            collegeOrSchool: $("#student-majors-college-or-school").val(),
+            degree: $("#student-majors-degree").val(),
+            discipline: $("#student-majors-discipline").val()
+        };
+
+       // Add a row for that major to the table.
+        $("#student-majors > tbody").append(createMajorTableRow(major));
+        updateDependentElements();
+    });
+
+    $("#student-minors-add-button").click(function (event) {
+        // Create a new minor (really just a string) then add it to the minors table.
+        var minor = $("#student-minors-discipline").val();
+
+       // Add a row for that minor to the table.
+        $("#student-minors > tbody").append(createMinorTableRow(minor));
+        updateDependentElements();
+    });
+
     $("#student-cancel").click(function (event) {
         history.go(-1);
         event.preventDefault();

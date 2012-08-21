@@ -31,7 +31,3 @@ table > tbody > tr > td > i.icon-remove-sign.pull-right {
 #student-majors-container, #student-minors-container {
     text-align: center;
 }
-
-input#student-majors-degree {
-    width: 4em;
-}

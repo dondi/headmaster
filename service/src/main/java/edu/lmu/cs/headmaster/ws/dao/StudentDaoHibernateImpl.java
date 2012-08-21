@@ -93,8 +93,20 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
 
     @Override
     public void createOrUpdateStudent(Student student) {
-        // We do a merge to ensure orphan deletion.
-        getHibernateTemplate().merge(student);
+        // FIXME This implementation is not totally clean. In particular,
+        // saveOrUpdate does not delete orphaned majors (i.e., a record remains
+        // in the major table even if that major is not referenced by any
+        // student).
+        //
+        // Calling merge instead of saveOrUpdate *will* delete orphans, but it
+        // cannot handle pure reordering of majors. The OneToMany relationship
+        // forces major IDs to be unique within the join table, but that breaks
+        // updates where only the majors_order column changes.
+        //
+        // So, for now, we stay with saveOrUpdate. This will leave dangling
+        // majors over time, but for now that is better than database exceptions
+        // due to violation of unique constraints.
+        getHibernateTemplate().saveOrUpdate(student);
     }
 
     /**

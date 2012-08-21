@@ -462,11 +462,13 @@
                                             <wicket:message key="label.majors">Major(s)</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <div class="alert alert-info hide message-empty" id="student-majors-empty">
+                                            <div class="alert alert-info hide message-empty"
+                                                    id="student-majors-empty">
                                                 <wicket:message key="prompt.empty.majors">(none)</wicket:message>
                                             </div>
                     
-                                            <table class="table table-striped hide" id="student-majors">
+                                            <table class="table table-striped table-condensed table-hover hide"
+                                                    id="student-majors">
                                                 <tbody></tbody>
                                             </table>
                                         </div>
@@ -477,8 +479,8 @@
                                             id="student-majors-container">
                                         <input type="text" class="input-medium"
                                                 placeholder="College or School"
-                                                id="student-majors-college"/>
-                                        <input type="text" class="input-small"
+                                                id="student-majors-college-or-school"/>
+                                        <input type="text" class="input-mini"
                                                 placeholder="Degree"
                                                 id="student-majors-degree"/>
                                         <input type="text" class="input-large"
@@ -494,11 +496,13 @@
                                             <wicket:message key="label.minors">Minor(s)</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <div class="alert alert-info hide message-empty" id="student-minors-empty">
+                                            <div class="alert alert-info hide message-empty"
+                                                    id="student-minors-empty">
                                                 <wicket:message key="prompt.empty.minors">(none)</wicket:message>
                                             </div>
                     
-                                            <table class="table table-striped hide" id="student-minors">
+                                            <table class="table table-striped table-condensed table-hover hide"
+                                                    id="student-minors">
                                                 <tbody></tbody>
                                             </table>
                                         </div>
@@ -581,7 +585,8 @@
                                         <wicket:message key="prompt.empty.attendance">(no events)</wicket:message>
                                     </div>
             
-                                    <table class="table table-striped hide" id="student-attendance">
+                                    <table class="table table-striped table-hover hide"
+                                            id="student-attendance">
                                         <tbody></tbody>
                                     </table>
                                 </div>
@@ -604,7 +609,8 @@
                                         <wicket:message key="prompt.empty.grades">(no grades)</wicket:message>
                                     </div>
             
-                                    <table class="table table-striped hide" id="student-grades">
+                                    <table class="table table-striped table-hover hide"
+                                            id="student-grades">
                                         <tbody></tbody>
                                     </table>
                                 </div>
@@ -631,7 +637,8 @@
                                         <wicket:message key="prompt.empty.grants">(no grants)</wicket:message>
                                     </div>
             
-                                    <table class="table table-striped hide" id="student-grants">
+                                    <table class="table table-striped table-hover hide"
+                                            id="student-grants">
                                         <tbody></tbody>
                                     </table>
                                 </div>
