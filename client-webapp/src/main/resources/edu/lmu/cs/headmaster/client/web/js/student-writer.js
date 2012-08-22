@@ -86,6 +86,22 @@ $(function () {
         },
 
         /*
+         * Sets up the given (presumed input) element as a typeahead for the
+         * given uri.
+         */
+        setUpTypeahead = function (input, uri) {
+            input.typeahead({
+                source: function (query, process) {
+                    $.getJSON(
+                        Headmaster.serviceUri(uri),
+                        { q: query },
+                        process
+                    );
+                }
+            });
+        },
+
+        /*
          * Helper function that changes a major table row from a read-only to an
          * editable one.
          */
@@ -129,6 +145,11 @@ $(function () {
                         .append(rowDegree)
                         .append(rowDiscipline);
 
+                // Set up the typeahead elements.
+                setUpTypeahead(rowCollegeOrSchool, "terms/colleges-or-schools");
+                setUpTypeahead(rowDegree, "terms/degrees");
+                setUpTypeahead(rowDiscipline, "terms/disciplines");
+                    
                 // Clear what was there...
                 td.empty()
                     // ...then add the new elements.
@@ -199,6 +220,9 @@ $(function () {
 
                     // Create an input-append container.
                     container = $("<div></div>").addClass("input-append").append(rowDiscipline);
+
+                // Set up typeahead elements.
+                setUpTypeahead(rowDiscipline, "terms/disciplines");
 
                 // Clear what was there...
                 td.empty()
@@ -413,8 +437,16 @@ $(function () {
         $(".progress").fadeOut();
     }
 
-    // Set up event handling so that the above function gets called when necessary.
+    // Set up event handling so that the updateDependentElements function gets
+    // called when radio buttons are clicked (because many elements depend on
+    // them).
     $('input[type="radio"]').click(updateDependentElements);
+
+    // Typeahead setup.
+    setUpTypeahead($("#student-majors-college-or-school"), "terms/colleges-or-schools");
+    setUpTypeahead($("#student-majors-degree"), "terms/degrees");
+    setUpTypeahead($("#student-majors-discipline"), "terms/disciplines");
+    setUpTypeahead($("#student-minors-discipline"), "terms/disciplines");
 
     // Button click handling.
     $("#student-majors-add-button").click(function (event) {
@@ -430,7 +462,7 @@ $(function () {
         updateDependentElements();
 
         // Clear the add section.
-        $("#student-majors-container > input").val("");
+        $("#student-majors-container > div > input").val("");
     });
 
     $("#student-minors-add-button").click(function (event) {
@@ -442,7 +474,7 @@ $(function () {
         updateDependentElements();
 
         // Clear the add section.
-        $("#student-minors-container > input").val("");
+        $("#student-minors-container > div > input").val("");
     });
 
     $("#student-cancel").click(function (event) {
