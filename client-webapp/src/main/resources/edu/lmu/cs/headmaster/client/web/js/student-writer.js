@@ -66,20 +66,20 @@ $(function () {
         /*
          * Helper function for creating the standard in-place editing controls.
          */
-        addEditableRowIcons = function (td, confirmFunction, restoreFunction) {
-            td.append(
-                $("<i></i>")
-                    .addClass("icon-ok-circle pull-right")
+        addEditableRowIcons = function (container, confirmFunction, restoreFunction) {
+            container.append(
+                $("<button></button>").addClass("btn btn-danger")
+                    .append($("<i></i>").addClass("icon-ban-circle icon-white"))
                     .click(function (event) {
-                        // Finalize the edit.
-                        confirmFunction();
+                        // No harm no foul---just restore the row.
                         restoreFunction(event);
                     })
             ).append(
-                $("<i></i>")
-                    .addClass("icon-ban-circle pull-right")
+                $("<button></button>").addClass("btn btn-success")
+                    .append($("<i></i>").addClass("icon-ok icon-white"))
                     .click(function (event) {
-                        // No harm no foul---just restore the row.
+                        // Finalize the edit.
+                        confirmFunction();
                         restoreFunction(event);
                     })
             );
@@ -97,7 +97,7 @@ $(function () {
                     // Create the editable elements.
                     rowCollegeOrSchool = $("<input/>")
                         .attr({ type: "text" })
-                        .addClass("input-small")
+                        .addClass("input-small search-query")
                         .val(major.collegeOrSchool),
     
                     rowDegree = $("<input/>")
@@ -116,24 +116,28 @@ $(function () {
                     // the event that triggered the restore so that we don't cycle back to being
                     // editable.
                     restoreMajorTableRow = function (event) {
-                        td.empty().removeClass("form-inline")
+                        td.empty().removeClass("form-search")
                             .text(getMajorAsText(major))
                             .append(createRemoveElement(tr));
                         makeMajorTableRowEditable(tr);
                         event.stopPropagation();
-                    };
+                    },
+
+                    // Create an input-append container.
+                    container = $("<div></div>").addClass("input-append major")
+                        .append(rowCollegeOrSchool)
+                        .append(rowDegree)
+                        .append(rowDiscipline);
 
                 // Clear what was there...
                 td.empty()
                     // ...then add the new elements.
-                    .addClass("form-inline")
-                    .append(rowCollegeOrSchool)
-                    .append(rowDegree)
-                    .append(rowDiscipline);
+                    .addClass("form-search")
+                    .append(container);
 
                 // Finally, the buttons.
                 addEditableRowIcons(
-                    td,
+                    container,
                     function () {
                         // Finalize the edit.  Note how this preserves the major's
                         // id, which is exactly how we want it to work.
@@ -179,29 +183,32 @@ $(function () {
                     // Create the editable element.
                     rowDiscipline = $("<input/>")
                         .attr({ type: "text" })
-                        .addClass("input-xlarge")
+                        .addClass("input-xlarge search-query")
                         .val(minor),
 
                     // Get this row back to its pre-editable state.  We also stop propagation on
                     // the event that triggered the restore so that we don't cycle back to being
                     // editable.
                     restoreMinorTableRow = function (event) {
-                        td.empty().removeClass("form-inline")
+                        td.empty().removeClass("form-search")
                             .text(minor)
                             .append(createRemoveElement(tr));
                         makeMinorTableRowEditable(tr);
                         event.stopPropagation();
-                    };
+                    },
+
+                    // Create an input-append container.
+                    container = $("<div></div>").addClass("input-append").append(rowDiscipline);
 
                 // Clear what was there...
                 td.empty()
                     // ...then add the editable element.
-                    .addClass("form-inline")
-                    .append(rowDiscipline);
+                    .addClass("form-search")
+                    .append(container);
 
                 // Finally, the buttons.
                 addEditableRowIcons(
-                    td,
+                    container,
                     function () {
                         minor = rowDiscipline.val();
                     },

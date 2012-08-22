@@ -9,7 +9,7 @@ input#student-active {
     margin-top: 5px;
 }
 
-/* These are for draggable objects in StudentWriterPage. */
+/* These are for draggable objects. */
 .ui-sortable-helper {
     background-color: whitesmoke;
     border: 1px solid lightgray;
@@ -22,9 +22,10 @@ input#student-active {
     border-style: none;
 }
 
-/* Now the clickable icons in StudentWriterPage. */
-table > tbody > tr > td > i.pull-right {
-    cursor: crosshair;
+/* Now an editable row. */
+table > tbody > tr > td.form-search {
+    padding: 1.5ex 0;
+    text-align: center;
 }
 
 /* Custom form/field sizes/styles in StudentWriterPage. */
@@ -32,7 +33,16 @@ table > tbody > tr > td > i.pull-right {
     text-align: center;
 }
 
-/* Small font tweak to fit its placeholder text. */
+/* Customizations for our look and feel. */
 #student-majors-college-or-school {
-    font-size: 95%;
+    width: 7em;
+}
+
+#student-majors-degree {
+    width: 3.5em;
+}
+
+.input-append > .btn.btn-danger, .input-append.major > *:nth-child(2),
+        .input-append.major > *:nth-child(3) {
+    border-radius: inherit;
 }

@@ -463,21 +463,23 @@
                                         <label class="control-label">
                                             <wicket:message key="label.majors">Major(s)</wicket:message>
                                         </label>
-                                        <div class="controls well form-inline"
+                                        <div class="controls well form-search"
                                                 id="student-majors-container">
-                                            <input type="text" class="input-small"
-                                                    placeholder="College/School"
-                                                    id="student-majors-college-or-school"/>
-                                            <input type="text" class="input-mini"
-                                                    placeholder="Degree"
-                                                    id="student-majors-degree"/>
-                                            <input type="text" class="input-medium"
-                                                    placeholder="Discipline"
-                                                    id="student-majors-discipline"/>
-                                            <button class="btn btn-small btn-info"
-                                                    id="student-majors-add-button">
-                                                <wicket:message key="button.add">Add</wicket:message>
-                                            </button>
+                                            <div class="input-append major">
+                                                <input type="text" class="input-small search-query"
+                                                        placeholder="College/School"
+                                                        id="student-majors-college-or-school"/>
+                                                <input type="text" class="span1"
+                                                        placeholder="Degree"
+                                                        id="student-majors-degree"/>
+                                                <input type="text" class="input-medium"
+                                                        placeholder="Discipline"
+                                                        id="student-majors-discipline"/>
+                                                <button class="btn btn-info"
+                                                        id="student-majors-add-button">
+                                                    <i class="icon-plus icon-white"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -499,15 +501,17 @@
                                         <label class="control-label">
                                             <wicket:message key="label.minors">Minor(s)</wicket:message>
                                         </label>
-                                        <div class="controls well form-inline"
+                                        <div class="controls well form-search"
                                                 id="student-minors-container">
-                                            <input type="text" class="input-xlarge"
-                                                    placeholder="Discipline"
-                                                    id="student-minors-discipline"/>
-                                            <button class="btn btn-small btn-info"
-                                                    id="student-minors-add-button">
-                                                <wicket:message key="button.add">Add</wicket:message>
-                                            </button>
+                                            <div class="input-append">
+                                                <input type="text" class="input-xlarge search-query"
+                                                        placeholder="Discipline"
+                                                        id="student-minors-discipline"/>
+                                                <button class="btn btn-info"
+                                                        id="student-minors-add-button">
+                                                    <i class="icon-plus icon-white"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="control-group">
