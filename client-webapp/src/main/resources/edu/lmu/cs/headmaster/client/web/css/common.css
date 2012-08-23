@@ -3,5 +3,5 @@
 /* Bootstrap tweak for proper spacing of "selected" navbar dropdown items. */
 .dropdown-menu span > em {
     display: block;
-    padding: 3px 15px;
+    padding: 3px 20px;
 }
