@@ -24,7 +24,9 @@
                         $("<td></td>").text(student.thesisTerm),
                         $("<td></td>")
                             .append($('<span class="badge badge-' +
-                                    (student.thesisInMajor ? 'info">Yes' : 'warning">No') +
+                                    (student.thesisInMajor ? 'info">Yes' :
+                                            (student.thesisInMajor === false ? 'warning">No' :
+                                                    'inverse">Unknown')) +
                                     "</span></td>")),
                         $("<td></td>").text(student.thesisCourse),
                         $("<td></td>").text(student.thesisAdvisor)

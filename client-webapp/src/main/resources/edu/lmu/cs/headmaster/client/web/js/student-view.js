@@ -6,6 +6,7 @@ $(function () {
         BLANK = "",
         YES = "Yes",
         NO = "No",
+        UNKNOWN = "Unknown",
 
         /*
          * Helper function for building email address links.
@@ -155,7 +156,8 @@ $(function () {
             $("#student-thesis-term").text(data.thesisTerm || BLANK);
             $("#student-thesis-year").text(data.thesisYear || data.expectedGraduationYear);
             $("#student-thesis-advisor").text(data.thesisAdvisor || BLANK);
-            $("#student-thesis-inmajor").text(data.thesisInMajor ? YES : NO);
+            $("#student-thesis-inmajor").text(data.thesisInMajor ? YES :
+                    (data.thesisInMajor === false ? NO : UNKNOWN));
             if (!data.thesisInMajor) {
                 $("#student-thesis-course-container").fadeOut();
             }

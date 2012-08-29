@@ -372,17 +372,17 @@ $(function () {
 
                 // Thesis information.
                 $("#student-thesis-title").val(data.thesisTitle || BLANK);
-                $("#student-thesis-term-" + (data.thesisTerm === "FALL" ? "fall" : "spring"))
+                $("input[type='radio'][name='thesis-term']").removeAttr("checked");
+                $("#student-thesis-term-" + (data.thesisTerm === "FALL" ? "fall" :
+                        (data.thesisTerm === "SPRING" ? "spring" : "unknown")))
                     .attr({ checked: "checked" });
-                $("#student-thesis-term-" + (data.thesisTerm === "FALL" ? "spring" : "fall"))
-                    .removeAttr("checked");
                 $("#student-thesis-year").val(data.thesisYear || data.expectedGraduationYear);
                 $("#student-thesis-advisor").val(data.thesisAdvisor || BLANK);
 
-                $("#student-thesis-inmajor-" + (data.thesisInMajor ? "yes" : "no"))
+                $("input[type='radio'][name='thesis-inmajor']").removeAttr("checked");
+                $("#student-thesis-inmajor-" + (data.thesisInMajor ? "yes" :
+                        (data.thesisInMajor === false ? "no" : "unknown")))
                     .attr({ checked: "checked" });
-                $("#student-thesis-inmajor-" + (data.thesisInMajor ? "no" : "yes"))
-                    .removeAttr("checked");
                 $("#student-thesis-course").val(data.thesisCourse || BLANK);
 
                 $("#student-thesis-submitted-" + (data.thesisSubmissionDate ? "yes" : "no"))
@@ -544,10 +544,12 @@ $(function () {
 
             // Thesis information.
             thesisTitle: $("#student-thesis-title").val(),
-            thesisTerm: Headmaster.isChecked("student-thesis-term-fall") ? "FALL" : "SPRING",
+            thesisTerm: Headmaster.isChecked("student-thesis-term-fall") ? "FALL" :
+                    (Headmaster.isChecked("student-thesis-term-spring") ? "SPRING" : null),
             thesisYear: $("#student-thesis-year").val(),
             thesisAdvisor: $("#student-thesis-advisor").val(),
-            thesisInMajor: Headmaster.isChecked("student-thesis-inmajor-yes"),
+            thesisInMajor: Headmaster.isChecked("student-thesis-inmajor-yes") ? true :
+                    (Headmaster.isChecked("student-thesis-inmajor-no") ? false : null),
             thesisCourse: $("#student-thesis-course").val(),
             thesisSubmissionDate: Headmaster.isChecked("student-thesis-submitted-yes") ?
                     Date.parse($("#student-thesis-submissiondate").val()) : null,
