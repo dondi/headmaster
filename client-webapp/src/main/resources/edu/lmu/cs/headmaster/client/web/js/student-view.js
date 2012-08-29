@@ -6,7 +6,7 @@ $(function () {
         BLANK = "",
         YES = "Yes",
         NO = "No",
-        UNKNOWN = "Unknown",
+        UNKNOWN = "?",
 
         /*
          * Helper function for building email address links.
