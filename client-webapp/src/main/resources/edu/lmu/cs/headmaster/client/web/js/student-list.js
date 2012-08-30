@@ -66,7 +66,8 @@ $(function () {
 
         function (student) {
             return $("<tr></tr>")
-                .append($("<td></td>").text(student.firstName + " " + student.lastName))
+                .append($("<td></td>").text(student.firstName))
+                .append($("<td></td>").text(student.lastName))
                 .append(
                     $("<td></td>").append(
                         $('<input type="checkbox" class="rowcheck" ' +
