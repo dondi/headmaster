@@ -21,7 +21,11 @@
                 .data("query", { "class": "SENIOR" })
                 .data("columns", function (student) {
                     return [
-                        $("<td></td>").text(student.thesisTerm),
+                        $("<td></td>").text(
+                            (student.thesisTerm ? student.thesisTerm.toLowerCase() : "") +
+                            (student.thesisTerm && student.thesisYear ? ", " : "") +
+                            (student.thesisYear ? student.thesisYear : "")
+                        ),
                         $("<td></td>")
                             .append($('<span class="badge badge-' +
                                     (student.thesisInMajor ? 'info">Yes' :
