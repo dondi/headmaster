@@ -38,7 +38,6 @@ public class Student {
 
     private Long id;
     private Boolean active = Boolean.TRUE;
-    private String schoolId;
     private String lastName;
     private String firstName;
     private String middleName;
@@ -55,11 +54,6 @@ public class Student {
     private List<Major> majors = new ArrayList<Major>();
     private List<String> minors = new ArrayList<String>();
     private Boolean hasStudiedAbroad;
-    private Double highSchoolGpa;
-    private Double actScore;
-    private Integer satVerbalScore;
-    private Integer satMathScore;
-    private Integer satWritingScore;
     private String scholarship;
     private Sex sex;
     private String raceOrEthnicity;
@@ -70,7 +64,6 @@ public class Student {
     private String zip;
     private String mainPhone;
     private String cellPhone;
-    private Double cumulativeGpa;
     private String notes;
     private Boolean thesisInMajor;
     private String thesisAdvisor;
@@ -80,10 +73,9 @@ public class Student {
     private String thesisTitle;
     private DateTime thesisSubmissionDate;
     private String thesisNotes;
-    private String academicStatus;
-    private List<GPA> grades = new ArrayList<GPA>();
     private List<Event> attendance = new ArrayList<Event>();
     private List<Grant> grants = new ArrayList<Grant>();
+    private StudentRecord record = new StudentRecord();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -107,14 +99,6 @@ public class Student {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public String getSchoolId() {
-        return schoolId;
-    }
-
-    public void setSchoolId(String schoolId) {
-        this.schoolId = schoolId;
     }
 
     @Lob
@@ -260,46 +244,6 @@ public class Student {
         this.hasStudiedAbroad = hasStudiedAbroad;
     }
 
-    public Double getHighSchoolGpa() {
-        return highSchoolGpa;
-    }
-
-    public void setHighSchoolGpa(Double highSchoolGpa) {
-        this.highSchoolGpa = highSchoolGpa;
-    }
-
-    public Double getActScore() {
-        return actScore;
-    }
-
-    public void setActScore(Double actScore) {
-        this.actScore = actScore;
-    }
-
-    public Integer getSatVerbalScore() {
-        return satVerbalScore;
-    }
-
-    public void setSatVerbalScore(Integer satVerbalScore) {
-        this.satVerbalScore = satVerbalScore;
-    }
-
-    public Integer getSatMathScore() {
-        return satMathScore;
-    }
-
-    public void setSatMathScore(Integer satMathScore) {
-        this.satMathScore = satMathScore;
-    }
-
-    public Integer getSatWritingScore() {
-        return satWritingScore;
-    }
-
-    public void setSatWritingScore(Integer satWritingScore) {
-        this.satWritingScore = satWritingScore;
-    }
-
     @Lob
     public String getScholarship() {
         return scholarship;
@@ -384,14 +328,6 @@ public class Student {
         this.cellPhone = cellPhone;
     }
 
-    public Double getCumulativeGpa() {
-        return cumulativeGpa;
-    }
-
-    public void setCumulativeGpa(Double cumulativeGpa) {
-        this.cumulativeGpa = cumulativeGpa;
-    }
-
     @Lob
     public String getNotes() {
         return notes;
@@ -470,25 +406,6 @@ public class Student {
         this.thesisNotes = thesisNotes;
     }
 
-    public String getAcademicStatus() {
-        return academicStatus;
-    }
-
-    public void setAcademicStatus(String academicStatus) {
-        this.academicStatus = academicStatus;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OrderBy("year, term")
-    public List<GPA> getGrades() {
-        return grades;
-    }
-
-    public void setGrades(List<GPA> grades) {
-        this.grades = grades;
-    }
-
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "attendees")
     @OrderBy("dateTime")
     // Event objects reference back to their student attendees, producing a
@@ -513,6 +430,17 @@ public class Student {
 
     public void setGrants(List<Grant> grants) {
         this.grants = grants;
+    }
+
+    // This keeps the record from going down the wire; it will have to be sent
+    // out separately.
+    @XmlTransient
+    public StudentRecord getRecord() {
+        return record;
+    }
+
+    public void setRecord(StudentRecord record) {
+        this.record = record;
     }
 
 }

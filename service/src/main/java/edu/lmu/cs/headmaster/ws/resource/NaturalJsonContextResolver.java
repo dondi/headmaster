@@ -15,6 +15,7 @@ import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
 import edu.lmu.cs.headmaster.ws.domain.Major;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.domain.StudentRecord;
 import edu.lmu.cs.headmaster.ws.domain.User;
 import edu.lmu.cs.headmaster.ws.domain.UserRole;
 import edu.lmu.cs.headmaster.ws.types.Role;
@@ -38,6 +39,7 @@ public class NaturalJsonContextResolver implements ContextResolver<JAXBContext> 
         Major.class,
         Role.class,
         Student.class,
+        StudentRecord.class,
         Term.class,
         User.class,
         UserRole.class

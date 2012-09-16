@@ -21,6 +21,7 @@
                 <value>edu.lmu.cs.headmaster.ws.domain.Grant</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.Major</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.Student</value>
+                <value>edu.lmu.cs.headmaster.ws.domain.StudentRecord</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.User</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.UserRole</value>
             </list>

@@ -39,7 +39,7 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertNull(student.getEntryYear());
         Assert.assertEquals(0, student.getMajors().size());
         Assert.assertEquals(0, student.getMinors().size());
-        Assert.assertEquals(0, student.getGrades().size());
+        Assert.assertEquals(0, student.getRecord().getGrades().size());
 
         // Grant and event data do not come along for the ride.
         try {
@@ -62,7 +62,7 @@ public class StudentDaoTest extends ApplicationContextTest {
     @Test
     public void testGetStudentByIdGrades() {
         // One of the test fixture students has grades.
-        List<GPA> grades = studentDao.getStudentById(1000002L).getGrades();
+        List<GPA> grades = studentDao.getStudentById(1000002L).getRecord().getGrades();
         Assert.assertEquals(2, grades.size());
 
         // We expect grades to be sorted by year then term.
@@ -251,11 +251,11 @@ public class StudentDaoTest extends ApplicationContextTest {
         grades.add(gpa);
 
         Student student = studentDao.getStudentById(1000000L);
-        student.setGrades(grades);
+        student.getRecord().setGrades(grades);
         studentDao.createOrUpdateStudent(student);
 
         // We check that the grades were indeed saved.
-        grades = studentDao.getStudentById(1000000L).getGrades();
+        grades = studentDao.getStudentById(1000000L).getRecord().getGrades();
         Assert.assertEquals(2, grades.size());
         Assert.assertEquals(Term.SUMMER, grades.get(0).getTerm());
         Assert.assertEquals(2015, grades.get(0).getYear());

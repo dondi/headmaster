@@ -12,8 +12,7 @@ import com.sun.jersey.api.client.GenericType;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.GPA;
 import edu.lmu.cs.headmaster.ws.domain.Student;
-import edu.lmu.cs.headmaster.ws.resource.AbstractResource;
-import edu.lmu.cs.headmaster.ws.resource.StudentResource;
+import edu.lmu.cs.headmaster.ws.domain.StudentRecord;
 import edu.lmu.cs.headmaster.ws.types.Term;
 
 /**
@@ -89,7 +88,7 @@ public class StudentResourceTest extends ResourceTest {
         // The text fixture data has some empty values.
         Assert.assertNull(student.getMiddleName());
         Assert.assertNull(student.getEntryYear());
-        Assert.assertEquals(0, student.getGrades().size());
+        Assert.assertEquals(0, student.getRecord().getGrades().size());
 
         // Grant and event data do not come along for the ride.
         Assert.assertEquals(0, student.getGrants().size());
@@ -130,8 +129,16 @@ public class StudentResourceTest extends ResourceTest {
 
     @Test
     public void testGetStudentByIdGrades() {
-        // This test fixture student is supposed to have grades.
-        List<GPA> grades = wr.path("students/1000002").get(Student.class).getGrades();
+        // This test fixture student has grades in the database, but because we
+        // are asking for this via the students URL, those data are not included
+        // in transit.
+        Assert.assertTrue(wr.path("students/1000002")
+                .get(Student.class).getRecord().getGrades().isEmpty());
+    }
+
+    @Test
+    public void testGetStudentRecordByIdGrades() {
+        List<GPA> grades = wr.path("students/1000002/record").get(StudentRecord.class).getGrades();
         Assert.assertEquals(2, grades.size());
 
         // We expect grades to be sorted by year then term.
@@ -162,16 +169,16 @@ public class StudentResourceTest extends ResourceTest {
         grades.add(gpa);
 
         // We leave the correctness of the GET to other unit tests.
-        Student student = wr.path("students/1000000").get(Student.class);
-        student.setGrades(grades);
+        StudentRecord studentRecord = wr.path("students/1000000/record").get(StudentRecord.class);
+        studentRecord.setGrades(grades);
 
-        // Now, save the student.  We should get a 204.
-        ClientResponse response = wr.path("students/1000000")
-                .put(ClientResponse.class, student);
+        // Now, save the student record.  We should get a 204.
+        ClientResponse response = wr.path("students/1000000/record")
+                .put(ClientResponse.class, studentRecord);
         Assert.assertEquals(204, response.getStatus());
 
         // We check that the grades were indeed saved.
-        grades = wr.path("students/1000000").get(Student.class).getGrades();
+        grades = wr.path("students/1000000/record").get(StudentRecord.class).getGrades();
         Assert.assertEquals(2, grades.size());
         Assert.assertEquals(Term.FALL, grades.get(0).getTerm());
         Assert.assertEquals(2013, grades.get(0).getYear());
