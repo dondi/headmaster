@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.domain.StudentRecord;
 import edu.lmu.cs.headmaster.ws.types.ClassYear;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
@@ -98,4 +99,19 @@ public interface StudentResource {
     @GET
     @Path("{id}/attendance")
     List<Event> getStudentAttendanceById(@PathParam("id") Long id);
+
+    /**
+     * Returns the student record for the student with the given id.
+     */
+    @GET
+    @Path("{id}/record")
+    StudentRecord getStudentRecordById(@PathParam("id") Long id);
+
+    /**
+     * Updates the record for the student with the given id.
+     */
+    @PUT
+    @Path("{id}/record")
+    Response updateStudentRecord(@PathParam("id") Long id, StudentRecord studentRecord);
+
 }

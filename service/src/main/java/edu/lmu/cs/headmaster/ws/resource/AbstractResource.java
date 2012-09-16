@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
+import edu.lmu.cs.headmaster.ws.types.Role;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
@@ -34,6 +35,8 @@ public class AbstractResource {
     public static final String MALFORMED_ARGUMENT_DATE = "argument.date.malformed";
     public static final String MISSING_ARGUMENT_DATE = "argument.date.missing";
     public static final String UNSUPPORTED_ENCODING = "encoding.not.supported";
+    public static final String INVALID_USER = "user.invalid";
+    public static final String USER_FORBIDDEN = "user.forbidden";
 
     protected Logger logger = Logger.getLogger(getClass());
 
@@ -112,41 +115,36 @@ public class AbstractResource {
     }
 
     /**
-     * Returns a list of all the current user's roles.  Since a user should have at least one
-     * role, this method will throw an exception if it detects the current user has no roles.
+     * Checks if the user principal in the security context only has a student
+     * user role. If not, the method returns normally. If the user is a student
+     * only, it arranges to return a 403 FORBIDDEN response to the client.
      */
-    // TODO Not yet ready
-//    protected List<UserRoleData> getRolesForCurrentUser() {
-//
-//        // First get all the patient roles.
-//        String loginName = securityContext.getUserPrincipal().getName();
-//        List<UserRoleData> roles = userDao.getRoleDataByLoginName(loginName);
-//
-//        if (roles == null || roles.isEmpty()) {
-//            logger.error("A user has logged in without any roles");
-//            throw new ServiceException(Response.Status.INTERNAL_SERVER_ERROR, INVALID_USER);
-//        }
-//
-//        logger.debug(loginName + " has " + roles.size() + " roles.");
-//
-//        return roles;
-//    }
+    protected void validateNonStudentCredentials() {
+        logger.debug("Checking for non-student credentials");
+
+        // We have a student-only if the user has only one role and that role is student.
+        boolean isStudent = false;
+        int roleCount = 0;
+        for (Role role: Role.values()) {
+            if (securityContext.isUserInRole(role.name())) {
+                roleCount++;
+                if (role == Role.STUDENT) {
+                    isStudent = true;
+                }
+            }
+        }
+
+        validate(!(roleCount == 1 && isStudent), Response.Status.FORBIDDEN, USER_FORBIDDEN);
+    }
 
     /**
      * Checks if the principal user in the security context has admin or superuser user roles.
      */
-    // TODO Not yet ready
-//    protected void validateAdminCredentials() {
-//        logger.debug("Checking for admin credentials");
-//        for (UserRoleData roleData : getRolesForCurrentUser()) {
-//            if (roleData.isManager() || roleData.isSuperuser()) {
-//                return;
-//            }
-//        }
-//
-//        // If we get here, we have a surefire rejection.
-//        validate(false, Response.Status.FORBIDDEN, USER_FORBIDDEN);
-//    }
+    protected void validateAdminCredentials() {
+        logger.debug("Checking for admin credentials");
+        validate(securityContext.isUserInRole(Role.HEADMASTER.name()), Response.Status.FORBIDDEN,
+                USER_FORBIDDEN);
+    }
 
     /**
      * Preprocesses a query for a URI by trimming, urldecoding, and validating that the skip and

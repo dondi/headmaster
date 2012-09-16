@@ -12,6 +12,7 @@ import edu.lmu.cs.headmaster.ws.dao.StudentDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.domain.StudentRecord;
 import edu.lmu.cs.headmaster.ws.types.ClassYear;
 
 /**
@@ -79,10 +80,10 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
     @Override
     public Response createOrUpdateStudent(Long id, Student student) {
         logServiceCall();
-        
+
         // The student IDs should match.
         validate(id.equals(student.getId()), Response.Status.BAD_REQUEST, STUDENT_INCONSISTENT);
-        
+
         // Dao problems will filter up as exceptions.
         studentDao.createOrUpdateStudent(student);
         return Response.noContent().build();
@@ -104,6 +105,30 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         List<Event> events = studentDao.getStudentAttendanceById(id);
         validate(events != null, Response.Status.NOT_FOUND, STUDENT_NOT_FOUND);
         return events;
+    }
+
+    @Override
+    public StudentRecord getStudentRecordById(Long id) {
+        // Students may not access this resource unless it is their own.
+        // TODO The "their own" part has not been implemented.
+        validateNonStudentCredentials();
+        return getStudentById(id).getRecord();
+    }
+
+    @Override
+    public Response updateStudentRecord(Long id, StudentRecord studentRecord) {
+        // Students may not access this resource, even if it is their own,
+        // because if they could, then they would be able to modify their
+        // own scores etc.
+        validateNonStudentCredentials();
+
+        // Retrieve the full student, assign this record, then save.
+        Student student = getStudentById(id);
+        student.setRecord(studentRecord);
+
+        // Dao problems will filter up as exceptions.
+        studentDao.createOrUpdateStudent(student);
+        return Response.noContent().build();
     }
 
 }
