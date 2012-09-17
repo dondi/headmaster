@@ -207,7 +207,7 @@
           <target>1.6</target>
         </configuration>
       </plugin>
-      <!-- FIXME Direct Tomcat execution isn't working yet; this is a work in progress. -->
+      <!-- FIXME Direct Tomcat execution isn't working yet; this is a work in progress.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -215,7 +215,6 @@
         <configuration>
           <webResources>
             <resource>
-              <!-- this is relative to the pom.xml directory -->
               <directory>src/main/tomcatconf</directory>
               <excludes>
                 <exclude>**/server.xml</exclude>
@@ -224,6 +223,7 @@
           </webResources>
         </configuration>
       </plugin>
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
