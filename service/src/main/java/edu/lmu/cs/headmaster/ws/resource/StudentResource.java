@@ -2,6 +2,7 @@ package edu.lmu.cs.headmaster.ws.resource;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -105,6 +106,7 @@ public interface StudentResource {
      */
     @GET
     @Path("{id}/record")
+    @RolesAllowed({ "headmaster", "FACULTY", "STAFF" })
     StudentRecord getStudentRecordById(@PathParam("id") Long id);
 
     /**
@@ -112,6 +114,7 @@ public interface StudentResource {
      */
     @PUT
     @Path("{id}/record")
+    @RolesAllowed({ "HEADMASTER", "FACULTY", "STAFF" })
     Response updateStudentRecord(@PathParam("id") Long id, StudentRecord studentRecord);
 
 }

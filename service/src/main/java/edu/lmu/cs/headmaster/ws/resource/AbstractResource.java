@@ -14,7 +14,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
-import edu.lmu.cs.headmaster.ws.types.Role;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
@@ -112,38 +111,6 @@ public class AbstractResource {
         if (logger.isDebugEnabled() && (uriInfo != null)) {
             logger.debug("Invoking " + uriInfo.getAbsolutePath());
         }
-    }
-
-    /**
-     * Checks if the user principal in the security context only has a student
-     * user role. If not, the method returns normally. If the user is a student
-     * only, it arranges to return a 403 FORBIDDEN response to the client.
-     */
-    protected void validateNonStudentCredentials() {
-        logger.debug("Checking for non-student credentials");
-
-        // We have a student-only if the user has only one role and that role is student.
-        boolean isStudent = false;
-        int roleCount = 0;
-        for (Role role: Role.values()) {
-            if (securityContext.isUserInRole(role.name())) {
-                roleCount++;
-                if (role == Role.STUDENT) {
-                    isStudent = true;
-                }
-            }
-        }
-
-        validate(!(roleCount == 1 && isStudent), Response.Status.FORBIDDEN, USER_FORBIDDEN);
-    }
-
-    /**
-     * Checks if the principal user in the security context has admin or superuser user roles.
-     */
-    protected void validateAdminCredentials() {
-        logger.debug("Checking for admin credentials");
-        validate(securityContext.isUserInRole(Role.HEADMASTER.name()), Response.Status.FORBIDDEN,
-                USER_FORBIDDEN);
     }
 
     /**

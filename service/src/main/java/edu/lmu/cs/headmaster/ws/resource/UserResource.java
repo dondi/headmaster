@@ -2,6 +2,7 @@ package edu.lmu.cs.headmaster.ws.resource;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -59,6 +60,7 @@ public interface UserResource {
      *         id is not null.
      */
     @POST
+    @RolesAllowed("headmaster")
     Response createUser(User user);
 
     /**
@@ -75,6 +77,7 @@ public interface UserResource {
      */
     @PUT
     @Path("{id}")
+    @RolesAllowed("headmaster")
     Response createOrUpdateUser(@PathParam("id") Long id, User user);
 
 }

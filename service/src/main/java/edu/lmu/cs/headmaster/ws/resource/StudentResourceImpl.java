@@ -109,19 +109,11 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
 
     @Override
     public StudentRecord getStudentRecordById(Long id) {
-        // Students may not access this resource unless it is their own.
-        // TODO The "their own" part has not been implemented.
-        validateNonStudentCredentials();
         return getStudentById(id).getRecord();
     }
 
     @Override
     public Response updateStudentRecord(Long id, StudentRecord studentRecord) {
-        // Students may not access this resource, even if it is their own,
-        // because if they could, then they would be able to modify their
-        // own scores etc.
-        validateNonStudentCredentials();
-
         // Retrieve the full student, assign this record, then save.
         Student student = getStudentById(id);
         student.setRecord(studentRecord);

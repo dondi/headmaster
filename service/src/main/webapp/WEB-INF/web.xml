@@ -30,6 +30,10 @@
             <param-name>com.sun.jersey.config.property.resourceConfigClass</param-name>
             <param-value>com.sun.jersey.api.core.PackagesResourceConfig</param-value>
         </init-param>
+        <init-param>  
+            <param-name>com.sun.jersey.spi.container.ResourceFilters</param-name>  
+            <param-value>com.sun.jersey.api.container.filter.RolesAllowedResourceFilterFactory</param-value>  
+        </init-param>  
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>edu.lmu.cs.headmaster.ws.resource</param-value>

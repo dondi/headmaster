@@ -184,6 +184,11 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>jsr250-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.2</version>
@@ -200,6 +205,23 @@
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
+        </configuration>
+      </plugin>
+      <!-- FIXME Direct Tomcat execution isn't working yet; this is a work in progress. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <webResources>
+            <resource>
+              <!-- this is relative to the pom.xml directory -->
+              <directory>src/main/tomcatconf</directory>
+              <excludes>
+                <exclude>**/server.xml</exclude>
+              </excludes>
+            </resource>
+          </webResources>
         </configuration>
       </plugin>
       <plugin>
@@ -220,6 +242,29 @@
       	<artifactId>maven-javadoc-plugin</artifactId>
       	<version>2.7</version>
       </plugin>
+      <!-- FIXME Ditto Tomcat. -->
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.0-SNAPSHOT</version>
+        <configuration>
+          <!-- http port -->
+          <port>9595</port>
+          <!-- application path always starts with /-->
+          <path>/headmaster</path>
+          <!-- custom server.xml -->
+          <serverXml>target/classes/server.xml</serverXml>
+          <!-- if you want to use test dependencies rather than only runtime -->
+          <useTestClasspath>false</useTestClasspath>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901.jdbc4</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
     <filters>
       <filter>build.properties</filter>
@@ -229,6 +274,12 @@
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
       </resource>
+      <!-- FIXME Ditto Tomcat.
+      <resource>
+        <directory>src/main/tomcatconf</directory>
+        <filtering>true</filtering>
+      </resource>
+      -->
     </resources>
     <testResources>
       <testResource>
@@ -265,7 +316,31 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>apache.snapshots</id>
+      <url>http://repository.apache.org/content/groups/snapshots-group/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>apache.snapshots</id>
+      <name>Apache Snapshots</name>
+      <url>http://repository.apache.org/content/groups/snapshots-group/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
   <reporting>
     <plugins>
