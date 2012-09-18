@@ -6,6 +6,9 @@ $(function () {
         YES = "Yes",
         NO = "No",
 
+        // Indicates whether the current user may edit the student record.
+        canEditStudentRecord = false,
+
         /*
          * Helper function for updating elements that depend on the value of
          * another element.
@@ -288,7 +291,6 @@ $(function () {
                 // Contact information.
                 $("#student-email1").val(data.primaryEmail || BLANK);
                 $("#student-email2").val(data.secondaryEmail || BLANK);
-                $("#student-schoolid").val(data.schoolId || BLANK);
                 $("#student-campus-box").val(data.campusBox || BLANK);
                 $("#student-address").val(data.address || BLANK);
                 $("#student-city").val(data.city || BLANK);
@@ -299,8 +301,6 @@ $(function () {
 
                 // Academic information.
                 $("#student-advisor").val(data.advisor || BLANK);
-                $("#student-gpa").val(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
-                $("#student-status").val(data.academicStatus || BLANK);
 
                 // Majors and minors.
                 Headmaster.loadArrayIntoTable(
@@ -347,28 +347,10 @@ $(function () {
                 $("#student-entryyear").val(data.entryYear || BLANK);
                 $("#student-honorsentrydate").val(data.honorsEntryDate ?
                         Date.parse(data.honorsEntryDate).toString(DATE_FORMAT) : BLANK);
-                $("#student-hsgpa").val(data.highSchoolGpa || BLANK);
-                $("#student-act").val(data.actScore || BLANK);
-                $("#student-sat-verbal").val(data.satVerbalScore || BLANK);
-                $("#student-sat-math").val(data.satMathScore || BLANK);
-                $("#student-sat-writing").val(data.satWritingScore || BLANK);
                 $("#student-scholarship").val(data.scholarship || BLANK);
 
                 // Notes.
                 $("#student-notes").val(data.notes || BLANK);
-
-                // Grade information.
-                Headmaster.loadArrayIntoTable(
-                    data.grades, "student-grades", "student-grades-empty",
-                    function (gpa) {
-                        return $("<tr></tr>")
-                            .append($("<td></td>").text(gpa.term + " " + gpa.year))
-                            .append($("<td></td>").text(gpa.gpa.toFixed(2)))
-
-                            // Save the actual object as data on that row.
-                            .data("gpa", gpa);
-                    }
-                );
 
                 // Thesis information.
                 $("#student-thesis-title").val(data.thesisTitle || BLANK);
@@ -430,6 +412,56 @@ $(function () {
                 updateDependentElements();
             }
         );
+
+        // Load up the student's privileged information. Here, we attempt to load
+        // the student record object. If we get FORBIDDEN, we conclude that the
+        // current user is not allowed to see the student record and thus hide the
+        // view elements for them. This can be done asynchronously because they
+        // affect a separate set of elements.
+        $.getJSON(
+            Headmaster.serviceUri("students/" + studentId + "/record"),
+            function (data, textStatus, jqXHR) {
+                $("#student-schoolid").val(data.schoolId || BLANK);
+                $("#student-hsgpa").val(data.highSchoolGpa || BLANK);
+                $("#student-act").val(data.actScore || BLANK);
+                $("#student-sat-verbal").val(data.satVerbalScore || BLANK);
+                $("#student-sat-math").val(data.satMathScore || BLANK);
+                $("#student-sat-writing").val(data.satWritingScore || BLANK);
+                $("#student-gpa").val(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
+                $("#student-status").val(data.academicStatus || BLANK);
+
+                // Grade information.
+                Headmaster.loadArrayIntoTable(
+                    data.grades, "student-grades", "student-grades-empty",
+                    function (gpa) {
+                        return $("<tr></tr>")
+                            .append($("<td></td>").text(gpa.term + " " + gpa.year))
+                            .append($("<td></td>").text(gpa.gpa.toFixed(2)))
+
+                            // Save the actual object as data on that row.
+                            .data("gpa", gpa);
+                    }
+                );
+
+                canEditStudentRecord = true;
+            }
+        ).error(function (jqXHR, textStatus, errorThrown) {
+            // On error, hide the expected fields.
+            // TODO The only "routine" error should be receipt of FORBIDDEN. If
+            // anything else is encountered, it would be good to inform the user
+            // that something else is amiss.
+            $("#student-schoolid").parent().parent().hide();
+            $("#student-hsgpa").parent().parent().hide();
+            $("#student-act").parent().parent().hide();
+            $("#student-sat-verbal").parent().parent().hide();
+            $("#student-sat-math").parent().parent().hide();
+            $("#student-sat-writing").parent().parent().hide();
+            $("#student-gpa").parent().parent().hide();
+            $("#student-status").parent().parent().hide();
+            $("#student-grades-container").parent().hide();
+
+            canEditStudentRecord = false;
+        });
     } else {
         // When there is no id, we update the dependent elements and clear out the lists.
         // Update dependent elements in the case that there is no id.
@@ -485,76 +517,79 @@ $(function () {
     $("#student-save").click(function (event) {
         // Grab the data from the web page.
         var studentData = {
-            id: studentId,
+                id: studentId,
 
-            // Student name and graduation year.
-            firstName: $("#student-firstname").val(),
-            middleName: $("#student-middlename").val(),
-            lastName: $("#student-lastname").val(),
-            expectedGraduationYear: $("#student-gradyear").val(),
-            active: Headmaster.isChecked("student-active"),
+                // Student name and graduation year.
+                firstName: $("#student-firstname").val(),
+                middleName: $("#student-middlename").val(),
+                lastName: $("#student-lastname").val(),
+                expectedGraduationYear: $("#student-gradyear").val(),
+                active: Headmaster.isChecked("student-active"),
+    
+                // Contact information.
+                primaryEmail: $("#student-email1").val(),
+                secondaryEmail: $("#student-email2").val(),
+                campusBox: $("#student-campus-box").val(),
+                address: $("#student-address").val(),
+                city: $("#student-city").val(),
+                state: $("#student-state").val(),
+                zip: $("#student-zip").val(),
+                mainPhone: $("#student-phone-main").val(),
+                cellPhone: $("#student-phone-cell").val(),
 
-            // Contact information.
-            primaryEmail: $("#student-email1").val(),
-            secondaryEmail: $("#student-email2").val(),
-            schoolId: $("#student-schoolid").val(),
-            campusBox: $("#student-campus-box").val(),
-            address: $("#student-address").val(),
-            city: $("#student-city").val(),
-            state: $("#student-state").val(),
-            zip: $("#student-zip").val(),
-            mainPhone: $("#student-phone-main").val(),
-            cellPhone: $("#student-phone-cell").val(),
+                // Academic information.
+                advisor: $("#student-advisor").val(),
 
-            // Academic information.
-            advisor: $("#student-advisor").val(),
-            cumulativeGpa: $("#student-gpa").val(),
-            academicStatus: $("#student-status").val(),
+                // Majors and minors (to be gathered later).
+                majors: [],
+                minors: [],
 
-            // Majors and minors (to be gathered later).
-            majors: [],
-            minors: [],
+                // Status information.
+                compactSigned: Headmaster.isChecked("student-compact-yes"),
+                inLivingLearningCommunity: Headmaster.isChecked("student-inllc-yes"),
+                transferStudent: Headmaster.isChecked("student-transfer-yes"),
+                hasStudiedAbroad: Headmaster.isChecked("student-studyabroad-yes"),
+                residencyCode: $("#student-residencycode").val(),
 
-            // Status information.
-            compactSigned: Headmaster.isChecked("student-compact-yes"),
-            inLivingLearningCommunity: Headmaster.isChecked("student-inllc-yes"),
-            transferStudent: Headmaster.isChecked("student-transfer-yes"),
-            hasStudiedAbroad: Headmaster.isChecked("student-studyabroad-yes"),
-            residencyCode: $("#student-residencycode").val(),
+                // Demographics information.
+                sex: Headmaster.isChecked("student-sex-female") ? "FEMALE" : "MALE",
+                raceOrEthnicity: $("#student-raceorethnicity").val(),
 
-            // Demographics information.
-            sex: Headmaster.isChecked("student-sex-female") ? "FEMALE" : "MALE",
-            raceOrEthnicity: $("#student-raceorethnicity").val(),
+                // Entry information.
+                entryYear: $("#student-entryyear").val(),
+                honorsEntryDate: Date.parse($("#student-honorsentrydate").val()),
+                scholarship: $("#student-scholarship").val(),
 
-            // Entry information.
-            entryYear: $("#student-entryyear").val(),
-            honorsEntryDate: Date.parse($("#student-honorsentrydate").val()),
-            highSchoolGpa: $("#student-hsgpa").val(),
-            actScore: $("#student-act").val(),
-            satVerbalScore: $("#student-sat-verbal").val(),
-            satMathScore: $("#student-sat-math").val(),
-            satWritingScore: $("#student-sat-writing").val(),
-            scholarship: $("#student-scholarship").val(),
+                // Notes.
+                notes: $("#student-notes").val(),
 
-            // Notes.
-            notes: $("#student-notes").val(),
+                // Thesis information.
+                thesisTitle: $("#student-thesis-title").val(),
+                thesisTerm: Headmaster.isChecked("student-thesis-term-fall") ? "FALL" :
+                        (Headmaster.isChecked("student-thesis-term-spring") ? "SPRING" : null),
+                thesisYear: $("#student-thesis-year").val(),
+                thesisAdvisor: $("#student-thesis-advisor").val(),
+                thesisInMajor: Headmaster.isChecked("student-thesis-inmajor-yes") ? true :
+                        (Headmaster.isChecked("student-thesis-inmajor-no") ? false : null),
+                thesisCourse: $("#student-thesis-course").val(),
+                thesisSubmissionDate: Headmaster.isChecked("student-thesis-submitted-yes") ?
+                        Date.parse($("#student-thesis-submissiondate").val()) : null,
+                thesisNotes: $("#student-thesis-notes").val()
+            },
 
-            // Grades (to be gathered later).
-            grades: [],
+            studentRecord = canEditStudentRecord ? {
+                schoolId: $("#student-schoolid").val(),
+                cumulativeGpa: $("#student-gpa").val(),
+                academicStatus: $("#student-status").val(),
+                highSchoolGpa: $("#student-hsgpa").val(),
+                actScore: $("#student-act").val(),
+                satVerbalScore: $("#student-sat-verbal").val(),
+                satMathScore: $("#student-sat-math").val(),
+                satWritingScore: $("#student-sat-writing").val(),
 
-            // Thesis information.
-            thesisTitle: $("#student-thesis-title").val(),
-            thesisTerm: Headmaster.isChecked("student-thesis-term-fall") ? "FALL" :
-                    (Headmaster.isChecked("student-thesis-term-spring") ? "SPRING" : null),
-            thesisYear: $("#student-thesis-year").val(),
-            thesisAdvisor: $("#student-thesis-advisor").val(),
-            thesisInMajor: Headmaster.isChecked("student-thesis-inmajor-yes") ? true :
-                    (Headmaster.isChecked("student-thesis-inmajor-no") ? false : null),
-            thesisCourse: $("#student-thesis-course").val(),
-            thesisSubmissionDate: Headmaster.isChecked("student-thesis-submitted-yes") ?
-                    Date.parse($("#student-thesis-submissiondate").val()) : null,
-            thesisNotes: $("#student-thesis-notes").val()
-        };
+                // Grades (to be gathered later).
+                grades: [],
+            } : null;
 
         // Gather array data. Empty arrays don't travel well, though, so
         // we eliminate those.
@@ -572,12 +607,15 @@ $(function () {
             }
         );
 
-        Headmaster.loadTableIntoArray(
-            studentData, "grades", $("#student-grades > tbody > tr"),
-            function (tr) {
-                return $(tr).data("gpa");
-            }
-        );
+        // Grade loading is conditional.
+        if (canEditStudentRecord) {
+            Headmaster.loadTableIntoArray(
+                studentRecord, "grades", $("#student-grades > tbody > tr"),
+                function (tr) {
+                    return $(tr).data("gpa");
+                }
+            );
+        }
 
         // Ditch the id attribute if it is empty.
         if (!studentData.id) {
@@ -589,12 +627,32 @@ $(function () {
             Headmaster.dateToDateString(studentData, propertyName);
         });
 
-        // Ajax call.
+        // Ajax call(s).  We do the student record put synchronously in case this is a new
+        // student (in which case we want to be certain that the addition succeeded before
+        // proceeding with the student record portion).
         $.ajax({
             type: studentData.id ? "PUT" : "POST",
             url: Headmaster.serviceUri("students" + (studentData.id ? "/" + studentData.id : "")),
             data: JSON.stringify(studentData),
+            contentType: "application/json",
+            dataType: "json",
+
             success: function (data, textStatus, jqXHR) {
+                var resultId = studentId || jqXHR.getResponseHeader("Location").split("/").pop();
+
+                // Now for the student record, if applicable.
+                if (canEditStudentRecord) {
+                    $.ajax({
+                        type: "PUT",
+                        url: Headmaster.serviceUri("students/" + resultId + "/record"),
+                        data: JSON.stringify(studentRecord),
+                        contentType: "application/json",
+                        dataType: "json",
+                        async: false
+                    });
+                }
+
+                // Provide visible UI feedback.
                 $("#student-success").fadeIn();
 
                 // If there is no studentId, then we are creating students,
@@ -603,7 +661,7 @@ $(function () {
                 if (!studentId) {
                     $("input, textarea").val("");
                     $("#student-new-link")
-                        .attr({ href: jqXHR.getResponseHeader("Location").split("/").pop() })
+                        .attr({ href: resultId })
                         .fadeIn();
                 } else {
                     location = "../" + studentId;
@@ -613,9 +671,7 @@ $(function () {
                 setTimeout(function () {
                     $("#student-new-link, #student-success").fadeOut();
                 }, 5000);
-            },
-            contentType: "application/json",
-            dataType: "json"
+            }
         });
 
         event.preventDefault();
