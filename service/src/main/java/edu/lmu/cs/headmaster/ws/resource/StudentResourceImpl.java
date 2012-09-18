@@ -61,7 +61,7 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         }
 
         return studentDao.getStudents(
-            query != null ? preprocessQuery(query, skip, max, 0, 50) : null,
+            query != null ? preprocessQuery(query, skip, max, 0, 100) : null,
             active, expectedGraduationYearFrom, expectedGraduationYearTo, skip, max
         );
     }
