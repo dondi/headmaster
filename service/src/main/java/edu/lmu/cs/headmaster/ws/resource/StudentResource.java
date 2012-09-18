@@ -106,7 +106,7 @@ public interface StudentResource {
      */
     @GET
     @Path("{id}/record")
-    @RolesAllowed({ "headmaster", "FACULTY", "STAFF" })
+    @RolesAllowed({ "headmaster", "faculty", "staff" })
     StudentRecord getStudentRecordById(@PathParam("id") Long id);
 
     /**
@@ -114,7 +114,7 @@ public interface StudentResource {
      */
     @PUT
     @Path("{id}/record")
-    @RolesAllowed({ "HEADMASTER", "FACULTY", "STAFF" })
+    @RolesAllowed({ "headmaster", "faculty", "staff" })
     Response updateStudentRecord(@PathParam("id") Long id, StudentRecord studentRecord);
 
 }
