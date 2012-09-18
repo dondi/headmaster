@@ -84,7 +84,6 @@ $(function () {
             // Contact information.
             $("#student-email1").append(getEmailElement(data.primaryEmail));
             $("#student-email2").append(getEmailElement(data.secondaryEmail));
-            $("#student-schoolid").text(data.schoolId || BLANK);
             $("#student-campus-box").text(data.campusBox || BLANK);
             $("#student-address").text(data.address || BLANK);
             $("#student-city").text(data.city || BLANK);
@@ -95,8 +94,6 @@ $(function () {
 
             // Academic information.
             $("#student-advisor").text(data.advisor || BLANK);
-            $("#student-gpa").text(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
-            $("#student-status").text(data.academicStatus || BLANK);
 
             // Majors and minors.
             Headmaster.loadArrayIntoTable(
@@ -131,25 +128,10 @@ $(function () {
             $("#student-entryyear").text(data.entryYear || BLANK);
             $("#student-honorsentrydate").text(data.honorsEntryDate ?
                     Date.parse(data.honorsEntryDate).toString(DATE_FORMAT) : BLANK);
-            $("#student-hsgpa").text(data.highSchoolGpa || BLANK);
-            $("#student-act").text(data.actScore || BLANK);
-            $("#student-sat-verbal").text(data.satVerbalScore || BLANK);
-            $("#student-sat-math").text(data.satMathScore || BLANK);
-            $("#student-sat-writing").text(data.satWritingScore || BLANK);
             $("#student-scholarship").text(data.scholarship || BLANK);
 
             // Notes.
             $("#student-notes").text(data.notes || UNSPECIFIED);
-
-            // Grade information.
-            Headmaster.loadArrayIntoTable(
-                data.grades, "student-grades", "student-grades-empty",
-                function (gpa) {
-                    return $("<tr></tr>")
-                        .append($("<td></td>").text(gpa.term + " " + gpa.year))
-                        .append($("<td></td>").text(gpa.gpa.toFixed(2)));
-                }
-            );
 
             // Thesis information.
             $("#student-thesis-title").text(data.thesisTitle || UNSPECIFIED);
@@ -171,4 +153,48 @@ $(function () {
             $("#student-thesis-notes").text(data.thesisNotes || UNSPECIFIED);
         }
     );
+
+    // Load up the student's privileged information. Here, we attempt to load
+    // the student record object. If we get FORBIDDEN, we conclude that the
+    // current user is not allowed to see the student record and thus hide the
+    // view elements for them. This can be done asynchronously because they
+    // affect a separate set of elements.
+    $.getJSON(
+        Headmaster.serviceUri("students/" + studentId + "/record"),
+        function (data, textStatus, jqXHR) {
+            $("#student-schoolid").text(data.schoolId || BLANK);
+            $("#student-hsgpa").text(data.highSchoolGpa || BLANK);
+            $("#student-act").text(data.actScore || BLANK);
+            $("#student-sat-verbal").text(data.satVerbalScore || BLANK);
+            $("#student-sat-math").text(data.satMathScore || BLANK);
+            $("#student-sat-writing").text(data.satWritingScore || BLANK);
+            $("#student-gpa").text(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
+            $("#student-status").text(data.academicStatus || BLANK);
+
+            // Grade information.
+            Headmaster.loadArrayIntoTable(
+                data.grades, "student-grades", "student-grades-empty",
+                function (gpa) {
+                    return $("<tr></tr>")
+                        .append($("<td></td>").text(gpa.term + " " + gpa.year))
+                        .append($("<td></td>").text(gpa.gpa.toFixed(2)));
+                }
+            );
+        }
+    ).error(function (jqXHR, textStatus, errorThrown) {
+        // On error, hide the expected fields.
+        // TODO The only "routine" error should be receipt of FORBIDDEN. If
+        // anything else is encountered, it would be good to inform the user
+        // that something else is amiss.
+        $("#student-schoolid").parent().parent().hide();
+        $("#student-hsgpa").parent().parent().hide();
+        $("#student-act").parent().parent().hide();
+        $("#student-sat-verbal").parent().parent().hide();
+        $("#student-sat-math").parent().parent().hide();
+        $("#student-sat-writing").parent().parent().hide();
+        $("#student-gpa").parent().parent().hide();
+        $("#student-status").parent().parent().hide();
+        $("#student-grades-container").parent().hide();
+    });
+
 });
