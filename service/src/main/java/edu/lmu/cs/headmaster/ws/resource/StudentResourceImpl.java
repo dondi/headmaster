@@ -84,6 +84,12 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         // The student IDs should match.
         validate(id.equals(student.getId()), Response.Status.BAD_REQUEST, STUDENT_INCONSISTENT);
 
+        // The student record does not travel with the incoming student, so we set it here.
+        Student currentStudent = studentDao.getStudentById(id);
+        if (currentStudent != null) {
+            student.setRecord(currentStudent.getRecord());
+        }
+
         // Dao problems will filter up as exceptions.
         studentDao.createOrUpdateStudent(student);
         return Response.noContent().build();
