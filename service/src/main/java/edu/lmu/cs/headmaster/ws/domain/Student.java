@@ -24,6 +24,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import edu.lmu.cs.headmaster.ws.types.FoodPreference;
 import edu.lmu.cs.headmaster.ws.types.ResidencyCode;
 import edu.lmu.cs.headmaster.ws.types.Sex;
 import edu.lmu.cs.headmaster.ws.types.Term;
@@ -76,6 +77,7 @@ public class Student {
     private List<Event> attendance = new ArrayList<Event>();
     private List<Grant> grants = new ArrayList<Grant>();
     private StudentRecord record = new StudentRecord();
+    private FoodPreference foodPreference;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -442,5 +444,13 @@ public class Student {
     public void setRecord(StudentRecord record) {
         this.record = record;
     }
+
+	public FoodPreference getFoodPreference() {
+		return foodPreference;
+	}
+
+	public void setFoodPreference(FoodPreference foodPreference) {
+		this.foodPreference = foodPreference;
+	}
 
 }
