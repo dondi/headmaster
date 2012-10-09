@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.types.Term;
 
 /**
  * Simple dao for student domain objects.
@@ -61,5 +62,8 @@ public interface StudentDao {
      * Updates or saves the given student, which should have a non-null id.
      */
     void createOrUpdateStudent(Student student);
+    
+    List<Student> getStudentsByGpa(Double minCumGpa, Double maxCumGpa,
+            Double minTermGpa, Double maxTermGpa, Term term, Integer year, int skip, int max);
 
 }

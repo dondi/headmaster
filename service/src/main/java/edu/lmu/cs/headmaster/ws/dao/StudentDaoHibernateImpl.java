@@ -9,6 +9,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import edu.lmu.cs.headmaster.ws.dao.util.QueryBuilder;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.types.Term;
 
 /**
  * Hibernate implementation of the student dao.
@@ -107,6 +108,38 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
         // majors over time, but for now that is better than database exceptions
         // due to violation of unique constraints.
         getHibernateTemplate().saveOrUpdate(student);
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Student> getStudentsByGpa(Double minCumGpa, Double maxCumGpa,
+            Double minTermGpa, Double maxTermGpa, Term term, Integer year,
+            int skip, int max) {
+        return createStudentQueryByGpa(minCumGpa, maxCumGpa,
+                minTermGpa, maxTermGpa, term, year)
+            .build(getSession())
+            .setFirstResult(skip)
+            .setMaxResults(max)
+            .list();
+    }
+    
+    private QueryBuilder createStudentQueryByGpa(Double minCumGpa, Double maxCumGpa,
+            Double minTermGpa, Double maxTermGpa, Term term, Integer year) {
+        // The desired return order is lastName, firstName.
+        QueryBuilder builder = new QueryBuilder(
+            "from Student s",
+            "order by lower(s.lastName), lower(s.firstName)"
+        );
+        
+        if (minCumGpa != null) {
+            builder.clause("s.record.cumulativeGpa >= :maxCumGpa", minCumGpa);
+        }
+        
+        if (maxCumGpa != null) {
+            builder.clause("s.record.cumulativeGpa <= :maxCumGpa", maxCumGpa);
+        }
+        
+        return builder;
     }
 
     /**
