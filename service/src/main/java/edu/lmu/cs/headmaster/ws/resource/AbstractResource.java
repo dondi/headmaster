@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
+import edu.lmu.cs.headmaster.ws.dao.GrantDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
