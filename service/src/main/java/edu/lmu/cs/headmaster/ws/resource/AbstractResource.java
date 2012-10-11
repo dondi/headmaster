@@ -56,10 +56,6 @@ public class AbstractResource {
         this.userDao = userDao;
     }
 
-    public AbstractResource() {
-        // TODO Auto-generated constructor stub
-    }
-
     /**
      * Checks that a condition is true and throws a <code>ServiceException</code> with the given
      * integer HTTP response code if it is not.  Example:

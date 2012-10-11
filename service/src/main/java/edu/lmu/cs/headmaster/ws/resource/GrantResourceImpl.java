@@ -9,6 +9,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.dao.GrantDao;
+import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
 
 @Path("/grants")
@@ -16,7 +17,8 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
     
     private GrantDao grantDao;
     
-    public GrantResourceImpl(GrantDao grantDao) {
+    public GrantResourceImpl(UserDao userDao, GrantDao grantDao) {
+        super(userDao);
         this.grantDao = grantDao;
     }
 
