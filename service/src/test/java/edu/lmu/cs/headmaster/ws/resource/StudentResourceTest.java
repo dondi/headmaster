@@ -84,7 +84,7 @@ public class StudentResourceTest extends ResourceTest {
         Assert.assertEquals("Berners-Lee", student.getLastName());
         Assert.assertEquals("Tim", student.getFirstName());
         Assert.assertEquals(Integer.valueOf(2016), student.getExpectedGraduationYear());
-
+        
         // The text fixture data has some empty values.
         Assert.assertNull(student.getMiddleName());
         Assert.assertNull(student.getEntryYear());
@@ -93,6 +93,22 @@ public class StudentResourceTest extends ResourceTest {
         // Grant and event data do not come along for the ride.
         Assert.assertEquals(0, student.getGrants().size());
         Assert.assertEquals(0, student.getAttendance().size());
+    }
+    
+    @Test
+    public void testTransferStudent(){
+    	// Grab five test fixture students.
+    	Student stud0 = wr.path("students/1000000").get(Student.class);
+    	Student stud1 = wr.path("students/1000001").get(Student.class);
+    	Student stud2 = wr.path("students/1000002").get(Student.class);
+    	Student stud3 = wr.path("students/1000003").get(Student.class);
+    	Student stud4 = wr.path("students/1000004").get(Student.class);
+    	Assert.assertEquals(true, stud0.isTransferStudent());
+    	Assert.assertEquals(false, stud1.isTransferStudent());
+    	Assert.assertEquals(true, stud2.isTransferStudent());
+    	Assert.assertEquals(false, stud3.isTransferStudent());
+    	Assert.assertEquals(true, stud4.isTransferStudent());
+    	
     }
 
     @Test

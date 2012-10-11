@@ -34,7 +34,7 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
     @Override
     public List<Student> getStudents(String query, Boolean active, ClassYear classYear,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            int skip, int max) {
+            int skip, int max, Boolean transferStudent) {
         logServiceCall();
 
         // classYear is mutually exclusive with (expectedGraduationYearFrom,
@@ -62,7 +62,7 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
 
         return studentDao.getStudents(
             query != null ? preprocessQuery(query, skip, max, 0, 100) : null,
-            active, expectedGraduationYearFrom, expectedGraduationYearTo, skip, max
+            active, expectedGraduationYearFrom, expectedGraduationYearTo, skip, max, transferStudent
         );
     }
 
