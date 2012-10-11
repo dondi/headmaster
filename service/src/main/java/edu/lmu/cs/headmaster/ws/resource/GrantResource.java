@@ -30,7 +30,6 @@ public interface GrantResource {
     String GRANT_OVERSPECIFIED = "grant.overspecified";
     String GRANT_INCONSISTENT = "grant.inconsistent";
     String GRANT_NOT_FOUND = "grant.not.found";
-    String GRANT_QUERY_PARAMETERS_BAD = "grant.query.parameters.bad";
 
     /**
      * Returns grants according to the search parameters

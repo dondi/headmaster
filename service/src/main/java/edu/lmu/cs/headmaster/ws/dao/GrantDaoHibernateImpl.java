@@ -14,7 +14,7 @@ public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantD
     // Search patterns
     private static final Pattern ALL_DIGITS = Pattern.compile("\\d+");
     private static final Pattern WORD = Pattern.compile("\\w+");
-
+    
     @Override
     public Grant getGrantById(Long id) {
         return getHibernateTemplate().get(Grant.class, id);
@@ -57,7 +57,6 @@ public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantD
 
         if (query != null) {
             Matcher m = WORD.matcher(query);
-            // TODO: make applicable
             if (m.matches()) {
                 builder.clause("lower(g.title) like lower(:title)", m.group(1) + "%");
             } else {
