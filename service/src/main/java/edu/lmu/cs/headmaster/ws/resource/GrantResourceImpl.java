@@ -23,11 +23,8 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
     }
 
     @Override
-    public List<Grant> getGrants(@QueryParam("q") String query,
-            @QueryParam("awarded") @DefaultValue("true") Boolean awarded,
-            @QueryParam("presented") @DefaultValue("true") Boolean presented,
-            @QueryParam("skip") @DefaultValue("0") int skip,
-            @QueryParam("max") @DefaultValue("100") int max) {
+    public List<Grant> getGrants(String query, Boolean awarded, Boolean presented,
+            int skip, int max) {
         logServiceCall();
         
         validate(query != null, Response.Status.BAD_REQUEST, QUERY_REQUIRED);
@@ -45,7 +42,7 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
     }
 
     @Override
-    public Response createOrUpdateGrant(@PathParam("id") Long id, Grant grant) {
+    public Response createOrUpdateGrant(Long id, Grant grant) {
         logServiceCall();
         
         validate(id.equals(grant.getId()), Response.Status.BAD_REQUEST, GRANT_INCONSISTENT);
@@ -56,7 +53,7 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
     }
 
     @Override
-    public Grant getGrantById(@PathParam("id") Long id) {
+    public Grant getGrantById(Long id) {
         logServiceCall();
         
         Grant grant = grantDao.getGrantById(id);

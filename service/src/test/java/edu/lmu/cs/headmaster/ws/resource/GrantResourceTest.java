@@ -21,12 +21,11 @@ public class GrantResourceTest extends ResourceTest {
     
     @Test
     public void testGetGrantById() {
-        /*Grant grant = wr.path("grants/1000000").get(Grant.class);
+        Grant grant = wr.path("grants/1000000").get(ClientResponse.class).getEntity(Grant.class);
         Assert.assertEquals(Long.valueOf(1000000L), grant.getId());
         Assert.assertEquals(Integer.valueOf(10000), grant.getAmount());
         Assert.assertEquals("Leonard Kleinrock", grant.getFacultyMentor());
-        Assert.assertEquals("The Worldwide Web", grant.getTitle());*/
-        System.out.println("\n\n\n\n\n\n\n\n" + "yo!" + "\n\n\n\n\n\n\n\n");
+        Assert.assertEquals("The Worldwide Web", grant.getTitle());
     }
 
 }
