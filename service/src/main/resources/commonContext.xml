@@ -57,6 +57,11 @@
         <constructor-arg ref="eventDao"/>
     </bean>
 
+    <bean id="grantResource"
+        class="edu.lmu.cs.headmaster.ws.resource.GrantResourceImpl">
+        <constructor-arg ref="grantDao"/>
+    </bean>
+
     <bean id="termResource"
         class="edu.lmu.cs.headmaster.ws.resource.TermResourceImpl">
         <constructor-arg ref="userDao"/>
@@ -75,6 +80,11 @@
 
     <bean id="eventDaoImpl"
         class="edu.lmu.cs.headmaster.ws.dao.EventDaoHibernateImpl"
+        autowire="byName"
+    />
+
+    <bean id="grantDaoImpl"
+        class="edu.lmu.cs.headmaster.ws.dao.GrantDaoHibernateImpl"
         autowire="byName"
     />
 
@@ -100,6 +110,19 @@
             <list>
                 <value>hibernateInterceptor</value>
                 <value>studentDaoImpl</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="grantDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>edu.lmu.cs.headmaster.ws.dao.GrantDao</value>
+        </property>
+
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+                <value>grantDaoImpl</value>
             </list>
         </property>
     </bean>
