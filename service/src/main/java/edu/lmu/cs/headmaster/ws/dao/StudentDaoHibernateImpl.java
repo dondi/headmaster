@@ -28,9 +28,9 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     @SuppressWarnings("unchecked")
     public List<Student> getStudents(String query, Boolean active,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            int skip, int max) {
+            int skip, int max, Boolean transferStudent) {
         return createStudentQuery(query, active,
-                expectedGraduationYearFrom, expectedGraduationYearTo)
+                expectedGraduationYearFrom, expectedGraduationYearTo, transferStudent)
             .build(getSession())
             .setFirstResult(skip)
             .setMaxResults(max)
@@ -114,7 +114,7 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
      * for students.
      */
     private QueryBuilder createStudentQuery(String query, Boolean active,
-            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo) {
+            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo, Boolean transferStudent) {
         // The desired return order is lastName, firstName.
         QueryBuilder builder = new QueryBuilder(
             "from Student s",
@@ -146,6 +146,9 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
 
         if (expectedGraduationYearTo != null) {
             builder.clause("s.expectedGraduationYear <= :gradYearTo", expectedGraduationYearTo);
+        }
+        if (transferStudent != null) {
+            builder.clause("s.transferStudent = :transferStudent", transferStudent);
         }
 
         // All done.
