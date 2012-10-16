@@ -76,6 +76,7 @@ public class Student {
     private List<Event> attendance = new ArrayList<Event>();
     private List<Grant> grants = new ArrayList<Grant>();
     private StudentRecord record = new StudentRecord();
+    private List<String> foodPreference = new ArrayList<String>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -442,5 +443,17 @@ public class Student {
     public void setRecord(StudentRecord record) {
         this.record = record;
     }
+
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @Lob
+    @OrderColumn
+	public List<String> getFoodPreference() {
+		return foodPreference;
+	}
+
+	public void setFoodPreference(List<String> foodPreference) {
+		this.foodPreference = foodPreference;
+	}
 
 }
