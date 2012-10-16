@@ -6,7 +6,9 @@ $(function () {
          * cumulative email list.
          */
         getEmailElement = function (email) {
-            addressList += (addressList ? "," : "") + email;
+            addressList += (addressList ?
+                    ((navigator.platform.toUpperCase().indexOf("WIN") !== -1) ? ";" : ",")
+                    : "") + email;
             return Headmaster.getEmailElement(email).addClass("email");
         },
 

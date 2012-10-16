@@ -1,0 +1,2 @@
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 4562) running in data directory "/home/sam/db_dir"?
