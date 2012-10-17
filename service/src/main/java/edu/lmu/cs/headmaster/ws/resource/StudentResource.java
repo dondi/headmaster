@@ -41,7 +41,6 @@ public interface StudentResource {
      * @param query the query
      * @param skip the number of initial results to skip
      * @param max the maximum number of results to display
-     * 
      * @return the (paginated) set of students matching the query parameters
      */
     @GET
@@ -50,9 +49,9 @@ public interface StudentResource {
             @QueryParam("class") ClassYear classYear,
             @QueryParam("classFrom") Integer expectedGraduationYearFrom,
             @QueryParam("classTo") Integer expectedGraduationYearTo,
+            @QueryParam("transferStudent") Boolean transferStudent,
             @QueryParam("skip") @DefaultValue("0") int skip,
-            @QueryParam("max") @DefaultValue("100") int max,
-            @QueryParam("transferStudent") @DefaultValue("false") Boolean transferStudent);
+            @QueryParam("max") @DefaultValue("100") int max);
 
     /**
      * Creates a student for which the server will generate the id.

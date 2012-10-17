@@ -92,11 +92,11 @@ public class StudentDaoTest extends ApplicationContextTest {
     public void testGetStudentsByLastName() {
         // When without commas and not all-digits, the student query is hits on
         // "last name starts with query," case insensitive.
-        List<Student> students = studentDao.getStudents("cer", null, null, null, 0, 10, null);
+        List<Student> students = studentDao.getStudents("cer", null, null, null, null, 0, 10);
         Assert.assertEquals(1, students.size());
         Assert.assertEquals(Long.valueOf(1000001L), students.get(0).getId());
 
-        students = studentDao.getStudents("k", null, null, null, 0, 10, null);
+        students = studentDao.getStudents("k", null, null, null, null, 0, 10);
         Assert.assertEquals(2, students.size());
  
         // Search results are sorted by last name, first name.
@@ -106,7 +106,7 @@ public class StudentDaoTest extends ApplicationContextTest {
 
     @Test
     public void testGetActiveStudents() {
-        List<Student> students = studentDao.getStudents(null, Boolean.TRUE, null, null, 0, 10, null);
+        List<Student> students = studentDao.getStudents(null, Boolean.TRUE, null, null, null, 0, 10);
         Assert.assertEquals(3, students.size());
 
         // Search results are sorted by last name, first name.
@@ -117,7 +117,7 @@ public class StudentDaoTest extends ApplicationContextTest {
 
     @Test
     public void testGetInactiveStudents() {
-        List<Student> students = studentDao.getStudents(null, Boolean.FALSE, null, null, 0, 10, null);
+        List<Student> students = studentDao.getStudents(null, Boolean.FALSE, null, null, null, 0, 10);
         Assert.assertEquals(2, students.size());
 
         // Search results are sorted by last name, first name.
@@ -127,7 +127,7 @@ public class StudentDaoTest extends ApplicationContextTest {
 
     @Test
     public void testGetTransferStudents() {
-        List<Student> students = studentDao.getStudents(null, null, null, null, 0, 10, Boolean.TRUE);
+        List<Student> students = studentDao.getStudents(null, null, null, null, Boolean.TRUE, 0, 10);
         Assert.assertEquals(3, students.size());
 
         // Search results are sorted by last name, first name.
@@ -138,7 +138,7 @@ public class StudentDaoTest extends ApplicationContextTest {
     
     @Test
     public void testGetNotTransferStudents() {
-        List<Student> students = studentDao.getStudents(null, null, null, null, 0, 10, Boolean.FALSE);
+        List<Student> students = studentDao.getStudents(null, null, null, null, Boolean.FALSE, 0, 10);
         Assert.assertEquals(2, students.size());
 
         // Search results are sorted by last name, first name.
@@ -148,7 +148,7 @@ public class StudentDaoTest extends ApplicationContextTest {
     
     @Test
     public void testGetStudentsBySpecificExpectedGraduationYear() {
-        List<Student> students = studentDao.getStudents(null, null, 2015, 2015, 0, 10, null);
+        List<Student> students = studentDao.getStudents(null, null, 2015, 2015, null, 0, 10);
         Assert.assertEquals(2, students.size());
 
         // Search results are sorted by last name, first name.

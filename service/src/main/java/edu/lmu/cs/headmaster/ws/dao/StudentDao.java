@@ -22,7 +22,7 @@ public interface StudentDao {
      */
     List<Student> getStudents(String query, Boolean active,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            int skip, int max, Boolean transferStudent);
+            Boolean transferStudent, int skip, int max);
 
     /**
      * Returns the events attended by the student with the given id.

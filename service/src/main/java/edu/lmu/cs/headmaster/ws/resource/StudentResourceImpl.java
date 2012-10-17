@@ -34,7 +34,7 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
     @Override
     public List<Student> getStudents(String query, Boolean active, ClassYear classYear,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            int skip, int max, Boolean transferStudent) {
+            Boolean transferStudent, int skip, int max) {
         logServiceCall();
 
         // classYear is mutually exclusive with (expectedGraduationYearFrom,
@@ -52,7 +52,8 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         // At least one of query, classYear, expectedGraduationYearFrom, or
         // expectedGraduationYearTo must be set.
         validate(query != null || classYear != null || expectedGraduationYearFrom != null ||
-                expectedGraduationYearTo != null, Response.Status.BAD_REQUEST, QUERY_REQUIRED);
+                expectedGraduationYearTo != null || transferStudent != null,
+                Response.Status.BAD_REQUEST, QUERY_REQUIRED);
 
         // The classYear parameter produces an expected graduation year.
         if (classYear != null) {
@@ -62,7 +63,7 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
 
         return studentDao.getStudents(
             query != null ? preprocessQuery(query, skip, max, 0, 100) : null,
-            active, expectedGraduationYearFrom, expectedGraduationYearTo, skip, max, transferStudent
+            active, expectedGraduationYearFrom, expectedGraduationYearTo, transferStudent, skip, max
         );
     }
 
