@@ -51,7 +51,8 @@ public interface StudentResource {
             @QueryParam("classFrom") Integer expectedGraduationYearFrom,
             @QueryParam("classTo") Integer expectedGraduationYearTo,
             @QueryParam("skip") @DefaultValue("0") int skip,
-            @QueryParam("max") @DefaultValue("100") int max);
+            @QueryParam("max") @DefaultValue("100") int max,
+            @QueryParam("transferStudent") @DefaultValue("false") Boolean transferStudent);
 
     /**
      * Creates a student for which the server will generate the id.
