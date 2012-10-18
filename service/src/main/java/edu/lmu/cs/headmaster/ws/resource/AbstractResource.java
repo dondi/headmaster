@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
+import edu.lmu.cs.headmaster.ws.types.Role;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
@@ -149,4 +150,12 @@ public class AbstractResource {
             throw new ServiceException(Response.Status.BAD_REQUEST, MALFORMED_ARGUMENT_DATE);
         }
     }
+    
+    protected void validateAdminCredentials() {
+        logger.debug("Checking for admin credentials.");
+        validate(securityContext.isUserInRole(Role.HEADMASTER.name()) || securityContext.isUserInRole(Role.FACULTY.name())
+                || securityContext.isUserInRole(Role.STAFF.name()), Response.Status.FORBIDDEN,
+                USER_FORBIDDEN);
+    }
+    
 }

@@ -87,16 +87,65 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertEquals("Mathematics", student.getMajors().get(1).getDiscipline());
         Assert.assertEquals("Music", student.getMinors().get(0));
     }
+    
+    @Test
+    public void testGetStudentByGpaWithOnlyMaximum() {
+        List<Student> students = studentDao.getStudents(null, null, null, null, null, 3.0, null, null, null, null, 0, 10);
+        Assert.assertEquals(2, students.size());
+        Assert.assertEquals(Long.valueOf(1000005), students.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000006), students.get(1).getId());
+    }
+    
+    @Test
+    public void testGetStudentByGpaWithOnlyMinimum() {
+        List<Student> students = studentDao.getStudents(null, null, null, null, 3.0, null, null, null, null, null, 0, 10);
+        Assert.assertEquals(3, students.size());
+        Assert.assertEquals(Long.valueOf(1000007), students.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000008), students.get(1).getId());
+        Assert.assertEquals(Long.valueOf(1000009), students.get(2).getId());
+    }
+    
+    @Test
+    public void testGetStudentByGpaBothMinimumAndMaximum() {
+        List<Student> students = studentDao.getStudents(null, null, null, null, 3.39, 3.91, null, null, null, null, 0, 10);
+        Assert.assertEquals(2, students.size());
+        Assert.assertEquals(Long.valueOf(1000008), students.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000009), students.get(1).getId());
+    }
 
+    @Test
+    public void testGetStudentByTermGpaMinimumOnly() {
+        List<Student> students = studentDao.getStudents(null, null, null, null, null, null, 3.0, null, Term.FALL, 2012, 0, 10);
+        Assert.assertEquals(3, students.size());
+        Assert.assertEquals("Turd", students.get(0).getFirstName());
+        Assert.assertEquals("Trevor", students.get(1).getFirstName());
+        Assert.assertEquals("Nestor", students.get(2).getFirstName());
+    }
+    
+    @Test
+    public void testGetStudentByTermGpaMaximumOnly() {
+        List<Student> students = studentDao.getStudents(null, null, null, null, null, null, null, 3.9, Term.FALL, 2012, 0, 10);
+        Assert.assertEquals(2, students.size());
+        Assert.assertEquals("Turd", students.get(0).getFirstName());
+        Assert.assertEquals("Trevor", students.get(1).getFirstName());
+    }
+    
+    @Test 
+    public void testGetStudentsByTermGpaMaxAndMin() {
+        List<Student> students = studentDao.getStudents(null, null, null, null, null, null, 3.7, 3.7, Term.FALL, 2012, 0, 10);
+        Assert.assertEquals(1, students.size());
+        Assert.assertEquals("Trevor", students.get(0).getFirstName());
+    }
+    
     @Test
     public void testGetStudentsByLastName() {
         // When without commas and not all-digits, the student query is hits on
         // "last name starts with query," case insensitive.
-        List<Student> students = studentDao.getStudents("cer", null, null, null, 0, 10);
+        List<Student> students = studentDao.getStudents("cer", null, null, null, null, null, null, null, null, null, 0, 10);
         Assert.assertEquals(1, students.size());
         Assert.assertEquals(Long.valueOf(1000001L), students.get(0).getId());
 
-        students = studentDao.getStudents("k", null, null, null, 0, 10);
+        students = studentDao.getStudents("k", null, null, null, null, null, null, null, null, null, 0, 10);
         Assert.assertEquals(2, students.size());
  
         // Search results are sorted by last name, first name.
@@ -106,18 +155,23 @@ public class StudentDaoTest extends ApplicationContextTest {
 
     @Test
     public void testGetActiveStudents() {
-        List<Student> students = studentDao.getStudents(null, Boolean.TRUE, null, null, 0, 10);
-        Assert.assertEquals(3, students.size());
+        List<Student> students = studentDao.getStudents(null, Boolean.TRUE, null, null, null, null, null, null, null, null, 0, 10);
+        Assert.assertEquals(8, students.size());
 
         // Search results are sorted by last name, first name.
         Assert.assertEquals(Long.valueOf(1000000L), students.get(0).getId());
-        Assert.assertEquals(Long.valueOf(1000004L), students.get(1).getId());
-        Assert.assertEquals(Long.valueOf(1000002L), students.get(2).getId());
+        Assert.assertEquals(Long.valueOf(1000005L), students.get(1).getId());
+        Assert.assertEquals(Long.valueOf(1000004L), students.get(2).getId());
+        Assert.assertEquals(Long.valueOf(1000002L), students.get(3).getId());
+        Assert.assertEquals(Long.valueOf(1000006L), students.get(4).getId());
+        Assert.assertEquals(Long.valueOf(1000007L), students.get(5).getId());
+        Assert.assertEquals(Long.valueOf(1000008L), students.get(6).getId());
+        Assert.assertEquals(Long.valueOf(1000009L), students.get(7).getId());
     }
 
     @Test
     public void testGetInactiveStudents() {
-        List<Student> students = studentDao.getStudents(null, Boolean.FALSE, null, null, 0, 10);
+        List<Student> students = studentDao.getStudents(null, Boolean.FALSE, null, null, null, null, null, null, null, null, 0, 10);
         Assert.assertEquals(2, students.size());
 
         // Search results are sorted by last name, first name.
@@ -127,7 +181,7 @@ public class StudentDaoTest extends ApplicationContextTest {
 
     @Test
     public void testGetStudentsBySpecificExpectedGraduationYear() {
-        List<Student> students = studentDao.getStudents(null, null, 2015, 2015, 0, 10);
+        List<Student> students = studentDao.getStudents(null, null, 2015, 2015, null, null, null, null, null, null, 0, 10);
         Assert.assertEquals(2, students.size());
 
         // Search results are sorted by last name, first name.

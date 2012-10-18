@@ -17,21 +17,17 @@ import edu.lmu.cs.headmaster.ws.resource.StringListMessageBodyProvider;
  * Base class for all other resource test classes to extend. It defines a shared
  * web resource object for subclass convenience.
  */
-public abstract class ResourceTest extends JerseyTest {
+public abstract class ResourceUnauthorizedUserTest extends JerseyTest {
 
     protected WebResource wr;
 
-    public ResourceTest() {
+    public ResourceUnauthorizedUserTest() {
         super();
         wr = resource();
     }
 
     @Override
     protected AppDescriptor configure() {
-        return configure("edu.lmu.cs.headmaster.ws.resource.SecurityContextContainerRequestFilter");
-    }
-
-    protected AppDescriptor configure(String securityContextClassName) {
         // The test web app descriptor nearly replicates web.xml except for the
         // Spring context and a container request filter.
         return new WebAppDescriptor.Builder("edu.lmu.cs.headmaster.ws.resource")
@@ -50,7 +46,7 @@ public abstract class ResourceTest extends JerseyTest {
             )
             .initParam(
                 "com.sun.jersey.spi.container.ContainerRequestFilters",
-                securityContextClassName
+                "edu.lmu.cs.headmaster.ws.resource.SecurityContextUnauthorizedUserContainerRequestFilter"
             )
             .contextPath("headmaster-test").build();
     }

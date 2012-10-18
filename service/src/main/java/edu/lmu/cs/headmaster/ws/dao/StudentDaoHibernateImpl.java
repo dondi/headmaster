@@ -29,9 +29,11 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
     @SuppressWarnings("unchecked")
     public List<Student> getStudents(String query, Boolean active,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            int skip, int max) {
+            Double minCumGpa, Double maxCumGpa, Double minTermGpa, 
+            Double maxTermGpa, Term term, Integer year, int skip, int max) {
         return createStudentQuery(query, active,
-                expectedGraduationYearFrom, expectedGraduationYearTo)
+                expectedGraduationYearFrom, expectedGraduationYearTo,
+                minCumGpa, maxCumGpa, minTermGpa, maxTermGpa, term, year)
             .build(getSession())
             .setFirstResult(skip)
             .setMaxResults(max)
@@ -109,51 +111,42 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
         // due to violation of unique constraints.
         getHibernateTemplate().saveOrUpdate(student);
     }
-    
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Student> getStudentsByGpa(Double minCumGpa, Double maxCumGpa,
-            Double minTermGpa, Double maxTermGpa, Term term, Integer year,
-            int skip, int max) {
-        return createStudentQueryByGpa(minCumGpa, maxCumGpa,
-                minTermGpa, maxTermGpa, term, year)
-            .build(getSession())
-            .setFirstResult(skip)
-            .setMaxResults(max)
-            .list();
-    }
-    
-    private QueryBuilder createStudentQueryByGpa(Double minCumGpa, Double maxCumGpa,
-            Double minTermGpa, Double maxTermGpa, Term term, Integer year) {
-        // The desired return order is lastName, firstName.
-        QueryBuilder builder = new QueryBuilder(
-            "from Student s",
-            "order by lower(s.lastName), lower(s.firstName)"
-        );
-        
-        if (minCumGpa != null) {
-            builder.clause("s.record.cumulativeGpa >= :maxCumGpa", minCumGpa);
-        }
-        
-        if (maxCumGpa != null) {
-            builder.clause("s.record.cumulativeGpa <= :maxCumGpa", maxCumGpa);
-        }
-        
-        return builder;
-    }
 
     /**
      * Returns a base HQL query object (no pagination) for the given parameters
      * for students.
      */
     private QueryBuilder createStudentQuery(String query, Boolean active,
-            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo) {
+            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo, 
+            Double minCumGpa, Double maxCumGpa, Double minTermGpa, Double maxTermGpa, Term term, Integer year) {
         // The desired return order is lastName, firstName.
         QueryBuilder builder = new QueryBuilder(
-            "from Student s",
-            "order by lower(s.lastName), lower(s.firstName)"
+                "select s from Student s",
+                "order by lower(s.lastName), lower(s.firstName)"
         );
-
+        
+        if (minTermGpa != null || maxTermGpa != null) {
+            builder.append(" join s.record.grades as sgrade");
+            builder.clause("sgrade.term = :term", term);
+            builder.clause("sgrade.year = :year", year);
+        }
+        
+        if (minTermGpa != null) {
+            builder.clause("sgrade.gpa >= :minTermGpa", minTermGpa);
+        }
+        
+        if (maxTermGpa != null) {
+            builder.clause("sgrade.gpa <= :maxTermGpa", maxTermGpa);
+        }
+        
+        if (minCumGpa != null) {
+            builder.clause("s.record.cumulativeGpa >= :minCumGpa", minCumGpa);
+        }
+        
+        if (maxCumGpa != null) {
+            builder.clause("s.record.cumulativeGpa <= :maxCumGpa", maxCumGpa);
+        }
+        
         if (query != null) {
             Matcher m = WORD_COMMA_WORD.matcher(query);
             if (m.matches()) {
@@ -180,7 +173,6 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
         if (expectedGraduationYearTo != null) {
             builder.clause("s.expectedGraduationYear <= :gradYearTo", expectedGraduationYearTo);
         }
-
         // All done.
         return builder;
     }

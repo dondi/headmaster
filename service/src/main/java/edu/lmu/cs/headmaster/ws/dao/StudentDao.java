@@ -23,7 +23,8 @@ public interface StudentDao {
      */
     List<Student> getStudents(String query, Boolean active,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            int skip, int max);
+            Double minCumGpa, Double maxCumGpa, Double minTermGpa, Double maxTermGpa, 
+            Term term, Integer year, int skip, int max);
 
     /**
      * Returns the events attended by the student with the given id.
@@ -62,8 +63,5 @@ public interface StudentDao {
      * Updates or saves the given student, which should have a non-null id.
      */
     void createOrUpdateStudent(Student student);
-    
-    List<Student> getStudentsByGpa(Double minCumGpa, Double maxCumGpa,
-            Double minTermGpa, Double maxTermGpa, Term term, Integer year, int skip, int max);
 
 }
