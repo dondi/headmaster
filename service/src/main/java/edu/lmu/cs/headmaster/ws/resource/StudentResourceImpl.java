@@ -58,7 +58,7 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         boolean isTermGpaQuery = minTermGpa != null || maxTermGpa != null;
         
         if (isCumulativeGpaQuery || isTermGpaQuery) {
-            validateAdminCredentials();
+            validatePrivilegedUserCredentials();
         }
         
         validate(

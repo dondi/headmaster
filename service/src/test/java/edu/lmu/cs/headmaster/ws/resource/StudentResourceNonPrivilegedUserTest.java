@@ -6,11 +6,11 @@ import org.junit.Test;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.test.framework.AppDescriptor;
 
-public class UnauthorizedUserResourceTest extends ResourceTest {
+public class StudentResourceNonPrivilegedUserTest extends ResourceTest {
 
     @Override
     protected AppDescriptor configure() {
-        return configure("edu.lmu.cs.headmaster.ws.resource.SecurityContextUnauthorizedUserContainerRequestFilter");
+        return configure("edu.lmu.cs.headmaster.ws.resource.SecurityContextNonPrivilegedUserContainerRequestFilter");
     }
     
     @Test

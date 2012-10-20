@@ -150,11 +150,15 @@ public class AbstractResource {
             throw new ServiceException(Response.Status.BAD_REQUEST, MALFORMED_ARGUMENT_DATE);
         }
     }
-    
-    protected void validateAdminCredentials() {
-        logger.debug("Checking for admin credentials.");
-        validate(securityContext.isUserInRole(Role.HEADMASTER.name()) || securityContext.isUserInRole(Role.FACULTY.name())
-                || securityContext.isUserInRole(Role.STAFF.name()), Response.Status.FORBIDDEN,
+
+    /**
+     * Checks whether the current user can see privileged information.
+     */
+    protected void validatePrivilegedUserCredentials() {
+        logger.debug("Checking for privileged user credentials.");
+        validate(securityContext.isUserInRole(Role.HEADMASTER.name()) ||
+                securityContext.isUserInRole(Role.FACULTY.name()) ||
+                securityContext.isUserInRole(Role.STAFF.name()), Response.Status.FORBIDDEN,
                 USER_FORBIDDEN);
     }
     
