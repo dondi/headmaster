@@ -17,33 +17,46 @@ public class SecurityContextContainerRequestFilter implements ContainerRequestFi
 
     @Override
     public ContainerRequest filter(ContainerRequest request) {
-        request.setSecurityContext(new SecurityContext() {
+        request.setSecurityContext(createSecurityContext());
+        return request;
+    }
+
+    /**
+     * Helper, override-able method for creating a security context.
+     */
+    protected SecurityContext createSecurityContext() {
+        return createSimpleSecurityContext("testuser", true, true, null);
+    }
+
+    /**
+     * Parameterized helper method for different kinds of [simple] security
+     * contexts.
+     */
+    protected SecurityContext createSimpleSecurityContext(final String username,
+            final boolean userInRole, final boolean secure, final String authenticationScheme) {
+        return new SecurityContext() {
 
             @Override
             public Principal getUserPrincipal() {
-                return new BasicUserPrincipal("testuser");
+                return new BasicUserPrincipal(username);
             }
 
             @Override
             public boolean isUserInRole(String role) {
                 // This user has every role.
-                return true;
+                return userInRole;
             }
 
             @Override
             public boolean isSecure() {
-                return true;
+                return secure;
             }
 
             @Override
             public String getAuthenticationScheme() {
-                // Doesn't matter for this test.
-                return null;
+                return authenticationScheme;
             }
             
-        });
-
-        return request;
+        };
     }
-
 }

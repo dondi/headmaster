@@ -31,6 +31,10 @@ public abstract class ResourceTest extends JerseyTest {
         return configure("edu.lmu.cs.headmaster.ws.resource.SecurityContextContainerRequestFilter");
     }
 
+    /**
+     * Parameterized configure method to allow for different types of resource
+     * tests.
+     */
     protected AppDescriptor configure(String securityContextClassName) {
         // The test web app descriptor nearly replicates web.xml except for the
         // Spring context and a container request filter.

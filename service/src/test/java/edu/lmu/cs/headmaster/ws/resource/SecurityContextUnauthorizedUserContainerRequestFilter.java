@@ -1,49 +1,17 @@
 package edu.lmu.cs.headmaster.ws.resource;
 
-import java.security.Principal;
-
 import javax.ws.rs.core.SecurityContext;
-
-import org.apache.http.auth.BasicUserPrincipal;
-
-import com.sun.jersey.spi.container.ContainerRequest;
-import com.sun.jersey.spi.container.ContainerRequestFilter;
 
 /**
  * A test-only container request filter for inserting a test security context into
- * a request.
+ * a request.  This version simulates a non-privileged user.
  */
-public class SecurityContextUnauthorizedUserContainerRequestFilter implements ContainerRequestFilter {
+public class SecurityContextUnauthorizedUserContainerRequestFilter
+        extends SecurityContextContainerRequestFilter {
 
     @Override
-    public ContainerRequest filter(ContainerRequest request) {
-        request.setSecurityContext(new SecurityContext() {
-
-            @Override
-            public Principal getUserPrincipal() {
-                return new BasicUserPrincipal("testuser");
-            }
-
-            @Override
-            public boolean isUserInRole(String role) {
-                // This user has every role.
-                return false;
-            }
-
-            @Override
-            public boolean isSecure() {
-                return true;
-            }
-
-            @Override
-            public String getAuthenticationScheme() {
-                // Doesn't matter for this test.
-                return null;
-            }
-            
-        });
-
-        return request;
+    protected SecurityContext createSecurityContext() {
+        return createSimpleSecurityContext("testuser", false, true, null);
     }
 
 }
