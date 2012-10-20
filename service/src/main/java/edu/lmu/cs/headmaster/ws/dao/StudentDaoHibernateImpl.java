@@ -9,6 +9,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import edu.lmu.cs.headmaster.ws.dao.util.QueryBuilder;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.types.Term;
 
 /**
  * Hibernate implementation of the student dao.
@@ -26,11 +27,14 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Student> getStudents(String query, Boolean active,
+    public List<Student> getStudents(String query, Boolean active, Boolean transferStudent,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            Boolean transferStudent, int skip, int max) {
-        return createStudentQuery(query, active,
-                expectedGraduationYearFrom, expectedGraduationYearTo, transferStudent)
+            Double minCumulativeGpa, Double maxCumulativeGpa,
+            Double minTermGpa, Double maxTermGpa,
+            Term term, Integer year, int skip, int max) {
+        return createStudentQuery(query, active, transferStudent,
+                expectedGraduationYearFrom, expectedGraduationYearTo,
+                minCumulativeGpa, maxCumulativeGpa, minTermGpa, maxTermGpa, term, year)
             .build(getSession())
             .setFirstResult(skip)
             .setMaxResults(max)
@@ -113,15 +117,38 @@ public class StudentDaoHibernateImpl extends HibernateDaoSupport implements Stud
      * Returns a base HQL query object (no pagination) for the given parameters
      * for students.
      */
-    private QueryBuilder createStudentQuery(String query, Boolean active,
-            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            Boolean transferStudent) {
+    private QueryBuilder createStudentQuery(String query, Boolean active, Boolean transferStudent,
+            Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo, 
+            Double minCumulativeGpa, Double maxCumulativeGpa,
+            Double minTermGpa, Double maxTermGpa, Term term, Integer year) {
         // The desired return order is lastName, firstName.
         QueryBuilder builder = new QueryBuilder(
-            "from Student s",
-            "order by lower(s.lastName), lower(s.firstName)"
+                "select s from Student s",
+                "order by lower(s.lastName), lower(s.firstName)"
         );
-
+        
+        if (minTermGpa != null || maxTermGpa != null) {
+            builder.append(" join s.record.grades as sgrade");
+            builder.clause("sgrade.term = :term", term);
+            builder.clause("sgrade.year = :year", year);
+        }
+        
+        if (minTermGpa != null) {
+            builder.clause("sgrade.gpa >= :minTermGpa", minTermGpa);
+        }
+        
+        if (maxTermGpa != null) {
+            builder.clause("sgrade.gpa <= :maxTermGpa", maxTermGpa);
+        }
+        
+        if (minCumulativeGpa != null) {
+            builder.clause("s.record.cumulativeGpa >= :minCumGpa", minCumulativeGpa);
+        }
+        
+        if (maxCumulativeGpa != null) {
+            builder.clause("s.record.cumulativeGpa <= :maxCumGpa", maxCumulativeGpa);
+        }
+        
         if (query != null) {
             Matcher m = WORD_COMMA_WORD.matcher(query);
             if (m.matches()) {

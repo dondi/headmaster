@@ -14,6 +14,7 @@ import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.domain.StudentRecord;
 import edu.lmu.cs.headmaster.ws.types.ClassYear;
+import edu.lmu.cs.headmaster.ws.types.Term;
 
 /**
  * The sole implementation of the student resource.
@@ -32,9 +33,12 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
     }
 
     @Override
-    public List<Student> getStudents(String query, Boolean active, ClassYear classYear,
+    public List<Student> getStudents(String query, Boolean active,
+            Boolean transferStudent, ClassYear classYear,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            Boolean transferStudent, int skip, int max) {
+            Double minCumulativeGpa, Double maxCumulativeGpa,
+            Double minTermGpa, Double maxTermGpa, 
+            Term term, Integer year, int skip, int max) {
         logServiceCall();
 
         // classYear is mutually exclusive with (expectedGraduationYearFrom,
@@ -48,11 +52,30 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
                                 expectedGraduationYearTo != null)),
             Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT
         );
-
-        // At least one of query, classYear, expectedGraduationYearFrom, or
-        // expectedGraduationYearTo must be set.
+        
+        // make sure cumulative gpa and term gpa queries are mutually exclusive
+        boolean isCumulativeGpaQuery = minCumulativeGpa != null || maxCumulativeGpa!= null;
+        boolean isTermGpaQuery = minTermGpa != null || maxTermGpa != null;
+        
+        if (isCumulativeGpaQuery || isTermGpaQuery) {
+            validateAdminCredentials();
+        }
+        
+        validate(
+            // logic'd this out with a k-map
+            (!isCumulativeGpaQuery || !isTermGpaQuery),
+            Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT
+        );
+        
+        if (isTermGpaQuery) {
+            validate(term != null & year != null, Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT);
+        }
+        
+        // At least one of query, classYear, expectedGraduationYearFrom, 
+        // expectedGraduationYearTo, or either of the GPA queries must be set.
         validate(query != null || classYear != null || expectedGraduationYearFrom != null ||
-                expectedGraduationYearTo != null || transferStudent != null,
+                expectedGraduationYearTo != null || transferStudent != null ||
+                isCumulativeGpaQuery || isTermGpaQuery,
                 Response.Status.BAD_REQUEST, QUERY_REQUIRED);
 
         // The classYear parameter produces an expected graduation year.
@@ -60,10 +83,12 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
             expectedGraduationYearFrom = expectedGraduationYearTo =
                     classYear.getExpectedGraduationYear(new DateTime());
         }
-
+        
         return studentDao.getStudents(
             query != null ? preprocessQuery(query, skip, max, 0, 100) : null,
-            active, expectedGraduationYearFrom, expectedGraduationYearTo, transferStudent, skip, max
+            active, transferStudent, expectedGraduationYearFrom, expectedGraduationYearTo,
+            minCumulativeGpa, maxCumulativeGpa, minTermGpa, maxTermGpa, term, year,
+            skip, max
         );
     }
 

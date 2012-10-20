@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
+import edu.lmu.cs.headmaster.ws.types.Term;
 
 /**
  * Simple dao for student domain objects.
@@ -20,9 +21,11 @@ public interface StudentDao {
      * skipping the first <code>skip</code> results and returning at most
      * <code>max</code> results.
      */
-    List<Student> getStudents(String query, Boolean active,
+    List<Student> getStudents(String query, Boolean active, Boolean transferStudent,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
-            Boolean transferStudent, int skip, int max);
+            Double minCumulativeGpa, Double maxCumulativeGpa,
+            Double minTermGpa, Double maxTermGpa, 
+            Term term, Integer year, int skip, int max);
 
     /**
      * Returns the events attended by the student with the given id.

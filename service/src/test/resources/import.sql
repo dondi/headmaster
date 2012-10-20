@@ -11,6 +11,12 @@ insert into student(id, firstname, lastname, active, expectedgraduationyear, tra
 insert into student(id, firstname, lastname, active, expectedgraduationyear, transferStudent) values(1000003, 'Ivan', 'Sutherland', false, 2012, false);
 insert into student(id, firstname, lastname, active, expectedgraduationyear, transferStudent) values(1000004, 'Alan', 'Kay', true, 2014, true);
 
+insert into student(id, firstname, lastname, active, cumulativegpa) values(1000005, 'Turd', 'Ferguson', true, 2.0);
+insert into student(id, firstname, lastname, active, cumulativegpa) values(1000006, 'Trevor', 'McBean', true, 2.5);
+insert into student(id, firstname, lastname, active, cumulativegpa) values(1000007, 'Nestor', 'Rwende', true, 4.0);
+insert into student(id, firstname, lastname, active, cumulativegpa) values(1000008, 'Rihanna', 'Streisand', true, 3.9);
+insert into student(id, firstname, lastname, active, cumulativegpa) values(1000009, 'Kevin', 'Taggart', true, 3.5);
+
 insert into major(id, collegeorschool, degree, discipline) values(1000000, 'Engineering', 'BS', 'Computer Science');
 insert into major(id, collegeorschool, degree, discipline) values(1000001, 'Science','BA', 'Mathematics');
 
@@ -29,9 +35,15 @@ insert into event_student(event_id, student_id, attendees_order) values(1000000,
 -- Test fixture grades.
 insert into gpa(id, gpa, term, year) values(1000000, 3.5, 0, 2016);
 insert into gpa(id, gpa, term, year) values(1000001, 3.8, 2, 2015);
+insert into gpa(id, gpa, term, year) values(1000002, 3.9, 2, 2012);
+insert into gpa(id, gpa, term, year) values(1000003, 3.7, 2, 2012);
+insert into gpa(id, gpa, term, year) values(1000004, 4.0, 2, 2012);
 
 insert into student_gpa(student_id, grades_id) values(1000002, 1000000);
 insert into student_gpa(student_id, grades_id) values(1000002, 1000001);
+insert into student_gpa(student_id, grades_id) values(1000005, 1000002);
+insert into student_gpa(student_id, grades_id) values(1000006, 1000003);
+insert into student_gpa(student_id, grades_id) values(1000007, 1000004);
 
 -- Test fixture grants.
 insert into researchgrant(id, amount, facultymentor, title) values(1000000, 10000, 'Leonard Kleinrock', 'The Worldwide Web');

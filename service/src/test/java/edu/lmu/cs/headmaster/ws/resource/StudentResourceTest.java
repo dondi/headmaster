@@ -151,6 +151,95 @@ public class StudentResourceTest extends ResourceTest {
         Assert.assertTrue(wr.path("students/1000002")
                 .get(Student.class).getRecord().getGrades().isEmpty());
     }
+    
+    @Test 
+    public void testGetStudentByCumulativeGpa() {
+        List<Student> s = wr.path("students")
+                .queryParam("cumulativeGpaFrom", "2.5")
+                .get(new GenericType<List<Student>>(){});
+        Assert.assertEquals(4, s.size());
+        Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000007), s.get(1).getId());
+        Assert.assertEquals(Long.valueOf(1000008), s.get(2).getId());
+        Assert.assertEquals(Long.valueOf(1000009), s.get(3).getId());
+        Assert.assertEquals("McBean", s.get(0).getLastName());
+        Assert.assertEquals("Rwende", s.get(1).getLastName());
+        Assert.assertEquals("Streisand", s.get(2).getLastName());
+        Assert.assertEquals("Taggart", s.get(3).getLastName());
+        
+        s  = wr.path("students")
+                .queryParam("cumulativeGpaTo", "2.5")
+                .get(new GenericType<List<Student>>(){});
+        Assert.assertEquals(2, s.size());
+        Assert.assertEquals(Long.valueOf(1000005), s.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000006), s.get(1).getId());
+        Assert.assertEquals("Ferguson", s.get(0).getLastName());
+        Assert.assertEquals("McBean", s.get(1).getLastName());
+        
+        s = wr.path("students")
+                .queryParam("cumulativeGpaFrom", "2.5")
+                .queryParam("cumulativeGpaTo", "2.5")
+                .get(new GenericType<List<Student>>(){});
+        Assert.assertEquals(1, s.size());
+        Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+        Assert.assertEquals("McBean", s.get(0).getLastName());
+    }
+    
+    @Test
+    public void testGetStudentsByTermGpa() {
+        List<Student> s = wr.path("students")
+                .queryParam("gpaFrom", "4.0")
+                .queryParam("gpaTerm", "FALL")
+                .queryParam("gpaYear", "2012")
+                .get(new GenericType<List<Student>>(){});
+        Assert.assertEquals(1, s.size());
+        Assert.assertEquals(Long.valueOf(1000007), s.get(0).getId());
+        Assert.assertEquals("Rwende", s.get(0).getLastName());
+        
+        s = wr.path("students")
+                .queryParam("gpaTo", "3.9")
+                .queryParam("gpaTerm", "FALL")
+                .queryParam("gpaYear", "2012")
+                .get(new GenericType<List<Student>>(){});
+        Assert.assertEquals(2, s.size());
+        Assert.assertEquals(Long.valueOf(1000005), s.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000006), s.get(1).getId());
+        Assert.assertEquals("Ferguson", s.get(0).getLastName());
+        Assert.assertEquals("McBean", s.get(1).getLastName());
+        
+        s = wr.path("students")
+                .queryParam("gpaTo", "3.7")
+                .queryParam("gpaFrom", "3.7")
+                .queryParam("gpaTerm", "FALL")
+                .queryParam("gpaYear", "2012")
+                .get(new GenericType<List<Student>>(){});
+        Assert.assertEquals(1, s.size());
+        Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+    }
+    
+    @Test
+    public void testGetStudentsByGpaMutualExclusion() {
+        ClientResponse c = wr.path("students")
+                .queryParam("cumulativeGpaFrom", "2.0")
+                .queryParam("gpaTo", "4.0")
+                .get(ClientResponse.class);
+        Assert.assertEquals(400,  c.getStatus());
+        Assert.assertEquals(
+                "400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class)
+            );
+
+    }
+    
+    @Test
+    public void testGetStudentsByLastName() {
+        List<Student> s = wr.path("students")
+                .queryParam("q", "mcbean")
+                .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(1, s.size());
+         Assert.assertEquals("McBean", s.get(0).getLastName());
+         Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+    }
 
     @Test
     public void testGetStudentRecordByIdGrades() {
