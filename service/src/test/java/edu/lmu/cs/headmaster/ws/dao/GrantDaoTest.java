@@ -2,9 +2,10 @@ package edu.lmu.cs.headmaster.ws.dao;
 
 //import java.util.List;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
-//import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,4 +32,29 @@ public class GrantDaoTest extends ApplicationContextTest {
         Assert.assertEquals("Leonard Kleinrock", grant.getFacultyMentor());
         Assert.assertEquals("The Worldwide Web", grant.getTitle());
     }
+
+    @Test
+    public void testGetGrantsByFacultyMentor() {
+        // Use a text query that can be found in the grant faculty mentor.
+        // We intentionally mix case to validate the case insensitivity.
+        List<Grant> grants = grantDao.getGrants("LeOnarD", null, null, 0, 5);
+
+        // There should only be one grant there.  We'll check just the ID.
+        Assert.assertEquals(1, grants.size());
+        Assert.assertEquals(Long.valueOf(1000000L), grants.get(0).getId());
+    }
+
+    @Test
+    public void testGetGrantsByTitle() {
+        List<Grant> grants = grantDao.getGrants("The world", null, null, 0, 5);
+        Assert.assertEquals(1, grants.size());
+        Assert.assertEquals(Long.valueOf(1000000L), grants.get(0).getId());
+    }
+
+    @Test
+    public void testGetGrantsByInvalidQuery() {
+        List<Grant> grants = grantDao.getGrants("blarg", null, null, 0, 5);
+        Assert.assertEquals(0, grants.size());
+    }
+
 }

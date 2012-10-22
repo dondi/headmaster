@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import edu.lmu.cs.headmaster.ws.domain.Grant;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.User;
 import edu.lmu.cs.headmaster.ws.domain.UserRole;
@@ -31,9 +32,20 @@ public class DomainObjectUtils {
             userRole.setRole(role);
             userRoles.add(userRole);
         }
-        
+
         user.setRoles(userRoles);
         return user;
+    }
+
+    /**
+     * Helper factory method for creating new event objects.
+     */
+    public static Grant createGrantObject(Integer amount, String facultyMentor, String title) {
+        Grant grant = new Grant();
+        grant.setAmount(amount);
+        grant.setFacultyMentor(facultyMentor);
+        grant.setTitle(title);
+        return grant;
     }
 
     /**
