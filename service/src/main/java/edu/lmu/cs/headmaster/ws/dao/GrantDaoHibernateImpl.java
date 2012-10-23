@@ -38,7 +38,7 @@ public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantD
 
     /**
      * Returns a base HQL query object (no pagination) for the given parameters
-     * for students.
+     * for grants.
      */
     private QueryBuilder createGrantQuery(String query, Boolean awarded,
             Boolean presented) {
