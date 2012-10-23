@@ -293,5 +293,163 @@ public class StudentResourceTest extends ResourceTest {
         Assert.assertEquals(2014, grades.get(1).getYear());
         Assert.assertEquals(3.75, grades.get(1).getGpa(), 0.0);
     }
-
+    
+    @Test
+    public void testGetStudentsByTransferStatusAndCumulativeGpa(){
+    	 List<Student> s = wr.path("students")
+    			 .queryParam("transfer", "true")
+    			 .queryParam("cumulativeGpaFrom", "2.5")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(2, s.size());
+         Assert.assertEquals(Long.valueOf(1000007), s.get(0).getId());
+         Assert.assertEquals("Rwende", s.get(0).getLastName());
+         Assert.assertEquals(Long.valueOf(1000009), s.get(1).getId());
+         Assert.assertEquals("Taggart", s.get(1).getLastName());
+         
+         s = wr.path("students")
+    			 .queryParam("transfer", "false")
+    			 .queryParam("cumulativeGpaFrom", "2.5")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(2, s.size());
+         Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+         Assert.assertEquals("McBean", s.get(0).getLastName());
+         Assert.assertEquals(Long.valueOf(1000008), s.get(1).getId());
+         Assert.assertEquals("Streisand", s.get(1).getLastName());
+         
+         s = wr.path("students")
+    			 .queryParam("transfer", "false")
+    			 .queryParam("cumulativeGpaTo", "2.5")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(1, s.size());
+         Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+         Assert.assertEquals("McBean", s.get(0).getLastName());
+         
+         
+         s = wr.path("students")
+    			 .queryParam("transfer", "true")
+    			 .queryParam("cumulativeGpaTo", "2.5")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(1, s.size());
+         Assert.assertEquals(Long.valueOf(1000005), s.get(0).getId());
+         Assert.assertEquals("Ferguson", s.get(0).getLastName());
+         
+         s = wr.path("students")
+    			 .queryParam("transfer", "true")
+    			 .queryParam("cumulativeGpaTo", "2.5")
+    			 .queryParam("cumulativeGpaFrom", "2.5")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(0, s.size());
+                  
+         s = wr.path("students")
+    			 .queryParam("transfer", "false")
+    			 .queryParam("cumulativeGpaTo", "2.5")
+    			 .queryParam("cumulativeGpaFrom", "2.5")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(1, s.size());
+         Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+         Assert.assertEquals("McBean", s.get(0).getLastName());
+    }
+    
+    //TODO to false, to true, from false, from true, to from true, to from false
+    
+    @Test
+    public void testGetStudentsByTransferStatusAndTermGpa() {
+    	 List<Student> s = wr.path("students")
+                 .queryParam("gpaFrom", "4.0")
+                 .queryParam("gpaTerm", "FALL")
+                 .queryParam("gpaYear", "2012")
+                 .queryParam("transfer", "true")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(1, s.size());
+         Assert.assertEquals(Long.valueOf(1000007), s.get(0).getId());
+         Assert.assertEquals("Rwende", s.get(0).getLastName());
+         
+         s = wr.path("students")
+                 .queryParam("gpaFrom", "3.5")
+                 .queryParam("gpaTerm", "FALL")
+                 .queryParam("gpaYear", "2012")
+                 .queryParam("transfer", "false")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(1, s.size());
+         Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+         Assert.assertEquals("McBean", s.get(0).getLastName());
+         
+         s = wr.path("students")
+                 .queryParam("gpaTo", "3.9")
+                 .queryParam("gpaTerm", "FALL")
+                 .queryParam("gpaYear", "2012")
+                 .queryParam("transfer", "true")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(1, s.size());
+         Assert.assertEquals(Long.valueOf(1000005), s.get(0).getId());
+         Assert.assertEquals("Ferguson", s.get(0).getLastName());
+         
+         s = wr.path("students")
+                 .queryParam("gpaTo", "3.7")
+                 .queryParam("gpaTerm", "FALL")
+                 .queryParam("gpaYear", "2012")
+                 .queryParam("transfer", "true")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(0, s.size());
+                           
+         s = wr.path("students")
+                 .queryParam("gpaTo", "3.9")
+                 .queryParam("gpaTerm", "FALL")
+                 .queryParam("gpaYear", "2012")
+                 .queryParam("transfer", "false")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(1, s.size());
+         Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+         Assert.assertEquals("McBean", s.get(0).getLastName());
+         
+         s = wr.path("students")
+                 .queryParam("gpaTo", "4.0")
+                 .queryParam("gpaFrom", "4.0")
+                 .queryParam("gpaTerm", "FALL")
+                 .queryParam("gpaYear", "2012")
+                 .queryParam("transfer", "true")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(1, s.size());
+         Assert.assertEquals(Long.valueOf(1000007), s.get(0).getId());
+         Assert.assertEquals("Rwende", s.get(0).getLastName());
+                 
+         s = wr.path("students")
+                 .queryParam("gpaTo", "3.7")
+                 .queryParam("gpaFrom", "3.7")
+                 .queryParam("gpaTerm", "FALL")
+                 .queryParam("gpaYear", "2012")
+                 .queryParam("transfer", "true")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(0, s.size());
+         
+         s = wr.path("students")
+                 .queryParam("gpaFrom", "3.7")
+                 .queryParam("gpaTerm", "FALL")
+                 .queryParam("gpaYear", "2012")
+                 .queryParam("transfer", "true")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(2, s.size());
+         Assert.assertEquals(Long.valueOf(1000005), s.get(0).getId());
+         Assert.assertEquals("Ferguson", s.get(0).getLastName());
+         Assert.assertEquals(Long.valueOf(1000007), s.get(1).getId());
+         Assert.assertEquals("Rwende", s.get(1).getLastName());
+         
+         s = wr.path("students")
+                 .queryParam("gpaTo", "4.0")
+                 .queryParam("gpaTerm", "FALL")
+                 .queryParam("gpaYear", "2012")
+                 .queryParam("transfer", "true")
+                 .get(new GenericType<List<Student>>(){});
+         Assert.assertEquals(2, s.size());
+         Assert.assertEquals(Long.valueOf(1000005), s.get(0).getId());
+         Assert.assertEquals("Ferguson", s.get(0).getLastName());
+         Assert.assertEquals(Long.valueOf(1000007), s.get(1).getId());
+         Assert.assertEquals("Rwende", s.get(1).getLastName());
+            	
+    }
+    
+    
+    
+    
+    
 }
