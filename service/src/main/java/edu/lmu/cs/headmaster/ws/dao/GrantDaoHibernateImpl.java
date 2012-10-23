@@ -1,19 +1,13 @@
 package edu.lmu.cs.headmaster.ws.dao;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import edu.lmu.cs.headmaster.ws.dao.util.QueryBuilder;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
-import edu.lmu.cs.headmaster.ws.domain.Student;
 
 public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantDao {
-
-    // Search patterns
-    private static final Pattern ALL_DIGITS = Pattern.compile("\\d+");
-    private static final Pattern WORD = Pattern.compile("\\w+");
     
     @Override
     public Grant getGrantById(Long id) {
@@ -50,26 +44,21 @@ public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantD
             Boolean presented) {
         // The desired return order is id.
         QueryBuilder builder = new QueryBuilder(
-            "select g.facultyMentor from researchgrant g",
+            "select g from Grant g",
             "order by id"
         );
         
-        
-        
-        
-        /*
         if (query != null) {
-            builder.clause("lower(g.facultyMentor) like lower(:facultyMentor)", query + "%");
-            //builder.clause("lower(g.title) like lower(:title)", query + "%");
+            builder.clause("lower(g.facultyMentor) like lower(:query) or lower(g.title) like lower(:query)", query + "%");
         }
 
         if (awarded != null) {
-            //builder.clause("g.awarded = :awarded", awarded + "%");
+            builder.clause("g.awarded = :awarded", awarded + "%");
         }
 
         if (presented != null) {
-            //builder.clause("g.presented = :presented", presented + "%");
-        }*/
+            builder.clause("g.presented = :presented", presented + "%");
+        }
 
         // All done.
         return builder;

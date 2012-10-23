@@ -70,14 +70,7 @@ public class GrantDaoTest extends ApplicationContextTest {
         Grant createdGrant = grantDao.getGrantById(1L);
         assertSimpleEquality(grantToCreate, createdGrant);
     }
-
-    // insert into researchgrant(id, amount, facultymentor, title) values(1000000, 10000, 'Leonard Kleinrock', 'The
-    // Worldwide Web');
-    /*
-     * Grant getGrantById(Long id); List<Grant> getGrants(String query, Boolean awarded, Boolean presented, int skip,
-     * int max); Grant createGrant(Grant grant); void createOrUpdateGrants(Grant grant);
-     */
-
+    
     @Test
     public void testCreateAndUpdateGrant() {
         // Create an id-less grant.
@@ -96,7 +89,7 @@ public class GrantDaoTest extends ApplicationContextTest {
 
         assertSimpleEquality(grantToReplaceWith, createdGrant);
         Assert.assertNotSame(createdGrant.getFacultyMentor(), grantToCreate.getFacultyMentor());
-        Assert.assertNotSame(createdGrant.getDescription(), grantToCreate.getDescription());
+        Assert.assertNotSame(createdGrant.getTitle(), grantToCreate.getTitle());
     }
 
     /**
