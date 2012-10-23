@@ -68,7 +68,7 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         );
         
         if (isTermGpaQuery) {
-            validate(term != null & year != null, Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT);
+            validate(term != null & year != null, Response.Status.BAD_REQUEST, QUERY_INCOMPLETE);
         }
         
         // At least one of query, classYear, expectedGraduationYearFrom, 

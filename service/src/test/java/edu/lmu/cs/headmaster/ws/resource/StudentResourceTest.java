@@ -186,6 +186,39 @@ public class StudentResourceTest extends ResourceTest {
     }
     
     @Test
+    public void getStudentsByTermGpaWithoutYearResponds400() {
+        ClientResponse c = wr.path("students")
+            .queryParam("gpaFrom", "4.0")
+            .queryParam("term", "FALL")
+            .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.QUERY_INCOMPLETE,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentByTermGpaWithoutTermResponds400() {
+        ClientResponse c = wr.path("students")
+                .queryParam("gpaFrom", "3.2")
+                .queryParam("year", "2012")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.QUERY_INCOMPLETE,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentByCumulativeGpaWithTermResponds400() {
+        ClientResponse c = wr.path("students")
+                .queryParam("cumulativeGpaFrom", "2.0")
+                .queryParam("term", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+    }
+    
+    @Test
     public void testGetStudentsByTermGpa() {
         List<Student> s = wr.path("students")
                 .queryParam("gpaFrom", "4.0")
