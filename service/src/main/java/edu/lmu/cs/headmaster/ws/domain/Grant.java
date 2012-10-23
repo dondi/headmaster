@@ -86,6 +86,7 @@ public class Grant {
         this.submissionDate = submissionDate;
     }
 
+    @Lob
     public String getType() {
         return type;
     }
@@ -110,6 +111,7 @@ public class Grant {
         this.awarded = awarded;
     }
 
+    @Lob
     public String getFacultyMentor() {
         return facultyMentor;
     }

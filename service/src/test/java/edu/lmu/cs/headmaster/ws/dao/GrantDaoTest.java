@@ -44,7 +44,7 @@ public class GrantDaoTest extends ApplicationContextTest {
 
     @Test
     public void testGetGrantsByTitle() {
-        List<Grant> grants = grantDao.getGrants("The world", null, null, 0, 5);
+        List<Grant> grants = grantDao.getGrants("The world", null, null, 0, 10);
         Assert.assertEquals(1, grants.size());
         Assert.assertEquals(Long.valueOf(1000000L), grants.get(0).getId());
     }
