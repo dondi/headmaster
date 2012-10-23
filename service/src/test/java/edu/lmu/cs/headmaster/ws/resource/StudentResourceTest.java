@@ -192,7 +192,7 @@ public class StudentResourceTest extends ResourceTest {
             .queryParam("term", "FALL")
             .get(ClientResponse.class);
         Assert.assertEquals(c.getStatus(), 400);
-        Assert.assertEquals("400 " + AbstractResource.QUERY_INCOMPLETE,
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
                 c.getEntity(String.class));
     }
     
@@ -203,15 +203,154 @@ public class StudentResourceTest extends ResourceTest {
                 .queryParam("year", "2012")
                 .get(ClientResponse.class);
         Assert.assertEquals(c.getStatus(), 400);
-        Assert.assertEquals("400 " + AbstractResource.QUERY_INCOMPLETE,
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
                 c.getEntity(String.class));
     }
     
     @Test
     public void getStudentByCumulativeGpaWithTermResponds400() {
         ClientResponse c = wr.path("students")
+                .queryParam("cumulativeGpaFrom", "2.5")
+                .queryParam("cumulativeGpaTo", "2.5")
+                .queryParam("gpaTerm", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentByCumulativeGpaWithYearResponds400() {
+        ClientResponse c = wr.path("students")
                 .queryParam("cumulativeGpaFrom", "2.0")
-                .queryParam("term", "FALL")
+                .queryParam("gpaYear", "2012")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentByCumulativeGpaWithYearAndTermResponds400() {
+        ClientResponse c = wr.path("students")
+                .queryParam("cumulativeGpaFrom", "2.0")
+                .queryParam("gpaYear", "2012")
+                .queryParam("gpaTerm", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentWithOnlyGpaTermResponds400() {
+        ClientResponse c = wr.path("students")
+                .queryParam("gpaTerm", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentWithOnlyGpaYearResponds400() {
+        ClientResponse c = wr.path("students")
+                .queryParam("gpaYear", "2012")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentWithOnlyGpaTermAndGpaYearResponds400() {
+        ClientResponse c = wr.path("students")
+                .queryParam("gpaYear", "2012")
+                .queryParam("gpaTerm", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentWithGpaTermOrYearAndQueryForNameResponds400() {
+        ClientResponse c = wr.path("students")
+                .queryParam("q", "mal")
+                .queryParam("gpaTerm", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+        
+        c = wr.path("students")
+                .queryParam("q", "mal")
+                .queryParam("gpaYear", "2012")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+        
+        c = wr.path("students")
+                .queryParam("q", "mal")
+                .queryParam("gpaYear", "2012")
+                .queryParam("gpaTerm", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentWithGpaTermOrYearAndQueryForIdResponds400() {
+        ClientResponse c = wr.path("students")
+                .queryParam("q", "1000000")
+                .queryParam("gpaTerm", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+        
+        c = wr.path("students")
+                .queryParam("q", "1000000")
+                .queryParam("gpaYear", "2012")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+        
+        c = wr.path("students")
+                .queryParam("q", "1000000")
+                .queryParam("gpaYear", "2012")
+                .queryParam("gpaTerm", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+    }
+    
+    @Test
+    public void getStudentWithGpaTermAndYearByFullNameResponds400() {
+        ClientResponse c = wr.path("students")
+                .queryParam("q", "g,s")
+                .queryParam("gpaTerm", "FALL")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+        
+        c = wr.path("students")
+                .queryParam("q", "g,s")
+                .queryParam("gpaYear", "2012")
+                .get(ClientResponse.class);
+        Assert.assertEquals(c.getStatus(), 400);
+        Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
+                c.getEntity(String.class));
+        
+        c = wr.path("students")
+                .queryParam("q", "g,s")
+                .queryParam("gpaYear", "2012")
+                .queryParam("gpaTerm", "FALL")
                 .get(ClientResponse.class);
         Assert.assertEquals(c.getStatus(), 400);
         Assert.assertEquals("400 " + AbstractResource.ARGUMENT_CONFLICT,
@@ -272,6 +411,16 @@ public class StudentResourceTest extends ResourceTest {
          Assert.assertEquals(1, s.size());
          Assert.assertEquals("McBean", s.get(0).getLastName());
          Assert.assertEquals(Long.valueOf(1000006), s.get(0).getId());
+    }
+    
+    @Test
+    public void testGetStudentByFullNameQuery() {
+        List<Student> s = wr.path("students")
+                .queryParam("q", "f,t")
+                .get(new GenericType<List<Student>>(){});
+        Assert.assertEquals(1, s.size());
+        Assert.assertEquals("Ferguson", s.get(0).getLastName());
+        Assert.assertEquals("Turd", s.get(0).getFirstName());
     }
 
     @Test
