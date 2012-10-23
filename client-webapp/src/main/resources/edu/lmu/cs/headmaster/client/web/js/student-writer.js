@@ -660,6 +660,9 @@ $(function () {
                 // are to be created.
                 if (!studentId) {
                     $("input, textarea").val("");
+                    $("#student-majors > tbody").remove();
+                    $("#student-minors> tbody").remove();
+                    updateDependentElements();
                     $("#student-new-link")
                         .attr({ href: resultId })
                         .fadeIn();
