@@ -49,15 +49,15 @@ public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantD
         );
         
         if (query != null) {
-            builder.clause("lower(g.facultyMentor) like lower(:query) or lower(g.title) like lower(:query)", query + "%");
+            builder.clause("lower(g.facultyMentor) like lower(:query) or lower(g.title) like lower(:query)", "%" + query + "%");
         }
 
         if (awarded != null) {
-            builder.clause("g.awarded = :awarded", awarded + "%");
+            builder.clause("g.awarded = :awarded", awarded);
         }
 
         if (presented != null) {
-            builder.clause("g.presented = :presented", presented + "%");
+            builder.clause("g.presented = :presented", presented);
         }
 
         // All done.
