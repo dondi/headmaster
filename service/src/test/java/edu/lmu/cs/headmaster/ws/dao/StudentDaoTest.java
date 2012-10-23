@@ -353,6 +353,22 @@ public class StudentDaoTest extends ApplicationContextTest {
         Assert.assertEquals(2017, grades.get(1).getYear());
         Assert.assertEquals(2.75, grades.get(1).getGpa(), 0.0);
     }
+    
+    @Test
+    public void testCreatOrUpdateStudentFoodPreference() {
+        Student student = studentDao.getStudentById(1000000L);
+        List<String> foodPreference = new ArrayList<String>();
+        foodPreference.add("vegetarian");
+        foodPreference.add("glutenfree");
+        student.setFoodPreference(foodPreference);
+        studentDao.createOrUpdateStudent(student);
+        
+        
+        student = studentDao.getStudentById(1000000L);
+        
+        Assert.assertEquals(foodPreference.get(0), student.getFoodPreference().get(0));
+        Assert.assertEquals(foodPreference.get(1), student.getFoodPreference().get(1));
+    }
 
     @Test
     public void testCreateOrUpdateStudentAddMajorsAndMinors() {

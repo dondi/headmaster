@@ -293,5 +293,34 @@ public class StudentResourceTest extends ResourceTest {
         Assert.assertEquals(2014, grades.get(1).getYear());
         Assert.assertEquals(3.75, grades.get(1).getGpa(), 0.0);
     }
+    
+    @Test
+    public void testCreatesorUpdatesStudentFoodPreference(){
+    	List<String> foodPreference = new ArrayList<String>();
+        foodPreference.add("vegetarian");
+        
+        List<String> foodPreference2 = new ArrayList<String>();
+        foodPreference2.add("vegetarian");
+        foodPreference2.add("gluten free");
+        
+        List<String> foodPreference3 = new ArrayList<String>();
+        foodPreference3.add("vegetarian");
+        foodPreference3.add("gluten free");
+        foodPreference3.add("nut allergy");
+        
+        Student student1 = wr.path("students/1000000").get(Student.class);
+        student1.setFoodPreference(foodPreference);
+        
+        wr.path("students/1000000").put(student1);
+        Student student2 = wr.path("students/1000000").get(Student.class);
+        Assert.assertEquals(student1.getFoodPreference(), student2.getFoodPreference());
+        student2 = wr.path("students/1000002").get(Student.class);
+        student2.setFoodPreference(foodPreference2);
+        wr.path("students/1000002").put(student2);
+        Student student3 = wr.path("students/1000002").get(Student.class);
+        Assert.assertEquals(student3.getFoodPreference(),student2.getFoodPreference());
+        
+        
+    }
 
 }
