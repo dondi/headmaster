@@ -46,7 +46,7 @@ insert into student_gpa(student_id, grades_id) values(1000006, 1000003);
 insert into student_gpa(student_id, grades_id) values(1000007, 1000004);
 
 -- Test fixture grants.
-insert into researchgrant(id, amount, facultymentor, title) values(1000000, 10000, 'Leonard Kleinrock', 'The Worldwide Web');
+insert into researchgrant(id, amount, facultymentor, title, awarded, presented) values(1000000, 10000, 'Leonard Kleinrock', 'The Worldwide Web', true, true);
 
 insert into researchgrant_student(grant_id, student_id, students_order) values(1000000, 1000000, 0);
 insert into researchgrant_student(grant_id, student_id, students_order) values(1000000, 1000001, 1);
