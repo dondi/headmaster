@@ -140,7 +140,35 @@ public class StudentDaoTest extends ApplicationContextTest {
         List<Student> students = studentDao.getStudents(null, null, null, null, null,
                 null, null, 3.7, 3.7, Term.FALL, 2012, 0, 10);
         Assert.assertEquals(1, students.size());
-        Assert.assertEquals("Trevor", students.get(0).getFirstName());
+        Assert.assertEquals("McBean", students.get(0).getLastName());
+    }
+    
+    @Test
+    public void testGetStudentsByTermGpaAndTransfer() {
+        List<Student> students = studentDao.getStudents(null, null, true, null, null,
+                null, null, 3.7, 4.0, Term.FALL, 2012, 0, 10);
+        Assert.assertEquals(2, students.size());
+        Assert.assertEquals("Ferguson", students.get(0).getLastName());
+        Assert.assertEquals("McBean", students.get(1).getLastName());
+        
+        students = studentDao.getStudents(null, null, true, null, null,
+                null, null, 4.0, 4.0, Term.FALL, 2012, 0, 10);
+        Assert.assertEquals(0, students.size());
+        
+    }
+    
+    @Test
+    public void testGetStudentsByCumulativeGpaAndTransfer() {
+        List<Student> students = studentDao.getStudents(null, null, true, null, null,
+                3.5, 4.0, null, null, null, null, 0, 10);
+       Assert.assertEquals(2, students.size());
+       Assert.assertEquals(Long.valueOf(1000008), students.get(0).getId());
+       Assert.assertEquals(Long.valueOf(1000009), students.get(1).getId());
+       
+       students = studentDao.getStudents(null, null, true, null, null,
+               4.0, null, null, null, null, null, 0, 10);
+       Assert.assertEquals(0, students.size());
+       
     }
     
     @Test
@@ -193,23 +221,28 @@ public class StudentDaoTest extends ApplicationContextTest {
     public void testGetTransferStudents() {
         List<Student> students = studentDao.getStudents(null, null, Boolean.TRUE, null, null,
                 null, null, null, null, null, null, 0, 10);
-        Assert.assertEquals(3, students.size());
+        Assert.assertEquals(7, students.size());
 
         // Search results are sorted by last name, first name.
         Assert.assertEquals(Long.valueOf(1000000L), students.get(0).getId());
-        Assert.assertEquals(Long.valueOf(1000004L), students.get(1).getId());
-        Assert.assertEquals(Long.valueOf(1000002L), students.get(2).getId());
+        Assert.assertEquals(Long.valueOf(1000005L), students.get(1).getId());
+        Assert.assertEquals(Long.valueOf(1000004L), students.get(2).getId());
+        Assert.assertEquals(Long.valueOf(1000002L), students.get(3).getId());
+        Assert.assertEquals(Long.valueOf(1000006L), students.get(4).getId());
+        Assert.assertEquals(Long.valueOf(1000008L), students.get(5).getId());
+        Assert.assertEquals(Long.valueOf(1000009L), students.get(6).getId());
     }
     
     @Test
     public void testGetNotTransferStudents() {
         List<Student> students = studentDao.getStudents(null, null, Boolean.FALSE, null, null,
                 null, null, null, null, null, null, 0, 10);
-        Assert.assertEquals(2, students.size());
+        Assert.assertEquals(3, students.size());
 
         // Search results are sorted by last name, first name.
         Assert.assertEquals(Long.valueOf(1000001L), students.get(0).getId());
-        Assert.assertEquals(Long.valueOf(1000003L), students.get(1).getId());
+        Assert.assertEquals(Long.valueOf(1000007L), students.get(1).getId());
+        Assert.assertEquals(Long.valueOf(1000003L), students.get(2).getId());
     }
     
     @Test

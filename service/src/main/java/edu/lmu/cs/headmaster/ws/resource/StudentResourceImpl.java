@@ -54,21 +54,30 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         );
         
         // make sure cumulative gpa and term gpa queries are mutually exclusive
-        boolean isCumulativeGpaQuery = minCumulativeGpa != null || maxCumulativeGpa!= null;
-        boolean isTermGpaQuery = minTermGpa != null || maxTermGpa != null;
-        
+        boolean gpaTermOrYearAreProvided = term != null || year != null;
+        boolean gpaTermAndYearAreProvided = term != null && year != null;
+        boolean isCumulativeGpaQuery = (minCumulativeGpa != null || maxCumulativeGpa!= null);
+        boolean isTermGpaQuery = (minTermGpa != null || maxTermGpa != null);
+                
         if (isCumulativeGpaQuery || isTermGpaQuery) {
+            // Validate we have admin privileges
             validatePrivilegedUserCredentials();
-        }
-        
-        validate(
-            // logic'd this out with a k-map
-            (!isCumulativeGpaQuery || !isTermGpaQuery),
-            Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT
-        );
-        
-        if (isTermGpaQuery) {
-            validate(term != null & year != null, Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT);
+            
+            // Validate we don't have both, they are mutually exclusive.
+            validate(
+                (isCumulativeGpaQuery != isTermGpaQuery),
+                Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT
+            );
+            
+            // Validate we don't have parameters from the two types of GPA queries mixing with each other
+            validate(!(isCumulativeGpaQuery && gpaTermOrYearAreProvided), 
+                    Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT);
+            // Validate we don't have incomplete term gpa query
+            validate(!(isTermGpaQuery && !gpaTermAndYearAreProvided), 
+                    Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT);
+        } else {
+            // Validate we don't only have gpaTerm or gpaYear for querying term gpa
+            validate(!gpaTermOrYearAreProvided, Response.Status.BAD_REQUEST, ARGUMENT_CONFLICT);
         }
         
         // At least one of query, classYear, expectedGraduationYearFrom, 

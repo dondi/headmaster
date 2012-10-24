@@ -11,11 +11,11 @@ insert into student(id, firstname, lastname, active, expectedgraduationyear, tra
 insert into student(id, firstname, lastname, active, expectedgraduationyear, transferStudent) values(1000003, 'Ivan', 'Sutherland', false, 2012, false);
 insert into student(id, firstname, lastname, active, expectedgraduationyear, transferStudent) values(1000004, 'Alan', 'Kay', true, 2014, true);
 
-insert into student(id, firstname, lastname, active, transferStudent, cumulativegpa) values(1000005, 'Turd', 'Ferguson', true, true, 2.0);
-insert into student(id, firstname, lastname, active, transferStudent, cumulativegpa) values(1000006, 'Trevor', 'McBean', true, false, 2.5);
-insert into student(id, firstname, lastname, active, transferStudent, cumulativegpa) values(1000007, 'Nestor', 'Rwende', true, true, 4.0);
-insert into student(id, firstname, lastname, active, transferStudent, cumulativegpa) values(1000008, 'Rihanna', 'Streisand', true, false, 3.9);
-insert into student(id, firstname, lastname, active, transferStudent, cumulativegpa) values(1000009, 'Kevin', 'Taggart', true, true, 3.5);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000005, 'Turd', 'Ferguson', true, 2.0, true);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000006, 'Trevor', 'McBean', true, 2.5, true);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000007, 'Nestor', 'Rwende', true, 4.0, false);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000008, 'Rihanna', 'Streisand', true, 3.9, true);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000009, 'Kevin', 'Taggart', true, 3.5, true);
 
 insert into major(id, collegeorschool, degree, discipline) values(1000000, 'Engineering', 'BS', 'Computer Science');
 insert into major(id, collegeorschool, degree, discipline) values(1000001, 'Science','BA', 'Mathematics');
