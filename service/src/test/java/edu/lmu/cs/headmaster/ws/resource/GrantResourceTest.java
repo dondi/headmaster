@@ -14,7 +14,7 @@ import edu.lmu.cs.headmaster.ws.domain.Grant;
 import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
 
 /**
- * Tests the user web resource.
+ * Tests the grant web resource.
  */
 public class GrantResourceTest extends ResourceTest {
 
@@ -58,52 +58,44 @@ public class GrantResourceTest extends ResourceTest {
     
     @Test
     public void testCreateGrant() {
-        // Create an id-less event.
         Grant grantToCreate = DomainObjectUtils.createGrantObject(
             1024, "Tyler Nichols", "Marc Papkyriakou"
         );
 
-        // Now, save it.  We should get a 201 with a location.
         ClientResponse response = wr.path("grants").post(ClientResponse.class, grantToCreate);
         Assert.assertEquals(201, response.getStatus());
     }
     
     @Test
     public void testCreateGrantWithSpecifiedIdProduces400() {
-        // Create an id-less event.
         Grant grantToCreate = DomainObjectUtils.createGrantObject(
             1024, "Tyler Nichols", "Marc Papkyriakou lol"
         );
         
         grantToCreate.setId(500L);
 
-        // Now, save it.  We should get a 201 with a location.
         ClientResponse response = wr.path("grants").post(ClientResponse.class, grantToCreate);
         Assert.assertEquals(400, response.getStatus());
     }
     
     @Test
     public void testUpdateGrantProduces204() {
-        // Create an id-less event.
         Grant grantToUpdate = DomainObjectUtils.createGrantObject(
             1000, "Andy Won", "Won Grant"
         );
 
         grantToUpdate.setId(1000000L);
         
-        // Now, save it.  We should get a 201 with a location.
         ClientResponse response = wr.path("grants/1000000").put(ClientResponse.class, grantToUpdate);
         Assert.assertEquals(204, response.getStatus());
     }
     
     @Test
-    public void testUpdateGrantWithInconsistentInfoProduces400() {
-        // Create an id-less event.
+    public void testUpdateGrantWithInconsistentIdProduces400() {
         Grant grantToUpdate = DomainObjectUtils.createGrantObject(
             1000, "Andy Won", "Won Grant"
         );
 
-        // Now, save it.  We should get a 201 with a location.
         ClientResponse response = wr.path("grants/1000").put(ClientResponse.class, grantToUpdate);
         Assert.assertEquals(400, response.getStatus());
     }
