@@ -614,8 +614,31 @@
 
                             <div class="accordion-body collapse in" id="student-grades-container">
                                 <div class="accordion-inner">
-                                    <div class="alert alert-info hide message-empty" id="student-grades-empty">
-                                        <wicket:message key="prompt.empty.grades">(no grades)</wicket:message>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.majors">Grades</wicket:message>
+                                        </label>
+                                        <div class="controls well form-search"
+                                                id="student-majors-container">
+                                            <div class="input-append major">
+                                                <input type="text" class="input-small search-query"
+                                                        placeholder="College/School"
+                                                        id="student-majors-college-or-school"/>
+                                                <input type="text" class="span1"
+                                                        placeholder="Degree"
+                                                        id="student-majors-degree"/>
+                                                <input type="text" class="input-medium"
+                                                        placeholder="Discipline"
+                                                        id="student-majors-discipline"/>
+                                                <button class="btn btn-info"
+                                                        id="student-majors-add-button">
+                                                    <i class="icon-plus icon-white"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-info hide message-empty" id="student-grants-empty">
+                                        <wicket:message key="prompt.empty.grants">(no grades)</wicket:message>
                                     </div>
             
                                     <table class="table table-striped table-hover hide"
