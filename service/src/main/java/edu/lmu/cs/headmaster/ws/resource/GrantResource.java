@@ -15,15 +15,24 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
+import edu.lmu.cs.headmaster.ws.service.GrantService;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
  * The JAX-RS interface for operating on student resources.
  */
+@Path("/grants")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface GrantResource {
+public class GrantResource extends AbstractResource {
+    
+    @Autowired
+    private GrantService grantService;
+    
     /**
      * Possible resource error messages.
      */
@@ -31,6 +40,11 @@ public interface GrantResource {
     String GRANT_INCONSISTENT = "grant.inconsistent";
     String GRANT_NOT_FOUND = "grant.not.found";
 
+    public GrantResource(UserDao userDao, GrantService grantService) {
+        super(userDao);
+        this.grantService = grantService;
+    }
+    
     /**
      * Returns grants according to the search parameters
      *
@@ -41,11 +55,14 @@ public interface GrantResource {
      * @return the (paginated) set of grants matching the query parameters
      */
     @GET
-    List<Grant> getGrants(@QueryParam("q") String query,
+    public List<Grant> getGrants(@QueryParam("q") String query,
             @QueryParam("awarded") @DefaultValue("true") Boolean awarded,
             @QueryParam("presented") @DefaultValue("true") Boolean presented,
             @QueryParam("skip") @DefaultValue("0") int skip,
-            @QueryParam("max") @DefaultValue("100") int max);
+            @QueryParam("max") @DefaultValue("100") int max){
+        return grantService.getGrants(/*preprocessQuery(query, skip, max, 0, 100)*/ query, awarded, presented, skip, max);
+    }
+    
 
     /**
      * Creates a grant for which the server will generate the id.
@@ -55,7 +72,9 @@ public interface GrantResource {
      * <code>grant.overspecified</code> if the grant's id is not null.
      */
     @POST
-    Response createGrant(Grant grant);
+    public Response createGrant(Grant grant) {
+        return grantService.createGrant(grant);
+    }
 
     /**
      * Supposed to save the representation of the grant with the given id.
@@ -70,7 +89,9 @@ public interface GrantResource {
     @PUT
     @Path("{id}")
     @RolesAllowed({ "headmaster", "faculty", "staff" })
-    Response createOrUpdateGrant(@PathParam("id") Long id, Grant grant);
+    public Response createOrUpdateGrant(@PathParam("id") Long id, Grant grant) {
+        return grantService.createOrUpdateGrant(id, grant);
+    }
 
     /**
      * Returns the grant with the given id.
@@ -82,5 +103,7 @@ public interface GrantResource {
      */
     @GET
     @Path("{id}")
-    Grant getGrantById(@PathParam("id") Long id);
+    public Grant getGrantById(@PathParam("id") Long id) {
+        return grantService.getGrantById(id);
+    }
 }

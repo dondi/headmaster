@@ -17,7 +17,7 @@ import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
  * Tests the grant web resource.
  */
 public class GrantResourceTest extends ResourceTest {
-
+    
     @Test
     public void testGetGrantByNonexistentId() {
         ClientResponse clientResponse = wr.path("grants/17").get(ClientResponse.class);

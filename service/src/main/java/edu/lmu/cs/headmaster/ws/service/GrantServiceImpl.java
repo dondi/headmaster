@@ -1,20 +1,18 @@
-package edu.lmu.cs.headmaster.ws.resource;
+package edu.lmu.cs.headmaster.ws.service;
 
 import java.util.List;
 
-import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.dao.GrantDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
 
-@Path("/grants")
-public class GrantResourceImpl extends AbstractResource implements GrantResource {
+public class GrantServiceImpl extends AbstractService implements GrantService {
 
     private GrantDao grantDao;
 
-    public GrantResourceImpl(UserDao userDao, GrantDao grantDao) {
+    public GrantServiceImpl(UserDao userDao, GrantDao grantDao) {
         super(userDao);
         this.grantDao = grantDao;
     }
@@ -25,7 +23,7 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
 
         return grantDao.getGrants(preprocessQuery(query, skip, max, 0, 100), awarded, presented, skip, max);
     }
-
+    
     @Override
     public Response createGrant(Grant grant) {
         logServiceCall();
@@ -55,5 +53,4 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
 
         return grant;
     }
-
 }
