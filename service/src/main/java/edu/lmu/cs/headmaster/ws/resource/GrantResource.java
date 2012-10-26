@@ -60,7 +60,7 @@ public class GrantResource extends AbstractResource {
             @QueryParam("presented") @DefaultValue("true") Boolean presented,
             @QueryParam("skip") @DefaultValue("0") int skip,
             @QueryParam("max") @DefaultValue("100") int max){
-        return grantService.getGrants(preprocessQuery(query, skip, max, 0, 100), awarded, presented, skip, max);
+        return grantService.getGrants(/*preprocessQuery(query, skip, max, 0, 100)*/ query, awarded, presented, skip, max);
     }
     
 
