@@ -5,32 +5,34 @@ import java.util.List;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import edu.lmu.cs.headmaster.ws.dao.GrantDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
+import edu.lmu.cs.headmaster.ws.service.GrantService;
 
 @Path("/grants")
 public class GrantResourceImpl extends AbstractResource implements GrantResource {
 
-    private GrantDao grantDao;
+    private GrantService grantService;
 
-    public GrantResourceImpl(UserDao userDao, GrantDao grantDao) {
+    public GrantResourceImpl(UserDao userDao, GrantService grantService) {
         super(userDao);
-        this.grantDao = grantDao;
+        this.grantService = grantService;
     }
 
     @Override
-    public List<Grant> getGrants(String query, Boolean awarded, Boolean presented, int skip, int max) {
+    public List<Grant> getGrants(String query, Boolean awarded, Boolean presented,
+            int skip, int max) {
         logServiceCall();
 
-        return grantDao.getGrants(preprocessQuery(query, skip, max, 0, 100), awarded, presented, skip, max);
+        return grantService.getGrants(preprocessQuery(query, skip, max, 0, 100), awarded, presented, skip, max);
     }
 
     @Override
     public Response createGrant(Grant grant) {
         logServiceCall();
+
         validate(grant.getId() == null, Response.Status.BAD_REQUEST, GRANT_OVERSPECIFIED);
-        grantDao.createGrant(grant);
+        grant = grantService.createGrant(grant);
 
         return Response.created(java.net.URI.create(Long.toString(grant.getId()))).build();
     }
@@ -40,8 +42,7 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
         logServiceCall();
 
         validate(id.equals(grant.getId()), Response.Status.BAD_REQUEST, GRANT_INCONSISTENT);
-
-        grantDao.createOrUpdateGrants(grant);
+        grantService.createOrUpdateGrant(grant);
 
         return Response.noContent().build();
     }
@@ -50,7 +51,7 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
     public Grant getGrantById(Long id) {
         logServiceCall();
 
-        Grant grant = grantDao.getGrantById(id);
+        Grant grant = grantService.getGrantById(id);
         validate(grant != null, Response.Status.NOT_FOUND, GRANT_NOT_FOUND);
 
         return grant;
