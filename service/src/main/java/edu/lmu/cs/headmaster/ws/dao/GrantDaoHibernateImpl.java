@@ -32,7 +32,7 @@ public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantD
     }
 
     @Override
-    public void createOrUpdateGrants(Grant grant) {
+    public void createOrUpdateGrant(Grant grant) {
         getHibernateTemplate().saveOrUpdate(grant);
     }
 

@@ -28,7 +28,7 @@ public class GrantServiceImpl extends AbstractService implements GrantService {
     @Override
     public void createOrUpdateGrant(Grant grant) {
         getLogger().debug("createOrUpdateGrant");
-        grantDao.createOrUpdateGrants(grant);
+        grantDao.createOrUpdateGrant(grant);
     }
 
     @Override

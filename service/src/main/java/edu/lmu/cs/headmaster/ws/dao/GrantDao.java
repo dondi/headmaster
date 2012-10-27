@@ -10,7 +10,7 @@ import edu.lmu.cs.headmaster.ws.domain.Grant;
 public interface GrantDao {
 
     /**
-     * Returns the student with the given id, or null if no such student exists.
+     * Returns the grant with the given id, or null if no such grant exists.
      */
     Grant getGrantById(Long id);
 
@@ -23,13 +23,13 @@ public interface GrantDao {
             int skip, int max);
 
     /**
-     * Saves the given student, which should have a null id.
+     * Saves the given grant, which should have a null id.
      */
     Grant createGrant(Grant grant);
 
     /**
-     * Updates or saves the given student, which should have a non-null id.
+     * Updates or saves the given grant, which should have a non-null id.
      */
-    void createOrUpdateGrants(Grant grant);
+    void createOrUpdateGrant(Grant grant);
 
 }

@@ -84,7 +84,7 @@ public class GrantDaoTest extends ApplicationContextTest {
         grantToReplaceWith.setId(createdGrantId);
 
         // Reload the grant that was just created with a new grant with the same ID.
-        grantDao.createOrUpdateGrants(grantToReplaceWith);
+        grantDao.createOrUpdateGrant(grantToReplaceWith);
         Grant createdGrant = grantDao.getGrantById(createdGrantId);
 
         assertSimpleEquality(grantToReplaceWith, createdGrant);

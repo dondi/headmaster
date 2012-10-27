@@ -14,6 +14,7 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
 
     private GrantService grantService;
 
+    // TODO userDao must become userService when that is available.
     public GrantResourceImpl(UserDao userDao, GrantService grantService) {
         super(userDao);
         this.grantService = grantService;
