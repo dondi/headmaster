@@ -29,16 +29,16 @@ table > tbody > tr > td.form-search {
 }
 
 /* Custom form/field sizes/styles in StudentWriterPage. */
-#student-majors-container, #student-minors-container, #student-addgpa-container {
+#student-majors-container, #student-minors-container, #student-grade-container {
     text-align: center;
 }
 
 /* Customizations for our look and feel. */
-#student-majors-college-or-school, #student-addgpa-semester {
+#student-majors-college-or-school, #student-grade-semester {
     width: 7em;
 }
 
-#student-majors-degree, #student-addgpa-year, #student-addgpa-gpa {
+#student-majors-degree, #student-addgpa-year, #student-grade-value{
     width: 3.5em;
 }
 

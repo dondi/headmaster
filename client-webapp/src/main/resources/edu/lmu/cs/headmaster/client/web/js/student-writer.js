@@ -508,6 +508,7 @@ $(function () {
         // Clear the add section.
         $("#student-minors-container > div > input").val("");
     });
+     
 
     $("#student-cancel").click(function (event) {
         history.go(-1);
