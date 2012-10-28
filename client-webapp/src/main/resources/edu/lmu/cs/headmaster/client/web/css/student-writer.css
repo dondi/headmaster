@@ -38,7 +38,7 @@ table > tbody > tr > td.form-search {
     width: 7em;
 }
 
-#student-majors-degree, #student-grade-year, #student-grade-value{
+#student-majors-degree, #student-grade-year, #student-grade-gpa{
     width: 3.5em;
 }
 
