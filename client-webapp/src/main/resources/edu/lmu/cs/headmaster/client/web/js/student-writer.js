@@ -416,7 +416,7 @@ $(function () {
             Headmaster.serviceUri("students/" + studentId),
             function (data, textStatus, jqXHR) {
                 // Student name and graduation year.
-                $("#student-firstname").val(data.firstName || BLANK);
+                $("#student-firstname").val(data.firstName || BLANK);// data.firstName ? data.firstName : BLANK
                 $("#student-middlename").val(data.middleName || BLANK);
                 $("#student-lastname").val(data.lastName || BLANK);
                 $("#student-gradyear").val(data.expectedGraduationYear);
