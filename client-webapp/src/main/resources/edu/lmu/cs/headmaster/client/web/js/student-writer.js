@@ -293,8 +293,13 @@ $(function () {
                     // editable.
                     restoreGradeTableRow = function (event) {
                         td.empty().removeClass("form-search")
-                            .text(grade.term + " " + grade.year + " " + grade.gpa.toFixed(2))// Still to be checked
-                            .append(createRemoveElement(tr));
+                            .text(grade.term + " " + grade.year + " ")
+                            .append(createRemoveElement(tr))
+                            .append($("<span></span>")
+                                .addClass("pull-right")
+                                .css("margin-right","10px")
+                                .text(" " + grade.gpa.toFixed(2) + " ")
+                            );
                         makeGradeTableRowEditable(tr);
                         event.stopPropagation();
                     },
@@ -339,8 +344,13 @@ $(function () {
             makeGradeTableRowEditable(tr);
 
             return tr.append($("<td></td>")
-                    .text(grade.term + " " + grade.year + " " + grade.gpa.toFixed(2))
+                    .text(grade.term + " " + grade.year + " ")
                     .append(createRemoveElement(tr))
+                    .append($("<span></span>")
+                        .addClass("pull-right")
+                        .css("margin-right","10px")
+                        .text(" " + grade.gpa.toFixed(2) + " ")
+                    )
                 )
 
                 // Save the actual object as data on that row.
