@@ -275,7 +275,7 @@ $(function () {
                     // Create the editable element.
                     rowDiscipline = $("<input/>")
                         .attr({ type: "text" })
-                        .addClass("input-xlarge search-query")
+                        .addClass("input-medium search-query")
                         .val(allergys),
 
                     // Get this row back to its pre-editable state.  We also stop propagation on
@@ -342,7 +342,7 @@ $(function () {
                     // Create the editable element.
                     rowDiscipline = $("<input/>")
                         .attr({ type: "text" })
-                        .addClass("input-xlarge search-query")
+                        .addClass("input-medium search-query")
                         .val(food),
 
                     // Get this row back to its pre-editable state.  We also stop propagation on
