@@ -151,6 +151,25 @@ $(function () {
             $("#student-thesis-submissiondate").text(data.thesisSubmissionDate ?
                     Date.parse(data.thesisSubmissionDate).toString(DATE_FORMAT) : BLANK);
             $("#student-thesis-notes").text(data.thesisNotes || UNSPECIFIED);
+
+            // Allergy information
+            Headmaster.loadArrayIntoTable(
+                data.allergy, "student-allergy", "student-allergy-empty",
+                function (allergy) {
+                    return $("<tr></tr>").append($("<td></td>")
+                            .text(getAllergyAsText(allergy))
+                        );
+                }
+            );
+
+            Headmaster.loadArrayIntoTable(
+                data.food_pref, "student-food_pref", "student-food_pref-empty",
+                function (food_pref) {
+                    return $("<tr></tr>").append($("<td></td>")
+                            .text(getFoodPrefAsText(food_pref))
+                        );
+                }
+            );
         }
     );
 
