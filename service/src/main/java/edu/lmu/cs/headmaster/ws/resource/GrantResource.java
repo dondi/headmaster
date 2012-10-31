@@ -42,8 +42,8 @@ public interface GrantResource {
      */
     @GET
     List<Grant> getGrants(@QueryParam("q") String query,
-            @QueryParam("awarded") @DefaultValue("true") Boolean awarded,
-            @QueryParam("presented") @DefaultValue("true") Boolean presented,
+            @QueryParam("awarded") @DefaultValue("true") Boolean grantAwarded,
+            @QueryParam("presented") @DefaultValue("true") Boolean grantPresented,
             @QueryParam("skip") @DefaultValue("0") int skip,
             @QueryParam("max") @DefaultValue("100") int max);
 
