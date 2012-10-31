@@ -1,0 +1,17 @@
+/* Some table width customization for events (first column displays event date). */
+table {
+    table-layout: fixed;
+}
+
+table td {
+    cursor: pointer;
+}
+
+table th:first-child {
+    width: 25%;
+}
+
+/* Our use of alerts here is limited to messages for empty tables. */
+.alert {
+    text-align: center;
+}
