@@ -325,6 +325,11 @@ $(function () {
                         grade.term = rowSemester.val();
                         grade.year = rowYear.val();
                         grade.gpa = parseFloat(rowGPA.val());
+                        var sum = 0;
+                        $("#student-gpa").val( 
+                           $("#student-grades>tr").each( function ( index, element  ) {
+                             sum+= element[i]/$("#student-grades>tr").length
+                             } ) );
                     },
                     restoreGradeTableRow
                 );
