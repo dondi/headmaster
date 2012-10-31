@@ -1,3 +1,4 @@
+$(function () {
 var TABLE_FORMAT = "M/d/yyyy",
     getGrants = function (tableId) {
         Headmaster.loadJsonArrayIntoTable(
@@ -29,3 +30,4 @@ var TABLE_FORMAT = "M/d/yyyy",
         );
     };
     getGrants("list-this");
+});
