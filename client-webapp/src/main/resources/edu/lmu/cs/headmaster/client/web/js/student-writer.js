@@ -329,7 +329,7 @@ $(function () {
                         $("#student-grades tr").each( function ( index, element) {
                             sum += (parseFloat($(element).find("span").text()) || grade.gpa)/$("#student-grades tr").length;
                         } );
-                        $("#student-gpa").val(sum.toFixed(2));
+                        $("#student-gpa").text(sum.toFixed(2));
                     },
                     restoreGradeTableRow
                 );
@@ -342,6 +342,16 @@ $(function () {
         /*
          * Helper function for creating a table row displaying a grade.
          */
+
+        addGradeTableRow = function (grade) {
+            var sum = 0;
+            $("#student-grades tr").each( function ( index, element) {
+                sum += parseFloat($(element).find("span").text())/($("#student-grades tr").length+1);
+            } );
+            $("#student-gpa").text((sum + parseFloat(grade.gpa)/($("#student-grades tr").length+1)).toFixed(2));
+            return createGradeTableRow(grade);
+        }
+
         createGradeTableRow = function (grade) {
             var tr = $("<tr></tr>");
 
@@ -528,7 +538,7 @@ $(function () {
                 $("#student-sat-verbal").val(data.satVerbalScore || BLANK);
                 $("#student-sat-math").val(data.satMathScore || BLANK);
                 $("#student-sat-writing").val(data.satWritingScore || BLANK);
-                $("#student-gpa").val(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
+                $("#student-gpa").text(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
                 $("#student-status").val(data.academicStatus || BLANK);
 
                 // Grade information.
@@ -611,7 +621,7 @@ $(function () {
         };
 
         // Add a row for that grade to the table.
-        $("#student-grades > tbody").append(createGradeTableRow(grade));
+        $("#student-grades > tbody").append(addGradeTableRow(grade));
         updateDependentElements();
 
         // Clear the add section.
@@ -689,7 +699,7 @@ $(function () {
 
             studentRecord = canEditStudentRecord ? {
                 schoolId: $("#student-schoolid").val(),
-                cumulativeGpa: $("#student-gpa").val(),
+                cumulativeGpa: $("#student-gpa").text(),
                 academicStatus: $("#student-status").val(),
                 highSchoolGpa: $("#student-hsgpa").val(),
                 actScore: $("#student-act").val(),
