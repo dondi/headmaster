@@ -47,7 +47,7 @@ public interface StudentResource {
     @GET
     List<Student> getStudents(@QueryParam("q") String query,
             @QueryParam("active") @DefaultValue("true") Boolean active,
-            @QueryParam("transferStudent") Boolean transferStudent,
+            @QueryParam("transfer") Boolean transferStudent,
             @QueryParam("class") ClassYear classYear,
             @QueryParam("classFrom") Integer expectedGraduationYearFrom,
             @QueryParam("classTo") Integer expectedGraduationYearTo,

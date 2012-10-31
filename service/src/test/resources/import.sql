@@ -11,11 +11,11 @@ insert into student(id, firstname, lastname, active, expectedgraduationyear, tra
 insert into student(id, firstname, lastname, active, expectedgraduationyear, transferStudent) values(1000003, 'Ivan', 'Sutherland', false, 2012, false);
 insert into student(id, firstname, lastname, active, expectedgraduationyear, transferStudent) values(1000004, 'Alan', 'Kay', true, 2014, true);
 
-insert into student(id, firstname, lastname, active, cumulativegpa) values(1000005, 'Turd', 'Ferguson', true, 2.0);
-insert into student(id, firstname, lastname, active, cumulativegpa) values(1000006, 'Trevor', 'McBean', true, 2.5);
-insert into student(id, firstname, lastname, active, cumulativegpa) values(1000007, 'Nestor', 'Rwende', true, 4.0);
-insert into student(id, firstname, lastname, active, cumulativegpa) values(1000008, 'Rihanna', 'Streisand', true, 3.9);
-insert into student(id, firstname, lastname, active, cumulativegpa) values(1000009, 'Kevin', 'Taggart', true, 3.5);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000005, 'Turd', 'Ferguson', true, 2.0, true);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000006, 'Trevor', 'McBean', true, 2.5, true);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000007, 'Nestor', 'Rwende', true, 4.0, false);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000008, 'Rihanna', 'Streisand', true, 3.9, true);
+insert into student(id, firstname, lastname, active, cumulativegpa, transferStudent) values(1000009, 'Kevin', 'Taggart', true, 3.5, true);
 
 insert into major(id, collegeorschool, degree, discipline) values(1000000, 'Engineering', 'BS', 'Computer Science');
 insert into major(id, collegeorschool, degree, discipline) values(1000001, 'Science','BA', 'Mathematics');
@@ -46,7 +46,7 @@ insert into student_gpa(student_id, grades_id) values(1000006, 1000003);
 insert into student_gpa(student_id, grades_id) values(1000007, 1000004);
 
 -- Test fixture grants.
-insert into researchgrant(id, amount, facultymentor, title) values(1000000, 10000, 'Leonard Kleinrock', 'The Worldwide Web');
+insert into researchgrant(id, amount, facultymentor, title, awarded, presented) values(1000000, 10000, 'Leonard Kleinrock', 'The Worldwide Web', true, true);
 
 insert into researchgrant_student(grant_id, student_id, students_order) values(1000000, 1000000, 0);
 insert into researchgrant_student(grant_id, student_id, students_order) values(1000000, 1000001, 1);

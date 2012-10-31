@@ -1,13 +1,10 @@
-package edu.lmu.cs.headmaster.ws.dao;
+package edu.lmu.cs.headmaster.ws.service;
 
 import java.util.List;
 
 import edu.lmu.cs.headmaster.ws.domain.Grant;
 
-/**
- * Simple dao for grant domain objects.
- */
-public interface GrantDao {
+public interface GrantService {
 
     /**
      * Returns the grant with the given id, or null if no such grant exists.
@@ -19,8 +16,7 @@ public interface GrantDao {
      * skipping the first <code>skip</code> results and returning at most
      * <code>max</code> results.
      */
-    List<Grant> getGrants(String query, Boolean awarded, Boolean presented,
-            int skip, int max);
+    List<Grant> getGrants(String query, Boolean awarded, Boolean presented, int skip, int max);
 
     /**
      * Saves the given grant, which should have a null id.

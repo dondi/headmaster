@@ -34,11 +34,11 @@ public interface EventDao {
     /**
      * Saves the given event, which should have a null id.
      */
-    public Event createEvent(Event event);
+    Event createEvent(Event event);
 
     /**
      * Updates or saves the given event, which should have a non-null id.
      */
-    public void createOrUpdateEvent(Event event);
+    void createOrUpdateEvent(Event event);
 
 }
