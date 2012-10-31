@@ -298,7 +298,7 @@ $(function () {
                             .append($("<span></span>")
                                 .addClass("pull-right")
                                 .css("margin-right","10px")
-                                .text(" " + grade.gpa.toFixed(2) + " ")
+                                .text(grade.gpa.toFixed(2))
                             );
                         makeGradeTableRowEditable(tr);
                         event.stopPropagation();
@@ -326,10 +326,10 @@ $(function () {
                         grade.year = rowYear.val();
                         grade.gpa = parseFloat(rowGPA.val());
                         var sum = 0;
-                        $("#student-gpa").val( 
-                           $("#student-grades>tr").each( function ( index, element  ) {
-                             sum+= element[i]/$("#student-grades>tr").length
-                             } ) );
+                        $("#student-grades tr").each( function ( index, element) {
+                            sum += (parseFloat($(element).find("span").text()) || grade.gpa)/$("#student-grades tr").length;
+                        } );
+                        $("#student-gpa").val(sum.toFixed(2));
                     },
                     restoreGradeTableRow
                 );
@@ -354,7 +354,7 @@ $(function () {
                     .append($("<span></span>")
                         .addClass("pull-right")
                         .css("margin-right","10px")
-                        .text(" " + grade.gpa.toFixed(2) + " ")
+                        .text(grade.gpa.toFixed(2))
                     )
                 )
 
