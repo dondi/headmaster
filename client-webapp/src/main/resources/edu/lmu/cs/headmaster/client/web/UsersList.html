@@ -32,9 +32,19 @@
                         <wicket:message key="button.delete">Delete Checked User</wicket:message>
                     </button>
 
+<<<<<<< HEAD
                      <a class="btn btn-primary pull-right" id="edit-button" href="#">
                         <wicket:message key="button.edit">Edit</wicket:message>
                     </a>
+=======
+                    <a class="btn btn-primary pull-right" id="edit-button" href="#">
+                        <wicket:message key="button.edit">
+                           <a ref="user_form_edit.html">
+                              Edit
+                           </a>
+                        </wicket:message>
+                    </a> -->
+>>>>>>> 4b7a7ef5b6f6c7129b5d2cb38c362e473b113151
 
                     <h1>
                         <wicket:message key="title">User List</wicket:message>
@@ -71,13 +81,13 @@
             <wicket:child/>
 
             <wicket:link>
-                <script src="js/student-list.js"></script>
+                <script src="js/user-list.js"></script>
             </wicket:link>
         </wicket:extend>
 
         <script src="js/headmaster-offline.js"></script>
 
-        <script src="lib/date.js"></script>
+        
         <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/js/bootstrap.min.js"></script>
         <script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
     </body>
