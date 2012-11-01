@@ -37,58 +37,180 @@
                         <wicket:message key="success.link">Click here to view the new grant.</wicket:message>
                     </a>
                 </div>
-                <div class="page-header well">
-                    <div class="form-inline">
-                        <label class="control-label" for="grant-title">
-                            <wicket:message key="label.title">Title</wicket:message>
-                        </label>
-                        <input type="text" class="input-xlarge span3"
-                                id="grant-title"/>
-                        <label class="control-label" for="faculty-mentor">
-                            <wicket:message key="label.faculty.mentor">Faculty Mentor</wicket:message>
-                        </label>
-                        <input type="text" class="input-xlarge span3"
-                                id="faculty-mentor"/>
-                        <label class="control-label" for="grant-amount">
-                            <wicket:message key="label.amount">Amount</wicket:message>
-                        </label>
-                        <input type="text" class="input-xlarge span2"
-                                id="grant-amount"/>
-
-<!--                        <label class="checkbox" for="student-active">
-                            <input type="checkbox" id="student-active" checked="checked"/>
-                            <wicket:message key="label.active">Active</wicket:message>
-                        </label>
--->
-                    </div>
+                <div class="alert alert-success hide fade in" id="event-success">
+                    <h4 class="alert-heading">
+                        <wicket:message key="success.title">Event Written</wicket:message>
+                    </h4>
+                    <wicket:message key="success.message">The event has been saved.</wicket:message>
                 </div>
 
+                <div class="page-header">
+                    <h1><wicket:message key="title">Event Entry</wicket:message></h1>
+                </div>
+
+                <div class="row-fluid">
+                    <div class="span6 form-horizontal">
+
+
+
+                        <div class="control-group">
+                            <label class="control-label" for="grant-title">
+                                <wicket:message key="label.title">Title</wicket:message>
+                            </label>
+                            <div class="controls">
+                            <input type="text" class="input-xlarge"
+                                    id="grant-title"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="faculty-mentor">
+                                <wicket:message key="label.faculty.mentor">Faculty Mentor</wicket:message>
+                            </label>
+                            <div class="controls">
+                            <input type="text" class="input-xlarge"
+                                    id="faculty-mentor"/>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="grant-amount">
+                                <wicket:message key="label.amount">Amount</wicket:message>
+                            </label>
+                            <div class="controls">
+                            <input class="input-xlarge" type="text"
+                                    id="grant-amount"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="event-description">
+                                <wicket:message key="prompt.description">Event Description</wicket:message>
+                            </label>
+                            <div class="controls">
+                                <textarea class="input-xlarge" id="event-description" rows="5"></textarea>
+                            </div>
+                        </div>
+
+
+                        <!-- Section for adding/editing minors.  Unfortunately,
+                                         placeholders cannot be externalized. -->
+                        <div class="control-group">
+                            <label class="control-label">
+                                <wicket:message key="label.types">Type(s)</wicket:message>
+                            </label>
+                            <div class="controls"
+                                    id="student-minors-container">
+                                <div class="input-append">
+                                    <input type="text" class="input-xlarge"
+                                            data-provide="typeahead"
+                                            placeholder="Type"
+                                            id="student-minors-discipline"/>
+                                    <button class="btn btn-info"
+                                            id="student-minors-add-button">
+                                        <i class="icon-plus icon-white"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                                        <div class="controls">
+                                            <div class="alert alert-info hide message-empty"
+                                                    id="grant-types-empty">
+                                                <wicket:message key="prompt.empty.types">(none)</wicket:message>
+                                            </div>
+                                            <table class="table table-striped table-condensed table-hover hide"
+                                                    id="student-minors">
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                        </div>
+
+
+                    </div>
+                    <div class="span6">
+                        <h2>
+                            <wicket:message key="heading.attendees">Attendees</wicket:message>
+                            <a class="btn btn-success pull-right" data-toggle="modal"
+                                    href="#student-search-modal" id="event-add-attendee">
+                                <wicket:message key="button.add">Add</wicket:message>...
+                            </a>
+                        </h2>
+
+                        <p><wicket:message key="instructions.attendees">
+                            To protect pending changes, clicking on a student while on this page
+                            will open the student view in a new window or tab.
+                        </wicket:message></p>
+
+                        <div class="alert alert-info hide" id="event-attendees-empty">
+                            <wicket:message key="prompt.empty.attendees">
+                                (no attendees)
+                            </wicket:message>
+                        </div>
+
+                        <table class="table table-striped hide" id="event-attendees">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student search modal view. -->
+            <div class="modal hide fade" id="student-search-modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3><wicket:message key="heading.attendees.add">Add Attendees</wicket:message></h3>
+                </div>
+
+                <div class="modal-body">
+                    <span class="help-block">
+                        <wicket:message key="instructions.attendees.add">
+                            Enter a search query, then click on a search result to add that
+                            student to this event.
+                        </wicket:message>
+                    </span>
+                    <form class="well form-search">
+                        <label for="search-field">
+                            <wicket:message key="prompt.search">Search for</wicket:message>:
+                        </label>
+                        <input type="text" class="input-medium search-query" id="search-field">
+                    </form>
+
+                    <div class="progress progress-striped active hide" id="search-progress">
+                        <div class="bar" style="width: 100%;"></div>
+                    </div>
+
+                    <div class="alert alert-info hide" id="search-empty">
+                        <wicket:message key="prompt.empty.students">
+                            (no matching students)
+                        </wicket:message>
+                    </div>
+
+                    <table class="table table-striped hide" id="search-results">
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">
+                        <wicket:message key="button.done">Done</wicket:message>
+                    </a>
+                </div>
+            </div>
+
                 <div class="row">
-                    <div class="span12 accordion" id="student-data-accordion">
+                    <div class="span12 accordion" id="grants-accordion">
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <h2 class="accordion-toggle"
                                         data-toggle="collapse"
-                                        data-target="#student-contact-container"
-                                        data-parent="#student-data-accordion">
+                                        data-target="#details-container"
+                                        data-parent="#grants-accordion">
                                     <wicket:message key="heading.details">Details</wicket:message>
                                 </h2>
                             </div>
 
-                            <div class="accordion-body collapse in" id="student-contact-container">
+                            <div class="accordion-body collapse in" id="details-container">
                                 <div class="form-horizontal accordion-inner">
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.description">
-                                                Description
-                                            </wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <textarea class="input-xlarge" rows="8"
-                                                    id="grant-description"></textarea>
-                                        </div>
-                                    </div>
-
 
                                     <!-- Section for adding/editing minors.  Unfortunately,
                                          placeholders cannot be externalized. -->
@@ -167,13 +289,13 @@
                             <div class="accordion-heading">
                                 <h2 class="accordion-toggle"
                                         data-toggle="collapse"
-                                        data-target="#student-thesis-container"
-                                        data-parent="#student-list-accordion">
+                                        data-target="#misc-container"
+                                        data-parent="#grants-accordion">
                                     <wicket:message key="heading.misc">Miscellaneous</wicket:message>
                                 </h2>
                             </div>
 
-                            <div class="accordion-body collapse in" id="student-thesis-container">
+                            <div class="accordion-body collapse in" id="misc-container">
                                 <div class="accordion-inner">
                                     <div class="form-horizontal">
                                         <div class="control-group">
@@ -262,7 +384,7 @@
                         </button>
                     </div>
                 </div>
-            </div>
+
 
             <!-- Temporary backversioning pending typeahead keyboard bug fix:
                  https://github.com/twitter/bootstrap/issues/4465 -->
@@ -272,7 +394,7 @@
                  Bootstrap: easy drag-and-drop rearranging of elements. -->
             <script src="http://code.jquery.com/ui/1.8.23/jquery-ui.min.js"></script>
             <wicket:link>
-                <script src="js/student-writer.js"></script>
+                <script src="js/grant-writer.js"></script>
             </wicket:link>
         </wicket:extend>
 
