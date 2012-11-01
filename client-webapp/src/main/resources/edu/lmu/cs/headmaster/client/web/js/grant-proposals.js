@@ -8,16 +8,22 @@ var TABLE_FORMAT = "M/d/yyyy",
             tableId + "-empty",
 
             function (grant) {
+                var title = grant.title || "",
+                    description = grant.description || "",
+                    submissionDate = grant.submissionDate || "",
+                    type = grant.type || "",
+                    facultyMentor = grant.facultyMentor || "",
+                    students = grant.students || "",
+                    notes = grant.notes || "";
                 return $("<tr></tr>")
-                    .append($("<td></td>").text(grant.title))
-                    .append($("<td></td>").text(grant.description))
-                    .append($("<td></td>").text(
-                         Date.parse(grant.submissionDate).toString(TABLE_FORMAT)))
-                    .append($("<td></td>").text(grant.type))
-                    .append($("<td></td>").text(grant.facultyMentor))
+                    .append($("<td></td>").text(title))
+                    .append($("<td></td>").text(description))
+                    .append($("<td></td>").text(submissionDate))
+                    .append($("<td></td>").text(type))
+                    .append($("<td></td>").text(facultyMentor))
                     //this is going to be a problem
-                    .append($("<td></td>").text(grant.students))
-                    .append($("<td></td>").text(grant.notes))
+                    .append($("<td></td>").text(students))
+                    .append($("<td></td>").text(notes))
                     .click(function () {
                         location = grant.id;
                     });
