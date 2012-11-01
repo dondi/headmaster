@@ -24,8 +24,8 @@ var TABLE_FORMAT = "M/d/yyyy",
             },
 
             {
-                awarded: false,
-                presented: false,
+                awarded: true,
+                presented: true,
             }
         );
     };
