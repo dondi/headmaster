@@ -8,16 +8,17 @@ var TABLE_FORMAT = "M/d/yyyy",
             tableId + "-empty",
 
             function (grant) {
+                var description = grant.description || "";
                 return $("<tr></tr>")
                     .append($("<td></td>").text(grant.title))
-                    .append($("<td></td>").text(grant.description))
-                    .append($("<td></td>").text(
-                         Date.parse(grant.submissionDate).toString(TABLE_FORMAT)))
-                    .append($("<td></td>").text(grant.type))
+                    .append($("<td></td>").text(description))
+                    //.append($("<td></td>").text(
+                    //     Grant.parse(grant.submissionDate).toString(TABLE_FORMAT)))
+                    //.append($("<td></td>").text(grant.type))
                     .append($("<td></td>").text(grant.facultyMentor))
                     //this is going to be a problem
-                    .append($("<td></td>").text(grant.students))
-                    .append($("<td></td>").text(grant.notes))
+                    //.append($("<td></td>").text(grant.students))
+                    //.append($("<td></td>").text(grant.notes))
                     .click(function () {
                         location = grant.id;
                     });
