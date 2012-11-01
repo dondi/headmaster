@@ -7,8 +7,8 @@ table td {
     cursor: pointer;
 }
 
-table th:first-child {
-    width: 25%;
+table th{
+    width: 14%;
 }
 
 /* Our use of alerts here is limited to messages for empty tables. */
