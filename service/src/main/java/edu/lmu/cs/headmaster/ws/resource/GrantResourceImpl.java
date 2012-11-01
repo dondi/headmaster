@@ -21,11 +21,11 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
     }
 
     @Override
-    public List<Grant> getGrants(String query, Boolean awarded, Boolean presented,
-            int skip, int max) {
+    public List<Grant> getGrants(String query, Boolean grantAwarded, Boolean grantPresented, int skip, int max) {
         logServiceCall();
 
-        return grantService.getGrants(preprocessQuery(query, skip, max, 0, 100), awarded, presented, skip, max);
+        return grantService.getGrants(preprocessNullableQuery(query, skip, max, 0, 100), grantAwarded, grantPresented,
+                skip, max);
     }
 
     @Override
