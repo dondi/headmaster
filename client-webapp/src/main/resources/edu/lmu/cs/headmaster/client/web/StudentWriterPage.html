@@ -473,7 +473,7 @@
                                                 <wicket:message key="prompt.empty.food_pref">(none)</wicket:message>
                                             </div>
                     
-                                            <table class="table table-striped table-condensed table-hover hide"
+                                            <table class="table table-striped table-condensed table-hover hide sortable-table"
                                                     id="student-food_pref">
                                                 <tbody></tbody>
                                             </table>
@@ -507,7 +507,7 @@
                                                 <wicket:message key="prompt.empty.allergy">(none)</wicket:message>
                                             </div>
                     
-                                            <table class="table table-striped table-condensed table-hover hide"
+                                            <table class="table table-striped table-condensed table-hover hide sortable-table"
                                                     id="student-allergy">
                                                 <tbody></tbody>
                                             </table>
@@ -573,7 +573,7 @@
                                                 <wicket:message key="prompt.empty.majors">(none)</wicket:message>
                                             </div>
                     
-                                            <table class="table table-striped table-condensed table-hover hide"
+                                            <table class="table table-striped table-condensed table-hover hide sortable-table"
                                                     id="student-majors">
                                                 <tbody></tbody>
                                             </table>
@@ -606,7 +606,7 @@
                                                 <wicket:message key="prompt.empty.minors">(none)</wicket:message>
                                             </div>
                     
-                                            <table class="table table-striped table-condensed table-hover hide"
+                                            <table class="table table-striped table-condensed table-hover hide sortable-table"
                                                     id="student-minors">
                                                 <tbody></tbody>
                                             </table>
@@ -626,8 +626,9 @@
                                             <wicket:message key="label.gpa">Cumulative GPA</wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <input type="number" class="input-xlarge"
-                                                    id="student-gpa"/>
+                                            <span class="input-xlarge uneditable-input"
+                                                    id="student-gpa">
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -698,14 +699,41 @@
 
                             <div class="accordion-body collapse in" id="student-grades-container">
                                 <div class="accordion-inner">
-                                    <div class="alert alert-info hide message-empty" id="student-grades-empty">
-                                        <wicket:message key="prompt.empty.grades">(no grades)</wicket:message>
+                                    <!-- Section for adding/editing majors.  Unfortunately,
+                                         placeholders cannot be externalized. -->
+                                    <div class="control-group">
+                                        <div class="controls well form-search"
+                                                id="student-grade-container">
+                                            <div class="input-append grade">
+                                                <input type="text" class="input-small search-query"
+                                                        placeholder="Semester"
+                                                        id="student-grade-semester"/>
+                                                <input type="text" class="span1"
+                                                        placeholder="Year"
+                                                        id="student-grade-year"/>
+                                                <input type="text" class="input-medium"
+                                                        placeholder="GPA"
+                                                        id="student-grade-gpa"/>
+                                                <button class="btn btn-info"
+                                                        id="student-grade-add-button">
+                                                    <i class="icon-plus icon-white"></i>
+                                                </button>
+                                            </div>
+                                        </div> 
                                     </div>
-            
-                                    <table class="table table-striped table-hover hide"
-                                            id="student-grades">
-                                        <tbody></tbody>
-                                    </table>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class="alert alert-info hide message-empty"
+                                                    id="student-grades-empty">
+                                                <wicket:message key="prompt.empty.grades">(no grades)</wicket:message>
+                                            </div>
+                    
+                                            <table class="table table-striped table-hover hide sortable-table"
+                                                    id="student-grades">
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
