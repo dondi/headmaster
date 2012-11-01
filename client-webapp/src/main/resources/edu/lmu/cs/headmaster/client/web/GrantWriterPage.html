@@ -113,10 +113,9 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <div class="alert alert-info hide message-empty"
-                                                    id="student-minors-empty">
-                                                <wicket:message key="prompt.empty.minors">(none)</wicket:message>
+                                                    id="grant-types-empty">
+                                                <wicket:message key="prompt.empty.types">(none)</wicket:message>
                                             </div>
-
                                             <table class="table table-striped table-condensed table-hover hide"
                                                     id="student-minors">
                                                 <tbody></tbody>
@@ -133,13 +132,13 @@
                                                 id="student-majors-container">
                                             <div class="input-append major">
                                                 <input type="text" class="input-small search-query"
-                                                        placeholder="College/School"
+                                                        placeholder="First Name"
                                                         id="student-majors-college-or-school"/>
-                                                <input type="text" class="span1"
-                                                        placeholder="Degree"
+                                                <input type="text" class="input-medium"
+                                                        placeholder="Last Name"
                                                         id="student-majors-degree"/>
                                                 <input type="text" class="input-medium"
-                                                        placeholder="Discipline"
+                                                        placeholder="Student ID"
                                                         id="student-majors-discipline"/>
                                                 <button class="btn btn-info"
                                                         id="student-majors-add-button">
@@ -151,8 +150,8 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <div class="alert alert-info hide message-empty"
-                                                    id="student-majors-empty">
-                                                <wicket:message key="prompt.empty.majors">(none)</wicket:message>
+                                                    id="grant-students-empty">
+                                                <wicket:message key="prompt.empty.students">(none)</wicket:message>
                                             </div>
                                             <table class="table table-striped table-condensed table-hover hide"
                                                     id="student-majors">
@@ -225,7 +224,7 @@
                                         </div>
                                         <div class="control-group" id="student-thesis-submissiondate-container">
                                             <label class="control-label">
-                                                <wicket:message key="label.thesis.submissiondate">
+                                                <wicket:message key="label.submissiondate">
                                                     Submission Date
                                                 </wicket:message>
                                             </label>
@@ -238,7 +237,7 @@
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">
-                                                <wicket:message key="label.thesis.notes">
+                                                <wicket:message key="label.notes">
                                                     Notes
                                                 </wicket:message>
                                             </label>

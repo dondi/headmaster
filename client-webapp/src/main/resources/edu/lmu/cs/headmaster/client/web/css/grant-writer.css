@@ -35,11 +35,7 @@ table > tbody > tr > td.form-search {
 
 /* Customizations for our look and feel. */
 #student-majors-college-or-school {
-    width: 7em;
-}
-
-#student-majors-degree {
-    width: 3.5em;
+    width: 6em;
 }
 
 .input-append > .btn.btn-danger, .input-append.major > *:nth-child(2),
