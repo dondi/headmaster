@@ -1,0 +1,154 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Headmaster: <wicket:message key="title"/></title>
+
+        <link rel="stylesheet"
+                href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/css/bootstrap.min.css"/>
+        <wicket:link>
+            <link rel="stylesheet" href="lib/bootstrap-datepicker/datepicker.css"/>
+
+            <link rel="stylesheet" href="css/client.css"/>
+        </wicket:link>
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <wicket:link>
+            <div class="navbar navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+
+                        <div class="nav-collapse">
+                            <ul class="nav">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle"
+                                            data-toggle="dropdown">Students
+                                        <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="StudentSearchPage.html">Search</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="FreshmenPage.html">Freshmen</a></li>
+                                        <li><a href="SophomoresPage.html">Sophomores</a></li>
+                                        <li><a href="JuniorsPage.html">Juniors</a></li>
+                                        <li><a href="SeniorsPage.html">Seniors</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="StudentCreationPage.html">Create</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle"
+                                            data-toggle="dropdown">Events
+                                        <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="EventSearchPage.html">Search</a></li>
+                                        <li><a href="EventListPage.html">List</a></li>
+                                        <li><a href="EventCreationPage.html">Create</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle"
+                                            data-toggle="dropdown">Grants
+                                        <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="GrantSearchPage.html">Search</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="ProposalListPage.html">Proposals</a></li>
+                                        <li><a href="AwardListPage.html">Awards</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="GrantCreationPage.html">Create</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle"
+                                            data-toggle="dropdown">Reports
+                                        <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="ProbationPage.html">Probation</a></li>
+                                        <li><a href="ThesisPage.html">Theses</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <ul class="nav pull-right">
+                            <li><a href="UsersList.html">Users</a></li>
+                            <li><a href="LogoutPage.html">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="body input">
+            	<form class="form-inline">
+            		<input type="text" class="input-medium" placeholder="First Name">
+            		<input type="text" class="input-medium" placeholder="Last Name">
+            		<input type="text" class="input-medium" placeholder="Email Address">
+            		<input type="text" class="input-medium" placeholder="Username">
+            		<input type="text" class="input-medium" placeholder="Password">
+            	</form>
+            </div>
+        </wicket:link>
+
+        <wicket:child/>
+
+        <!-- Implementation note: as much as possible we would like to load JavaScript at the end
+             of the web page.  However, child pages may have specific JavaScript file requirements.
+             These can be loaded before the libraries as long as their code does not run until the
+             entire page has been loaded.  Thus, inclusion of the jQuery script element is left to
+             the child pages.  This allows jQuery to be loaded first, after which page-specific
+             JavaScript can then be read.  The following libraries can then come in after.
+             (suggested jQuery CDN URL: http://code.jquery.com/jquery.min.js) -->
+
+        <script>
+            /*
+             * Local module for universally-used client functions.
+             *
+             * This code only gets included when pages are rendered by Wicket.  To allow for
+             * both test-by-file and test-by-server setups, do the following:
+             * 
+             * 1) Copy the SAMPLE-headmaster-offline.js file to
+             *    src/main/resources/edu/lmu/cs/headmaster/client/web/js
+             *    as headmaster-offline.js
+             * 
+             * 2) Edit that file to reflect the root of the web service (in the sample, it is
+             *    http://localhost:8080/headmaster)
+             * 
+             * 3) Include a script element linking to js/headmaster-offline.js in any HTML file
+             *    that might need it and with which you would like to work locally.  This script
+             *    element must be located *outside* the <wicket:head> and <wicket:extend> elements.
+             *
+             * Note that jQuery is assumed to be available.
+             */
+             window.Headmaster = $.extend(window.Headmaster || {}, {
+                 serviceUri: function (serviceCall) {
+                    // Encode the service call tail because it gets passed as a parameter.
+                     return "/headmaster-client/relay?s=" + encodeURIComponent(serviceCall);
+                 }
+             });
+        </script>
+
+        <wicket:link>
+            <script src="lib/date.js"></script>
+            <script src="js/headmaster-util.js"></script>
+        </wicket:link>
+        <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/js/bootstrap.min.js"></script>
+        <wicket:link>
+            <script src="lib/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+        </wicket:link>
+    </body>
+</html>
