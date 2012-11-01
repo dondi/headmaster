@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.UniformInterfaceException;
 
 import edu.lmu.cs.headmaster.ws.domain.Grant;
 import edu.lmu.cs.headmaster.ws.util.DomainObjectUtils;
@@ -35,37 +34,37 @@ public class GrantResourceTest extends ResourceTest {
 
     @Test
     public void testGetGrantsQueryByName() {
-        List<Grant> grants = wr.path("grants").queryParam("q", "leonard").get(new GenericType<List<Grant>>() {
-        });
+        List<Grant> grants = wr.path("grants").queryParam("q", "leonard")
+                .get(new GenericType<List<Grant>>() { });
 
         Assert.assertEquals(1, grants.size());
     }
 
     @Test
     public void testGetGrantsQueryByTitle() {
-        List<Grant> grants = wr.path("grants").queryParam("q", "worldwide").get(new GenericType<List<Grant>>() {
-        });
+        List<Grant> grants = wr.path("grants").queryParam("q", "worldwide")
+                .get(new GenericType<List<Grant>>() { });
 
         Assert.assertEquals(1, grants.size());
     }
 
     @Test
     public void testGetGrantsByNullQuery() {
-        List<Grant> grants = wr.path("grants").get(new GenericType<List<Grant>>() {
-        });
+        List<Grant> grants = wr.path("grants")
+                .get(new GenericType<List<Grant>>() { });
 
         Assert.assertEquals(1, grants.size());
     }
 
     @Test
     public void testGetGrantsByBooleanQuery() {
-        List<Grant> grants = wr.path("grants").queryParam("awarded", "false").get(new GenericType<List<Grant>>() {
-        });
+        List<Grant> grants = wr.path("grants").queryParam("awarded", "false")
+                .get(new GenericType<List<Grant>>() { });
 
         Assert.assertEquals(0, grants.size());
 
-        grants = wr.path("grants").queryParam("presented", "false").get(new GenericType<List<Grant>>() {
-        });
+        grants = wr.path("grants").queryParam("presented", "false")
+                .get(new GenericType<List<Grant>>() { });
 
         Assert.assertEquals(1, grants.size());
     }
