@@ -1,0 +1,48 @@
+@import url("student-view.css");
+
+label.checkbox[for="student-active"] {
+    margin-left: 0.5em;
+    margin-top: -2px;
+}
+
+input#student-active {
+    margin-top: 5px;
+}
+
+/* These are for draggable objects. */
+.ui-sortable-helper {
+    background-color: whitesmoke;
+    border: 1px solid lightgray;
+    border-radius: 2px;
+    box-shadow: 0 0 8px lightgray;
+    cursor: default;
+}
+
+.ui-sortable-helper > td {
+    border-style: none;
+}
+
+/* Now an editable row. */
+table > tbody > tr > td.form-search {
+    padding: 1.5ex 0;
+    text-align: center;
+}
+
+/* Custom form/field sizes/styles in StudentWriterPage. */
+#student-majors-container, #student-minors-container {
+    text-align: center;
+}
+
+/* Customizations for our look and feel. */
+#student-majors-college-or-school {
+    width: 7em;
+}
+
+#student-majors-degree {
+    width: 3.5em;
+}
+
+.input-append > .btn.btn-danger, .input-append.major > *:nth-child(2),
+        .input-append.major > *:nth-child(3) {
+    border-radius: inherit;
+}
