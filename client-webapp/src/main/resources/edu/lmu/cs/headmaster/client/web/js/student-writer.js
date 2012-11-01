@@ -38,6 +38,8 @@ $(function () {
             // Show/hide table elements vs. their empty indicators.
             updateTableVisibility($("#student-majors"), $("#student-majors-empty"));
             updateTableVisibility($("#student-minors"), $("#student-minors-empty"));
+			updateTableVisibility($("#student-allergy"), $("#student-allergy-empty"));
+			updateTableVisibility($("#student-food_pref"), $("#student-food_pref-empty"));
             updateTableVisibility($("#student-attendance"), $("#student-attendance-empty"));
             updateTableVisibility($("#student-grades"), $("#student-grades-empty"));
             updateTableVisibility($("#student-grants"), $("#student-grants-empty"));
@@ -246,8 +248,8 @@ $(function () {
                 tr.unbind("click");
             });
         },
-
-        /*
+		
+		/*
          * Helper function for creating a table row displaying a minor.
          */
         createMinorTableRow = function (string) {
@@ -260,13 +262,147 @@ $(function () {
                     .text(string)
                     .append(createRemoveElement(tr)));
         };
+		
+		        /*
+         * Helper function that changes a allergy table row from a read-only to an
+         * editable one.  
+         */
+        makeAllergyTableRowEditable = function (tr) {
+            tr.click(function () {
+                var td = tr.find("td"),
+                    allergys = td.text(),
+    
+                    // Create the editable element.
+                    rowDiscipline = $("<input/>")
+                        .attr({ type: "text" })
+                        .addClass("input-medium search-query")
+                        .val(allergys),
+
+                    // Get this row back to its pre-editable state.  We also stop propagation on
+                    // the event that triggered the restore so that we don't cycle back to being
+                    // editable.
+                    restoreAllergyTableRow = function (event) {
+                        td.empty().removeClass("form-search")
+                            .text(allergys)
+                            .append(createRemoveElement(tr));
+                        makeAllergyTableRowEditable(tr);
+                        event.stopPropagation();
+                    },
+
+                    // Create an input-append container.
+                    container = $("<div></div>").addClass("input-append").append(rowDiscipline);
+
+                // Set up typeahead elements.
+                setUpTypeahead(rowDiscipline, "terms/disciplines");
+
+                // Clear what was there...
+                td.empty()
+                    // ...then add the editable element.
+                    .addClass("form-search")
+                    .append(container);
+
+                // Finally, the buttons.
+                addEditableRowIcons(
+                    container,
+                    function () {
+                        allergys = rowDiscipline.val();
+                    },
+                    restoreAllergyTableRow
+                );
+
+                // Finally, disengage this very handler.
+                tr.unbind("click");
+            });
+        },
+		
+		        /*
+         * Helper function for creating a table row displaying an allergy.
+         */
+        createAllergyTableRow = function (string) {
+            var tr = $("<tr></tr>");
+
+            // Support in-place edits.
+            makeAllergyTableRowEditable(tr);
+
+            return tr.append($("<td></td>")
+                    .text(string)
+                    .append(createRemoveElement(tr)));
+        };
+		
+		
+				        /*
+         * Helper function that changes a food preference table row from a read-only to an
+         * editable one.  
+         */
+        makeFoodTableRowEditable = function (tr) {
+            tr.click(function () {
+                var td = tr.find("td"),
+                    food = td.text(),
+    
+                    // Create the editable element.
+                    rowDiscipline = $("<input/>")
+                        .attr({ type: "text" })
+                        .addClass("input-medium search-query")
+                        .val(food),
+
+                    // Get this row back to its pre-editable state.  We also stop propagation on
+                    // the event that triggered the restore so that we don't cycle back to being
+                    // editable.
+                    restoreFoodTableRow = function (event) {
+                        td.empty().removeClass("form-search")
+                            .text(food)
+                            .append(createRemoveElement(tr));
+                        makeFoodTableRowEditable(tr);
+                        event.stopPropagation();
+                    },
+
+                    // Create an input-append container.
+                    container = $("<div></div>").addClass("input-append").append(rowDiscipline);
+
+                // Set up typeahead elements.
+                setUpTypeahead(rowDiscipline, "terms/disciplines");
+
+                // Clear what was there...
+                td.empty()
+                    // ...then add the editable element.
+                    .addClass("form-search")
+                    .append(container);
+
+                // Finally, the buttons.
+                addEditableRowIcons(
+                    container,
+                    function () {
+                        food = rowDiscipline.val();
+                    },
+                    restoreFoodTableRow
+                );
+
+                // Finally, disengage this very handler.
+                tr.unbind("click");
+            });
+        },
+		
+		        /*
+         * Helper function for creating a table row displaying a food preference.
+         */
+        createFoodTableRow = function (string) {
+            var tr = $("<tr></tr>");
+
+            // Support in-place edits.
+            makeFoodTableRowEditable(tr);
+
+            return tr.append($("<td></td>")
+                    .text(string)
+                    .append(createRemoveElement(tr)));
+        };
+
 
     // Datepicker setup.
     $("#student-honorsentrydate, #student-thesis-submissiondate").datepicker();
 
-    // Majors and minors can be manually ordered---something that is doable more
+    // Majors, minors, allergies, and food preferences can be manually ordered---something that is doable more
     // easily than with Bootstrap.
-    $("#student-majors > tbody, #student-minors > tbody").sortable({
+    $("#student-majors > tbody, #student-minors > tbody, #student-allergy > tbody, #student-food_pref > tbody").sortable({
         // For the helper, we provide almost the same thing, but without the
         // remove element.
         helper: function (event, element) {
@@ -280,7 +416,7 @@ $(function () {
             Headmaster.serviceUri("students/" + studentId),
             function (data, textStatus, jqXHR) {
                 // Student name and graduation year.
-                $("#student-firstname").val(data.firstName || BLANK);
+                $("#student-firstname").val(data.firstName || BLANK);// data.firstName ? data.firstName : BLANK
                 $("#student-middlename").val(data.middleName || BLANK);
                 $("#student-lastname").val(data.lastName || BLANK);
                 $("#student-gradyear").val(data.expectedGraduationYear);
@@ -310,7 +446,16 @@ $(function () {
                 Headmaster.loadArrayIntoTable(
                     data.minors, "student-minors", "student-minors-empty", createMinorTableRow
                 );
-
+				
+				// Allergies and Food Preferences
+                Headmaster.loadArrayIntoTable(
+                    data.allergy, "student-allergy", "student-allergy-empty", createAllergyTableRow
+                );
+				
+				Headmaster.loadArrayIntoTable(
+                    data.food_pref, "student-food_pref", "student-food_pref-empty", createFoodTableRow
+                );
+				
                 // Status information.
                 $("#student-compact-" + (data.compactSigned ? "yes" : "no"))
                     .attr({ checked: "checked" });
@@ -508,6 +653,32 @@ $(function () {
         // Clear the add section.
         $("#student-minors-container > div > input").val("");
     });
+	
+	//Allergy
+	$("#student-allergy-add-button").click(function (event) {
+        // Create a new allergy (really just a string) then add it to the allergy table.
+        var allergys = $("#student-allergy-discipline").val();
+
+        // Add a row for that allergy to the table.
+        $("#student-allergy > tbody").append(createAllergyTableRow(allergys));
+        updateDependentElements();
+
+        // Clear the add section.
+        $("#student-allergy-container > div > input").val("");
+    });
+	
+	//Food Preference
+	$("#student-food_pref-add-button").click(function (event) {
+        // Create a new food preference (really just a string) then add it to the food preference table.
+        var food = $("#student-food_pref-discipline").val();
+
+        // Add a row for that food preference to the table.
+        $("#student-food_pref > tbody").append(createFoodTableRow(food));
+        updateDependentElements();
+
+        // Clear the add section.
+        $("#student-food_pref-container > div > input").val("");
+    });
 
     $("#student-cancel").click(function (event) {
         history.go(-1);
@@ -543,6 +714,10 @@ $(function () {
                 // Majors and minors (to be gathered later).
                 majors: [],
                 minors: [],
+				
+				//Allergies and Food Preferences (to be gathered later).
+				allergy: [],
+				food_pref: [],
 
                 // Status information.
                 compactSigned: Headmaster.isChecked("student-compact-yes"),
@@ -602,6 +777,22 @@ $(function () {
 
         Headmaster.loadTableIntoArray(
             studentData, "minors", $("#student-minors > tbody td"),
+            function (td) {
+                return $(td).text();
+            }
+        );
+		
+		//Allergy
+        Headmaster.loadTableIntoArray(
+            studentData, "allergy", $("#student-allergy > tbody td"),
+            function (td) {
+                return $(td).text();
+            }
+        );
+		
+		//Food Preference
+		Headmaster.loadTableIntoArray(
+            studentData, "food_pref", $("#student-food_pref > tbody td"),
             function (td) {
                 return $(td).text();
             }

@@ -381,6 +381,57 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <h3 class="accordion-toggle"
+                                        data-toggle="collapse"
+                                        data-target="#student-allergies-container"
+                                        data-parent="#student-data-accordion">
+                                    <wicket:message key="heading.allergies">Food Preference/Allergies</wicket:message>
+                                </h3>
+                            </div>
+     
+                            <div class="accordion-body collapse in" id="student-allergies-container">
+                                <div class="form-horizontal accordion-inner">
+
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.food_pref">Food Preference</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <div class="alert alert-info hide message-empty" id="student-food_pref-empty">
+                                                <wicket:message key="prompt.empty.food_pref">(none)</wicket:message>
+                                            </div>
+                    
+                                            <table class="table table-striped table-condensed hide"
+                                                    id="student-food_pref">
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.allergy">Minor(s)</wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <div class="alert alert-info hide message-empty" id="student-allergy-empty">
+                                                <wicket:message key="prompt.empty.allergy">(none)</wicket:message>
+                                            </div>
+                    
+                                            <table class="table table-striped table-condensed hide"
+                                                    id="student-allergy">
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </div>
 
                     <div class="span7 accordion" id="student-list-accordion">
