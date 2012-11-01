@@ -1,142 +1,99 @@
 $(function () {
-    var addressList = "",
+    // Retrieve the User ID that we were given.
+    var userId = $("#student-id").text(),
+        DATE_FORMAT = "M/d/yyyy",
+        BLANK = "",
+        YES = "Yes",
+        NO = "No",
+   
+    // If supplied, load up the student with that ID.
+    if (userId) {
+        $.getJSON(
+            Headmaster.serviceUri("users/" + userId),
+            function (data, textStatus, jqXHR) {
+                // Student name and graduation year.
+                $("#user-firstname").val(data.firstName || BLANK);
+                $("#user-email").val(data.email || BLANK);
+                $("#user-username").val(data.username || BLANK);
+                $("#user-password").val(data.password || BLANK);                
+                $("#user-lastname").val(data.lastName || BLANK);
 
-        /*
-         * Helper function for building email address links. Also builds up the
-         * cumulative email list.
-         */
-        getEmailElement = function (email) {
-            addressList += (addressList ? "," : "") + email;
-            return Headmaster.getEmailElement(email).addClass("email");
-        },
-
-        /*
-         * Helper function for building elements indicating a student's college(s).
-         */
-        getCollegeElements = function (student) {
-            return Headmaster.loadArrayIntoUnorderedList(student.majors, "collegeOrSchool");
-        },
-
-        /*
-         * Helper function for building elements indicating a student's major(s).
-         */
-        getMajorElements = function (student) {
-            return Headmaster.loadArrayIntoUnorderedList(student.majors, "discipline");
-        },
-
-        /*
-         * UI feedback function that updates components that depend on others,
-         * such as the "Send Email to Checked" button (which depends on whether
-         * there are checked rows).
-         */
-        updateDependentElements = function () {
-            // We iterate because we want to break out.
-            var checkboxes = $("input.rowcheck"), i, max, jCheckbox;
-
-            for (i = 0, max = checkboxes.length; i < max; i += 1) {
-                jCheckbox = $(checkboxes[i]);
-
-                // Derive the email address(es) associated with that checkbox.
-                if (jCheckbox.attr("checked") === "checked") {
-                    // A single check does the trick.
-                    $("#email-checked-button").removeAttr("disabled").removeClass("disabled");
-                    return;
-                }
-            }
-
-            // If we reach here, nothing was checked.
-            $("#email-checked-button").attr({ disabled: "disabled" }).addClass("disabled");
-        },
-
-        /*
-         * Convenience function for stopping "click-through" in row checkboxes.
-         */
-        stopProp = function (event) {
-            event.stopPropagation();
-            updateDependentElements();
-        };
-
-    // Load up students based on the "query" data property of the #student-query
-    // element.
-    Headmaster.loadJsonArrayIntoTable(
-        Headmaster.serviceUri("students"),
-        "student-list-progress",
-        "student-list",
-        "student-list-empty",
-
-        function (student) {
-            return $("<tr></tr>")
-                .append($("<td></td>").text(student.firstName))
-                .append($("<td></td>").text(student.lastName))
-                .append(
-                    $("<td></td>").append(
-                        $('<input type="checkbox" class="rowcheck" ' +
-                                (student.primaryEmail || student.secondaryEmail ?
-                                        "" : 'disabled="disabled"') + "/>").click(stopProp)
-                    )
-                )
-                .append($('<td class="emailcol"></td>').append(
-                        student.primaryEmail ? getEmailElement(student.primaryEmail) : null
-                    ).append(
-                        student.primaryEmail && student.secondaryEmail ? $("<br/>") : null
-                    ).append(
-                        student.secondaryEmail ? getEmailElement(student.secondaryEmail) : null
-                    )
-                )
-                .append($("<td></td>").append(getCollegeElements(student)))
-                .append($("<td></td>").append(getMajorElements(student)))
-                .append($("#student-query").data("columns") ?
-                        $("#student-query").data("columns")(student) : null)
-                .click(function () {
-                    location = student.id;
+                    // We only load once.
+                    $(this).unbind("show");
                 });
-        },
-
-        $("#student-query").data("query"),
-
-        function (studentArray) {
-            // Assign the list of all addresses.
-            if (addressList) {
-                $("#email-all-button").attr({ href: "mailto:" + addressList });
-            } else {
-                $("#email-all-button, #email-checked-button").fadeOut();
             }
+        );
 
-            // Set the student count.
-            $("#student-list-count").text(studentArray.length);
+        
+    } else {
+        
+    $("#user-cancel").click(function (event) {
+        history.go(-1);
+        event.preventDefault();
+    });
 
-            // Update any elements whose state depends on others.
-            updateDependentElements();
+    $("#user-save").click(function (event) {
+        // Grab the data from the web page.
+        var userData = {
+                id: userId,
+
+                // Student name and graduation year.
+                firstName: $("#user-firstname").val(),                
+                lastName: $("#user-lastname").val(),
+                email: $("#user-email").val(),
+                username: $("#user-username").val(),
+                password: $("#user-password").val(),
+                
+
+        
+
+        // Ditch the id attribute if it is empty.
+        if (!userData.id) {
+            delete userData.id;
         }
-    );
 
-    // Sending email to checked can't just be an anchor; it requires additional
-    // logic.
-    $("#email-checked-button").click(function () {
-        var checkedAddresses = "";
+       
 
-        // Gather the checked rows.
-        //
-        // FIXME For some reason jQuery cannot select the
-        // already-checked checkboxes---that would tighten this
-        // code up a bit.
-        $("input.rowcheck").each(function (index, checkbox) {
-            var jCheckbox = $(checkbox);
+        // Ajax call(s).  We do the student record put synchronously in case this is a new
+        // student (in which case we want to be certain that the addition succeeded before
+        // proceeding with the student record portion).
+        $.ajax({
+            type: userData.id ? "PUT" : "POST",
+            url: Headmaster.serviceUri("users" + (userData.id ? "/" + userData.id : "")),
+            data: JSON.stringify(userData),
+            contentType: "application/json",
+            dataType: "json",
 
-            // Derive the email address(es) associated with that checkbox.
-            if (jCheckbox.attr("checked") === "checked") {
-                jCheckbox.parent().parent().find("td.emailcol > a.email").each(
-                    function (index, a) {
-                        checkedAddresses += (checkedAddresses ? "," : "") + $(a).text();
-                    }
-                );
+            success: function (data, textStatus, jqXHR) {
+                var resultId = userId || jqXHR.getResponseHeader("Location").split("/").pop();
+
+                // Now for the student record, if applicable.
+               
+                // Provide visible UI feedback.
+                $("#student-success").fadeIn();
+
+                // If there is no studentId, then we are creating students,
+                // in which case we clear the form in case more students
+                // are to be created.
+                if (!userId) {
+                    $("input, textarea").val("");
+                    $("#user-new-link")
+                        .attr({ href: resultId })
+                        .fadeIn();
+                } else {
+                    location = "../" + userId;
+                }
+
+                // Dismiss the alert after a fixed delay (not needed for edits).
+                setTimeout(function () {
+                    $("#user-new-link, #user-success").fadeOut();
+                }, 5000);
             }
         });
 
-        // Issue the email link, if we have addresses.
-        if (checkedAddresses) {
-            location = "mailto:" + checkedAddresses;
-        }
+        event.preventDefault();
     });
 
+    // Set up other interactive components.
+    $(".collapse").collapse();
 });
