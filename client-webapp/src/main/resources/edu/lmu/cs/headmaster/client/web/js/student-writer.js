@@ -261,6 +261,117 @@ $(function () {
             return tr.append($("<td></td>")
                     .text(string)
                     .append(createRemoveElement(tr)));
+        },
+
+        /*
+         * Helper function that changes a grade table row from a read-only to an
+         * editable one.
+         */
+        makeGradeTableRowEditable = function (tr) {
+            tr.click(function () {
+                // The center of it all: the current model object for the grade.
+                var grade = tr.data("gpa"),
+    
+                    // Create the editable elements.
+                    rowSemester = $("<input/>")
+                        .attr({ type: "text" })
+                        .addClass("input-small search-query")
+                        .val(grade.term),
+    
+                    rowYear = $("<input/>")
+                        .attr({ type: "text" })
+                        .addClass("input-mini")
+                        .val(grade.year),
+    
+                    rowGPA = $("<input/>")
+                        .attr({ type: "text" })
+                        .addClass("input-mini")
+                        .val(grade.gpa),
+    
+                    td = tr.find("td"),
+
+                    // Get this row back to its pre-editable state.  We also stop propagation on
+                    // the event that triggered the restore so that we don't cycle back to being
+                    // editable.
+                    restoreGradeTableRow = function (event) {
+                        td.empty().removeClass("form-search")
+                            .text(grade.term + " " + grade.year + " ")
+                            .append(createRemoveElement(tr))
+                            .append($("<span></span>")
+                                .addClass("pull-right")
+                                .css("margin-right","10px")
+                                .text(grade.gpa.toFixed(2))
+                            );
+                        makeGradeTableRowEditable(tr);
+                        event.stopPropagation();
+                    },
+
+                    // Create an input-append container.
+                    container = $("<div></div>").addClass("input-append grade")
+                        .append(rowSemester)
+                        .append(rowYear)
+                        .append(rowGPA);
+                    
+                // Clear what was there...
+                td.empty()
+                    // ...then add the new elements.
+                    .addClass("form-search")
+                    .append(container);
+
+                // Finally, the buttons.
+                addEditableRowIcons(
+                    container,
+                    function () {
+                        // Finalize the edit.  Note how this preserves the grade's
+                        // id, which is exactly how we want it to work.
+                        grade.term = rowSemester.val();
+                        grade.year = rowYear.val();
+                        grade.gpa = parseFloat(rowGPA.val());
+                        var sum = 0;
+                        $("#student-grades tr").each( function ( index, element) {
+                            sum += (parseFloat($(element).find("span").text()) || grade.gpa)/$("#student-grades tr").length;
+                        } );
+                        $("#student-gpa").text(sum.toFixed(2));
+                    },
+                    restoreGradeTableRow
+                );
+
+                // Finally, disengage this very handler.
+                tr.unbind("click");
+            });
+        },
+
+        /*
+         * Helper function for creating a table row displaying a grade.
+         */
+
+        addGradeTableRow = function (grade) {
+            var sum = 0;
+            $("#student-grades tr").each( function ( index, element) {
+                sum += parseFloat($(element).find("span").text())/($("#student-grades tr").length+1);
+            } );
+            $("#student-gpa").text((sum + parseFloat(grade.gpa)/($("#student-grades tr").length+1)).toFixed(2));
+            return createGradeTableRow(grade);
+        }
+
+        createGradeTableRow = function (grade) {
+            var tr = $("<tr></tr>");
+
+            // Support in-place edits.
+            makeGradeTableRowEditable(tr);
+
+            return tr.append($("<td></td>")
+                    .text(grade.term + " " + grade.year + " ")
+                    .append(createRemoveElement(tr))
+                    .append($("<span></span>")
+                        .addClass("pull-right")
+                        .css("margin-right","10px")
+                        .text(grade.gpa.toFixed(2))
+                    )
+                )
+
+                // Save the actual object as data on that row.
+                .data("gpa", grade);
         };
 		
 		        /*
@@ -400,9 +511,9 @@ $(function () {
     // Datepicker setup.
     $("#student-honorsentrydate, #student-thesis-submissiondate").datepicker();
 
-    // Majors, minors, allergies, and food preferences can be manually ordered---something that is doable more
-    // easily than with Bootstrap.
-    $("#student-majors > tbody, #student-minors > tbody, #student-allergy > tbody, #student-food_pref > tbody").sortable({
+    // Majors, minors, allergies, food preferences, and semester GPAs can be
+    // manually ordered---something that is doable more easily than with Bootstrap.
+    $("table.sortable-table > tbody").sortable({
         // For the helper, we provide almost the same thing, but without the
         // remove element.
         helper: function (event, element) {
@@ -572,20 +683,12 @@ $(function () {
                 $("#student-sat-verbal").val(data.satVerbalScore || BLANK);
                 $("#student-sat-math").val(data.satMathScore || BLANK);
                 $("#student-sat-writing").val(data.satWritingScore || BLANK);
-                $("#student-gpa").val(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
+                $("#student-gpa").text(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
                 $("#student-status").val(data.academicStatus || BLANK);
 
                 // Grade information.
                 Headmaster.loadArrayIntoTable(
-                    data.grades, "student-grades", "student-grades-empty",
-                    function (gpa) {
-                        return $("<tr></tr>")
-                            .append($("<td></td>").text(gpa.term + " " + gpa.year))
-                            .append($("<td></td>").text(gpa.gpa.toFixed(2)))
-
-                            // Save the actual object as data on that row.
-                            .data("gpa", gpa);
-                    }
+                    data.grades, "student-grades", "student-grades-empty", createGradeTableRow
                 );
 
                 canEditStudentRecord = true;
@@ -680,6 +783,23 @@ $(function () {
         $("#student-food_pref-container > div > input").val("");
     });
 
+    $("#student-grade-add-button").click(function (event) {
+        // Create a new grade from the fields then add it to the majors table.
+        var grade = {
+            term: $("#student-grade-semester").val(),
+            year: $("#student-grade-year").val(),
+            gpa: parseFloat($("#student-grade-gpa").val())
+        };
+
+        // Add a row for that grade to the table.
+        $("#student-grades > tbody").append(addGradeTableRow(grade));
+        updateDependentElements();
+
+        // Clear the add section.
+        $("#student-grade-container > div > input").val("");
+    });
+     
+
     $("#student-cancel").click(function (event) {
         history.go(-1);
         event.preventDefault();
@@ -754,7 +874,7 @@ $(function () {
 
             studentRecord = canEditStudentRecord ? {
                 schoolId: $("#student-schoolid").val(),
-                cumulativeGpa: $("#student-gpa").val(),
+                cumulativeGpa: $("#student-gpa").text(),
                 academicStatus: $("#student-status").val(),
                 highSchoolGpa: $("#student-hsgpa").val(),
                 actScore: $("#student-act").val(),
@@ -853,8 +973,9 @@ $(function () {
                     $("input, textarea").val("");
                     
                     // New added content begins here.
+                    // TODO Check to see if this can be unified somehow.
                     $("#student-majors > tbody").remove();
-                    $("#student-minors> tbody").remove();
+                    $("#student-minors > tbody").remove();
                     updateDependentElements();
                     // Added content ends here.
                     

@@ -1,10 +1,10 @@
 <!doctype html>
 
-<html xmlns:wicket>
+<html>
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Headmaster: <wicket:message key="title"/></title>
+        <title>Headmaster: User Edit Form<wicket:message key="title"/></title>
 
         <link rel="stylesheet"
                 href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/css/bootstrap.min.css"/>
@@ -19,6 +19,7 @@
           <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
     </head>
+    <!--Create forms for users under the Create User-->
     <body>
         <wicket:link>
             <div class="navbar navbar-fixed-top">
@@ -87,11 +88,20 @@
                             </ul>
                         </div>
                         <ul class="nav pull-right">
-                            <li class = "userbutton"><a href="UsersList.html">Users</a></li>
+                            <li><a href="UsersList.html">Users</a></li>
                             <li><a href="LogoutPage.html">Logout</a></li>
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div class="body input">
+            	<form class="form-inline">
+            		<input type="text" class="input-medium" placeholder="First Name">
+            		<input type="text" class="input-medium" placeholder="Last Name">
+            		<input type="text" class="input-medium" placeholder="Email Address">
+            		<input type="text" class="input-medium" placeholder="Username">
+            		<input type="text" class="input-medium" placeholder="Password">
+            	</form>
             </div>
         </wicket:link>
 
