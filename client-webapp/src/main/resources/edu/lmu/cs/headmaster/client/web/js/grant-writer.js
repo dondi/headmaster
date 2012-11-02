@@ -1,10 +1,201 @@
 $(function () {
     // Retrieve the ID that we were given.
-    var studentId = $("#grant-id").text(),
+    var grantId = $("#grant-id").text(),
         DATE_FORMAT = "M/d/yyyy",
         BLANK = "",
         YES = "Yes",
         NO = "No",
+
+        /*
+         * Checks the state of the attendees and student search result tables.
+         * An empty table is hidden and replaced with its accompanying empty
+         * indicator. If it is not empty, it is displayed and the empty
+         * indicator is hidden.
+         */
+        showOrHideStudentTables = function () {
+            Headmaster.toggleElements(
+                $("#grant-students > tbody > tr").length,
+                $("#grant-students"),
+                $("#grant-students-empty")
+            );
+
+            Headmaster.toggleElements(
+                $("#search-results > tbody > tr").length,
+                $("#search-results"),
+                $("#search-empty")
+            );
+        },
+
+        /*
+         * Creates a tr element representing an attending student.
+         */
+        createAttendeeTableRow = function (student) {
+            var td = $("<td></td>").text(student.firstName + " " + student.lastName),
+                tr = $("<tr></tr>");
+
+            // Include a remove button.
+            $('<i class="icon-remove-sign pull-right"></i>')
+                .appendTo(td)
+                .click(function () {
+                    tr.remove();
+                    showOrHideStudentTables();
+                });
+
+            // Save the actual object as data on that row.
+            return tr.data("student", student).append(td).click(function () {
+                window.open("../../students/" + student.id, "_blank");
+            });
+        },
+
+        /*
+         * Checks whether the given student already has a row in the attendees
+         * table.
+         */
+        isAttendee = function (student) {
+            // We don't use $.each because we might want to break out of the
+            // loop.
+            var rows = $("#grant-students > tbody > tr"), i, max;
+
+            // Comparison is by student id only.
+            for (i = 0, max = rows.length; i < max; i += 1) {
+                if ($(rows[i]).data("student").id === student.id) {
+                    return true;
+                }
+            }
+
+            // If we get here, we did not find the student.
+            return false;
+        };
+
+    if (grantId) {
+        $.getJSON(
+            Headmaster.serviceUri("grants/" + eventId),
+            function (data, textStatus, jqXHR) {
+                $("#grant-submissiondate").val(data.submissiondate ?
+                        Date.parse(data.submissiondate).toString(DATE_FORMAT) : BLANK);
+                $("#grant-title").val(data.title || BLANK);
+                $("#grant-description").val(data.description || BLANK);
+                $("#grant-amount").val(data.amount || BLANK);
+                $("#grant-notes").val(data.notes || BLANK);
+                $("#grant-facultymentor").val(data.facultymentor || BLANK);
+                $("#grant-presented-" + (data.presented ? "yes" : "no"))
+                    .attr({ checked: "checked" });
+                $("#grant-presented-" + (data.presented ? "no" : "yes"))
+                    .removeAttr("checked");
+                $("#grant-awarded-pending").removeAttr("checked");
+                $("#grant-awarded-awarded").removeAttr("checked");
+                $("#grant-awarded-declined").removeAttr("checked");
+                $("#grant-awarded-" + toLower(data.awarded)).attr({ checked: "checked" });
+
+                // List the attendees.
+                Headmaster.loadArrayIntoTable(
+                    data.students,
+                    "grant-students",
+                    "grant-students-empty",
+                    createAttendeeTableRow
+                );
+            }
+        );
+    } else {
+        // Otherwise, we start empty.
+        $("#grant-notes, #grant-amount, #grant-facultymentor, #grant-submissiondate, #grant-title, #grant-description").val(BLANK);
+        $("#grant-students").fadeOut();
+        $("#grant-students-empty").fadeIn();
+    }
+
+    // Datepicker setup.
+//    $("#grant-submissiondate").datepicker();
+
+    // Search field setup.
+    Headmaster.setupSearchField(
+        $("#search-field"), $("#search-progress"), $("#search-empty"), $("#search-results"),
+        Headmaster.serviceUri("grants"), "q",
+        function (grant) {
+            return isAttendee(grant) ? null :
+                $("<tr></tr>")
+                    .append($("<td></td>").text(student.firstName + " " + student.lastName))
+                    .click(function () {
+                        // Add the clicked student to the attendee table...
+                        $("#grant-students > tbody")
+                            .append(createAttendeeTableRow(student));
+
+                        // ...then remove it from this one.
+                        $(this).remove();
+                        showOrHideStudentTables();
+                    });
+        }
+    );
+
+    // Button click handling.
+    $("#grant-cancel").click(function (grant) {
+        history.go(-1);
+        grant.preventDefault();
+    });
+
+    $("#grant-save").click(function (grant) {
+        // Grab the data from the web page.
+        var grantData = {
+            id: grantId,
+            title: $("#grant-title").val(),
+            description: $("#grant-description").val(),
+            submissionDate: new Date(),
+            facultymentor: $("#grant-facultymentor").val(),
+            amount: $("grant-amount").val(),
+            notes: $("grant-notes").val(),
+/*
+    private String type;
+    private Boolean awarded;
+    private List<Student> students = new ArrayList<Student>();
+    private Boolean presented;
+*/
+            // To be filled out below.
+            attendees: []
+        };
+
+        // Gather attendee data.
+        Headmaster.loadTableIntoArray(
+            grantData, "students", $("#grant-students > tbody > tr"),
+            function (tr) {
+                return $(tr).data("student");
+            }
+        );
+
+        // Ditch the id attribute if it is empty.
+        if (!grantData.id) {
+            delete grantData.id;
+        }
+
+        // Convert the date into a string that the service will parse correctly.
+        Headmaster.dateToDateString(grantData, "submissionDate");
+
+        // Ajax call.
+        $.ajax({
+            type: grantData.id ? "PUT" : "POST",
+            url: Headmaster.serviceUri("grants" + (grantData.id ? "/" + grantData.id : "")),
+            data: JSON.stringify(grantData),
+            success: function () {
+                $("#grant-success").fadeIn();
+
+                // If there is no eventId, then we are creating events,
+                // in which case we clear the form in case more events
+                // are to be created.
+                if (!grantId) {
+                    $("form input, form textarea").val("");
+                } else {
+                    location = "../" + eventId;
+                }
+
+                // Dismiss the alert after a fixed delay (not needed for edits).
+                setTimeout(function () {
+                    $("#grant-success").fadeOut();
+                }, 5000);
+            },
+            contentType: "application/json",
+            dataType: "json"
+        });
+
+        grant.preventDefault();
+    });
 
         // Indicates whether the current user may edit the student record.
         canEditGrantRecord = false,
@@ -261,9 +452,6 @@ $(function () {
                     .append(createRemoveElement(tr)));
         };
 
-    // Datepicker setup.
-    $("#student-honorsentrydate, #student-thesis-submissiondate").datepicker();
-
     // Majors and minors can be manually ordered---something that is doable more
     // easily than with Bootstrap.
     $("#student-majors > tbody, #student-minors > tbody").sortable({
@@ -273,201 +461,6 @@ $(function () {
             return $("<tr></tr>").append($("<td></td>").text(element.text()));
         }
     });
-
-    // If supplied, load up the student with that ID.
-    if (studentId) {
-        $.getJSON(
-            Headmaster.serviceUri("students/" + studentId),
-            function (data, textStatus, jqXHR) {
-                // Student name and graduation year.
-                $("#student-firstname").val(data.firstName || BLANK);
-                $("#student-middlename").val(data.middleName || BLANK);
-                $("#student-lastname").val(data.lastName || BLANK);
-                $("#student-gradyear").val(data.expectedGraduationYear);
-                $("#student-active")
-                    .removeAttr(data.active ? null : "checked")
-                    .attr(data.active ? { checked: "checked" } : null);
-
-                // Contact information.
-                $("#student-email1").val(data.primaryEmail || BLANK);
-                $("#student-email2").val(data.secondaryEmail || BLANK);
-                $("#student-campus-box").val(data.campusBox || BLANK);
-                $("#student-address").val(data.address || BLANK);
-                $("#student-city").val(data.city || BLANK);
-                $("#student-state").val(data.state || BLANK);
-                $("#student-zip").val(data.zip || BLANK);
-                $("#student-phone-main").val(data.mainPhone || BLANK);
-                $("#student-phone-cell").val(data.cellPhone || BLANK);
-
-                // Academic information.
-                $("#student-advisor").val(data.advisor || BLANK);
-
-                // Majors and minors.
-                Headmaster.loadArrayIntoTable(
-                    data.majors, "student-majors", "student-majors-empty", createMajorTableRow
-                );
-
-                Headmaster.loadArrayIntoTable(
-                    data.minors, "student-minors", "student-minors-empty", createMinorTableRow
-                );
-
-                // Status information.
-                $("#student-compact-" + (data.compactSigned ? "yes" : "no"))
-                    .attr({ checked: "checked" });
-                $("#student-compact-" + (data.compactSigned ? "no" : "yes"))
-                    .removeAttr("checked");
-
-                $("#student-inllc-" + (data.inLivingLearningCommunity ? "yes" : "no"))
-                    .attr({ checked: "checked" });
-                $("#student-inllc-" + (data.inLivingLearningCommunity ? "no" : "yes"))
-                    .removeAttr("checked");
-
-                $("#student-transfer-" + (data.transferStudent ? "yes" : "no"))
-                    .attr({ checked: "checked" });
-                $("#student-transfer-" + (data.transferStudent ? "no" : "yes"))
-                    .removeAttr("checked");
-
-                // TODO This is better done as a select element.
-                $("#student-residencycode").val(data.residencyCode);
-
-                $("#student-studyabroad-" + (data.hasStudiedAbroad ? "yes" : "no"))
-                    .attr({ checked: "checked" });
-                $("#student-studyabroad-" + (data.hasStudiedAbroad ? "no" : "yes"))
-                    .removeAttr("checked");
-
-                // Demographics information.
-                $("#student-sex-" + (data.sex === "FEMALE" ? "female" : "male"))
-                    .attr({ checked: "checked" });
-                $("#student-sex-" + (data.sex === "FEMALE" ? "male" : "female"))
-                    .removeAttr("checked");
-
-                $("#student-raceorethnicity").val(data.raceOrEthnicity || BLANK);
-
-                // Entry information.
-                $("#student-entryyear").val(data.entryYear || BLANK);
-                $("#student-honorsentrydate").val(data.honorsEntryDate ?
-                        Date.parse(data.honorsEntryDate).toString(DATE_FORMAT) : BLANK);
-                $("#student-scholarship").val(data.scholarship || BLANK);
-
-                // Notes.
-                $("#student-notes").val(data.notes || BLANK);
-
-                // Thesis information.
-                $("#student-thesis-title").val(data.thesisTitle || BLANK);
-                $("input[type='radio'][name='thesis-term']").removeAttr("checked");
-                $("#student-thesis-term-" + (data.thesisTerm === "FALL" ? "fall" :
-                        (data.thesisTerm === "SPRING" ? "spring" : "unknown")))
-                    .attr({ checked: "checked" });
-                $("#student-thesis-year").val(data.thesisYear || data.expectedGraduationYear);
-                $("#student-thesis-advisor").val(data.thesisAdvisor || BLANK);
-
-                $("input[type='radio'][name='thesis-inmajor']").removeAttr("checked");
-                $("#student-thesis-inmajor-" + (data.thesisInMajor ? "yes" :
-                        (data.thesisInMajor === false ? "no" : "unknown")))
-                    .attr({ checked: "checked" });
-                $("#student-thesis-course").val(data.thesisCourse || BLANK);
-
-                $("#student-thesis-submitted-" + (data.thesisSubmissionDate ? "yes" : "no"))
-                    .attr({ checked: "checked" });
-                $("#student-thesis-submitted-" + (data.thesisSubmissionDate ? "no" : "yes"))
-                    .removeAttr("checked");
-                $("#student-thesis-submissiondate").val(data.thesisSubmissionDate ?
-                        Date.parse(data.thesisSubmissionDate).toString(DATE_FORMAT) : BLANK);
-
-                $("#student-thesis-notes").val(data.thesisNotes || BLANK);
-
-                // Set up listeners so that as an accordion opens, the right Ajax call is made
-                // (except for grades and thesis, which are known right away).
-                $("#student-attendance-container").on("show", function () {
-                    Headmaster.loadJsonArrayIntoTable(
-                        Headmaster.serviceUri("students/" + studentId + "/attendance"),
-                        "student-attendance-progress",
-                        "student-attendance",
-                        "student-attendance-empty",
-                        function (event) {
-                            return $("<tr></tr>")
-                                .append(
-                                    $("<td></td>").text(
-                                        event.dateTime ?
-                                                Date.parse(event.dateTime).toString(DATE_FORMAT) :
-                                                UNSPECIFIED
-                                    )
-                                ).append(
-                                    $("<td></td>").text(event.title || UNSPECIFIED)
-                                ).click(function () {
-                                    // View that event if the row is clicked.
-                                    location = "../../events/" + event.id;
-                                });
-                        }
-                    );
-
-                    // We only load once.
-                    $(this).unbind("show");
-                });
-
-                // TODO grants
-
-                // Now that values have been set, put dependent user interface
-                // elements in the correct initial state.
-                updateDependentElements();
-            }
-        );
-
-        // Load up the student's privileged information. Here, we attempt to load
-        // the student record object. If we get FORBIDDEN, we conclude that the
-        // current user is not allowed to see the student record and thus hide the
-        // view elements for them. This can be done asynchronously because they
-        // affect a separate set of elements.
-        $.getJSON(
-            Headmaster.serviceUri("students/" + studentId + "/record"),
-            function (data, textStatus, jqXHR) {
-                $("#student-schoolid").val(data.schoolId || BLANK);
-                $("#student-hsgpa").val(data.highSchoolGpa || BLANK);
-                $("#student-act").val(data.actScore || BLANK);
-                $("#student-sat-verbal").val(data.satVerbalScore || BLANK);
-                $("#student-sat-math").val(data.satMathScore || BLANK);
-                $("#student-sat-writing").val(data.satWritingScore || BLANK);
-                $("#student-gpa").val(data.cumulativeGpa ? data.cumulativeGpa.toFixed(2) : BLANK);
-                $("#student-status").val(data.academicStatus || BLANK);
-
-                // Grade information.
-                Headmaster.loadArrayIntoTable(
-                    data.grades, "student-grades", "student-grades-empty",
-                    function (gpa) {
-                        return $("<tr></tr>")
-                            .append($("<td></td>").text(gpa.term + " " + gpa.year))
-                            .append($("<td></td>").text(gpa.gpa.toFixed(2)))
-
-                            // Save the actual object as data on that row.
-                            .data("gpa", gpa);
-                    }
-                );
-
-                canEditStudentRecord = true;
-            }
-        ).error(function (jqXHR, textStatus, errorThrown) {
-            // On error, hide the expected fields.
-            // TODO The only "routine" error should be receipt of FORBIDDEN. If
-            // anything else is encountered, it would be good to inform the user
-            // that something else is amiss.
-            $("#student-schoolid").parent().parent().hide();
-            $("#student-hsgpa").parent().parent().hide();
-            $("#student-act").parent().parent().hide();
-            $("#student-sat-verbal").parent().parent().hide();
-            $("#student-sat-math").parent().parent().hide();
-            $("#student-sat-writing").parent().parent().hide();
-            $("#student-gpa").parent().parent().hide();
-            $("#student-status").parent().parent().hide();
-            $("#student-grades-container").parent().hide();
-
-            canEditStudentRecord = false;
-        });
-    } else {
-        // When there is no id, we update the dependent elements and clear out the lists.
-        // Update dependent elements in the case that there is no id.
-        updateDependentElements();
-        $(".progress").fadeOut();
-    }
 
     // Set up event handling so that the updateDependentElements function gets
     // called when radio buttons are clicked (because many elements depend on
@@ -507,174 +500,6 @@ $(function () {
 
         // Clear the add section.
         $("#student-minors-container > div > input").val("");
-    });
-
-    $("#student-cancel").click(function (event) {
-        history.go(-1);
-        event.preventDefault();
-    });
-
-    $("#student-save").click(function (event) {
-        // Grab the data from the web page.
-        var studentData = {
-                id: studentId,
-
-                // Student name and graduation year.
-                firstName: $("#student-firstname").val(),
-                middleName: $("#student-middlename").val(),
-                lastName: $("#student-lastname").val(),
-                expectedGraduationYear: $("#student-gradyear").val(),
-                active: Headmaster.isChecked("student-active"),
-
-                // Contact information.
-                primaryEmail: $("#student-email1").val(),
-                secondaryEmail: $("#student-email2").val(),
-                campusBox: $("#student-campus-box").val(),
-                address: $("#student-address").val(),
-                city: $("#student-city").val(),
-                state: $("#student-state").val(),
-                zip: $("#student-zip").val(),
-                mainPhone: $("#student-phone-main").val(),
-                cellPhone: $("#student-phone-cell").val(),
-
-                // Academic information.
-                advisor: $("#student-advisor").val(),
-
-                // Majors and minors (to be gathered later).
-                majors: [],
-                minors: [],
-
-                // Status information.
-                compactSigned: Headmaster.isChecked("student-compact-yes"),
-                inLivingLearningCommunity: Headmaster.isChecked("student-inllc-yes"),
-                transferStudent: Headmaster.isChecked("student-transfer-yes"),
-                hasStudiedAbroad: Headmaster.isChecked("student-studyabroad-yes"),
-                residencyCode: $("#student-residencycode").val(),
-
-                // Demographics information.
-                sex: Headmaster.isChecked("student-sex-female") ? "FEMALE" : "MALE",
-                raceOrEthnicity: $("#student-raceorethnicity").val(),
-
-                // Entry information.
-                entryYear: $("#student-entryyear").val(),
-                honorsEntryDate: Date.parse($("#student-honorsentrydate").val()),
-                scholarship: $("#student-scholarship").val(),
-
-                // Notes.
-                notes: $("#student-notes").val(),
-
-                // Thesis information.
-                thesisTitle: $("#student-thesis-title").val(),
-                thesisTerm: Headmaster.isChecked("student-thesis-term-fall") ? "FALL" :
-                        (Headmaster.isChecked("student-thesis-term-spring") ? "SPRING" : null),
-                thesisYear: $("#student-thesis-year").val(),
-                thesisAdvisor: $("#student-thesis-advisor").val(),
-                thesisInMajor: Headmaster.isChecked("student-thesis-inmajor-yes") ? true :
-                        (Headmaster.isChecked("student-thesis-inmajor-no") ? false : null),
-                thesisCourse: $("#student-thesis-course").val(),
-                thesisSubmissionDate: Headmaster.isChecked("student-thesis-submitted-yes") ?
-                        Date.parse($("#student-thesis-submissiondate").val()) : null,
-                thesisNotes: $("#student-thesis-notes").val()
-            },
-
-            studentRecord = canEditStudentRecord ? {
-                schoolId: $("#student-schoolid").val(),
-                cumulativeGpa: $("#student-gpa").val(),
-                academicStatus: $("#student-status").val(),
-                highSchoolGpa: $("#student-hsgpa").val(),
-                actScore: $("#student-act").val(),
-                satVerbalScore: $("#student-sat-verbal").val(),
-                satMathScore: $("#student-sat-math").val(),
-                satWritingScore: $("#student-sat-writing").val(),
-
-                // Grades (to be gathered later).
-                grades: [],
-            } : null;
-
-        // Gather array data. Empty arrays don't travel well, though, so
-        // we eliminate those.
-        Headmaster.loadTableIntoArray(
-            studentData, "majors", $("#student-majors > tbody > tr"),
-            function (td) {
-                return $(td).data("major");
-            }
-        );
-
-        Headmaster.loadTableIntoArray(
-            studentData, "minors", $("#student-minors > tbody td"),
-            function (td) {
-                return $(td).text();
-            }
-        );
-
-        // Grade loading is conditional.
-        if (canEditStudentRecord) {
-            Headmaster.loadTableIntoArray(
-                studentRecord, "grades", $("#student-grades > tbody > tr"),
-                function (tr) {
-                    return $(tr).data("gpa");
-                }
-            );
-        }
-
-        // Ditch the id attribute if it is empty.
-        if (!studentData.id) {
-            delete studentData.id;
-        }
-
-        // Convert the dates into strings that the service will parse correctly.
-        $.each(["honorsEntryDate", "thesisSubmissionDate"], function (index, propertyName) {
-            Headmaster.dateToDateString(studentData, propertyName);
-        });
-
-        // Ajax call(s).  We do the student record put synchronously in case this is a new
-        // student (in which case we want to be certain that the addition succeeded before
-        // proceeding with the student record portion).
-        $.ajax({
-            type: studentData.id ? "PUT" : "POST",
-            url: Headmaster.serviceUri("students" + (studentData.id ? "/" + studentData.id : "")),
-            data: JSON.stringify(studentData),
-            contentType: "application/json",
-            dataType: "json",
-
-            success: function (data, textStatus, jqXHR) {
-                var resultId = studentId || jqXHR.getResponseHeader("Location").split("/").pop();
-
-                // Now for the student record, if applicable.
-                if (canEditStudentRecord) {
-                    $.ajax({
-                        type: "PUT",
-                        url: Headmaster.serviceUri("students/" + resultId + "/record"),
-                        data: JSON.stringify(studentRecord),
-                        contentType: "application/json",
-                        dataType: "json",
-                        async: false
-                    });
-                }
-
-                // Provide visible UI feedback.
-                $("#student-success").fadeIn();
-
-                // If there is no studentId, then we are creating students,
-                // in which case we clear the form in case more students
-                // are to be created.
-                if (!studentId) {
-                    $("input, textarea").val("");
-                    $("#student-new-link")
-                        .attr({ href: resultId })
-                        .fadeIn();
-                } else {
-                    location = "../" + studentId;
-                }
-
-                // Dismiss the alert after a fixed delay (not needed for edits).
-                setTimeout(function () {
-                    $("#student-new-link, #student-success").fadeOut();
-                }, 5000);
-            }
-        });
-
-        event.preventDefault();
     });
 
     // Set up other interactive components.
