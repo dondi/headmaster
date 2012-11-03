@@ -68,7 +68,7 @@
                                 <wicket:message key="label.amount">Amount</wicket:message>
                             </label>
                             <div class="controls">
-                            <input class="input-xlarge" type="text"
+                            <input class="input-xlarge" type="number"
                                     id="grant-amount"/>
                             </div>
                         </div>
@@ -117,6 +117,7 @@
                         </div>
 
 
+                    <!-- Students -->
                     </div>
                     <div class="span6">
                         <h2>
@@ -142,6 +143,115 @@
                             <tbody></tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span12 accordion" id="grants-accordion">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <h2 class="accordion-toggle"
+                                    data-toggle="collapse"
+                                    data-target="#misc-container"
+                                    data-parent="#grants-accordion">
+                                <wicket:message key="heading.misc">Miscellaneous</wicket:message>
+                            </h2>
+                        </div>
+
+                        <div class="accordion-body collapse in" id="misc-container">
+                            <div class="accordion-inner">
+                                <div class="form-horizontal">
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.awarded">
+                                                Awarded
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <label class="radio inline" for="grant-awarded-pending">
+                                                <input type="radio" name="grant-awarded" id="grant-awarded-pending" checked/>
+                                                <wicket:message key="label.radio.pending">
+                                                    Pending
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="grant-awarded-declined">
+                                                <input type="radio" name="grant-awarded"
+                                                        id="grant-awarded-declined"/>
+                                                <wicket:message key="label.radio.declined">
+                                                    Declined
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="grant-awarded-awarded">
+                                                <input type="radio" name="grant-awarded"
+                                                        id="grant-awarded-awarded"/>
+                                                <wicket:message key="label.radio.awarded">
+                                                    Awarded
+                                                </wicket:message>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.presented">
+                                                Presented
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <label class="radio inline" for="grant-presented-yes">
+                                                <input type="radio" name="grant-presented"
+                                                        id="grant-presented-yes"/>
+                                                <wicket:message key="label.radio.yes">
+                                                    Yes
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="grant-presented-no">
+                                                <input type="radio" name="grant-presented"
+                                                        id="grant-presented-no" checked/>
+                                                <wicket:message key="label.radio.no">
+                                                    No
+                                                </wicket:message>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group" id="grant-submissiondate-container">
+                                        <label class="control-label">
+                                            <wicket:message key="label.submissiondate">
+                                                Submission Date
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <input type="text" class="input-xlarge"
+                                                    data-date-format="m/d/yyyy"
+                                                    placeholder="m/d/yyyy"
+                                                    id="grant-submissiondate"
+                                                    disabled="disabled"/>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">
+                                            <wicket:message key="label.notes">
+                                                Notes
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <textarea class="input-xlarge" rows="5"
+                                                    id="grant-notes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="pull-right">
+                    <button class="btn" id="grant-cancel">
+                        <wicket:message key="button.cancel">Cancel</wicket:message>
+                    </button>
+                    <button class="btn btn-primary" id="grant-save">
+                        <wicket:message key="button.save">Save</wicket:message>
+                    </button>
                 </div>
             </div>
 
@@ -187,115 +297,6 @@
                     </a>
                 </div>
             </div>
-
-                <div class="row">
-                    <div class="span12 accordion" id="grants-accordion">
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h2 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#misc-container"
-                                        data-parent="#grants-accordion">
-                                    <wicket:message key="heading.misc">Miscellaneous</wicket:message>
-                                </h2>
-                            </div>
-
-                            <div class="accordion-body collapse in" id="misc-container">
-                                <div class="accordion-inner">
-                                    <div class="form-horizontal">
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.awarded">
-                                                    Awarded
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <label class="radio inline" for="grant-awarded-pending">
-                                                    <input type="radio" name="grant-awarded" id="grant-awarded-pending"/>
-                                                    <wicket:message key="label.radio.pending">
-                                                        Pending
-                                                    </wicket:message>
-                                                </label>
-                                                <label class="radio inline" for="grant-awarded-declined">
-                                                    <input type="radio" name="grant-awarded"
-                                                            id="grant-awarded-declined"/>
-                                                    <wicket:message key="label.radio.declined">
-                                                        Declined
-                                                    </wicket:message>
-                                                </label>
-                                                <label class="radio inline" for="grant-awarded-awarded">
-                                                    <input type="radio" name="grant-awarded"
-                                                            id="grant-awarded-awarded"/>
-                                                    <wicket:message key="label.radio.awarded">
-                                                        Awarded
-                                                    </wicket:message>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.presented">
-                                                    Presented
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <label class="radio inline" for="grant-presented-yes">
-                                                    <input type="radio" name="grant-presented"
-                                                            id="grant-presented-yes"/>
-                                                    <wicket:message key="label.radio.yes">
-                                                        Yes
-                                                    </wicket:message>
-                                                </label>
-                                                <label class="radio inline" for="grant-presented-no">
-                                                    <input type="radio" name="grant-presented"
-                                                            id="grant-presented-no" checked/>
-                                                    <wicket:message key="label.radio.no">
-                                                        No
-                                                    </wicket:message>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="control-group" id="grant-submissiondate-container">
-                                            <label class="control-label">
-                                                <wicket:message key="label.submissiondate">
-                                                    Submission Date
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <input type="text" class="input-xlarge"
-                                                        data-date-format="m/d/yyyy"
-                                                        placeholder="m/d/yyyy"
-                                                        id="grant-submissiondate"/>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.notes">
-                                                    Notes
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <textarea class="input-xlarge" rows="5"
-                                                        id="grant-notes"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <div class="pull-right">
-                        <button class="btn" id="grant-cancel">
-                            <wicket:message key="button.cancel">Cancel</wicket:message>
-                        </button>
-                        <button class="btn btn-primary" id="grant-save">
-                            <wicket:message key="button.save">Save</wicket:message>
-                        </button>
-                    </div>
-                </div>
-
 
             <!-- Temporary backversioning pending typeahead keyboard bug fix:
                  https://github.com/twitter/bootstrap/issues/4465 -->

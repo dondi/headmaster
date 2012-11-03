@@ -140,18 +140,26 @@ $(function () {
             description: $("#grant-description").val(),
             submissionDate: new Date(),
             facultymentor: $("#grant-facultymentor").val(),
-            amount: parseInt($("#grant-amount").val()),
+            amount: parseInt($("#grant-amount").val().replace(/[^0-9]/g,"")),
             notes: $("#grant-notes").val(),
             presented: Headmaster.isChecked("grant-presented-yes"),
+            type: "",
 /*
-    private String type;
     private Boolean awarded;
-    private List<Student> students = new ArrayList<Student>();
-    private Boolean presented;
 */
             // To be filled out below.
             students: []
-        };
+
+        },
+
+        // Gather type data.
+        // Not using Headmaster's loadTableIntoArray because I didn't want to
+        // bother learning how to work it.
+        grantTypes = $("#grant-types > tbody > tr").map(function() {
+            return $(this).text();
+        }).get().toString();
+        grantTypes ? grantData.type = grantTypes : delete grantData.type;
+
 /*
         // Gather attendee data.
         Headmaster.loadTableIntoArray(
@@ -159,8 +167,8 @@ $(function () {
             function (tr) {
                 return $(tr).data("student");
             }
-        );
-*/
+        );*/
+
         // Ditch the id attribute if it is empty.
         if (!grantData.id) {
             delete grantData.id;
@@ -180,9 +188,8 @@ console.log(grantData);
             success: function () {
                 $("#grant-success").fadeIn();
 
-                // If there is no eventId, then we are creating events,
-                // in which case we clear the form in case more events
-                // are to be created.
+                // If there is no grantId, then we are creating grants, in which
+                // case we clear the form in case more grants are to be created.
                 if (!grantId) {
                     $("form input, form textarea").val("");
                 } else {
@@ -249,16 +256,6 @@ console.log(grantData);
         },
 
         /*
-         * Helper function that provides the standardized text representation
-         * for a major.
-         */
-        getMajorAsText = function (major) {
-            return (major.degree ? major.degree + " " : BLANK) +
-                    (major.discipline || BLANK) +
-                    (major.collegeOrSchool ? ", " + major.collegeOrSchool : BLANK);
-        },
-
-        /*
          * Helper function for creating the standard in-place editing controls.
          */
         addEditableRowIcons = function (container, confirmFunction, restoreFunction) {
@@ -297,110 +294,19 @@ console.log(grantData);
         },
 
         /*
-         * Helper function that changes a major table row from a read-only to an
-         * editable one.
-         */
-        makeMajorTableRowEditable = function (tr) {
-            tr.click(function () {
-                // The center of it all: the current model object for the major.
-                var major = tr.data("major"),
-
-                    // Create the editable elements.
-                    rowCollegeOrSchool = $("<input/>")
-                        .attr({ type: "text" })
-                        .addClass("input-small search-query")
-                        .val(major.collegeOrSchool),
-
-                    rowDegree = $("<input/>")
-                        .attr({ type: "text" })
-                        .addClass("input-mini")
-                        .val(major.degree),
-
-                    rowDiscipline = $("<input/>")
-                        .attr({ type: "text" })
-                        .addClass("input-medium")
-                        .val(major.discipline),
-
-                    td = tr.find("td"),
-
-                    // Get this row back to its pre-editable state.  We also stop propagation on
-                    // the event that triggered the restore so that we don't cycle back to being
-                    // editable.
-                    restoreMajorTableRow = function (event) {
-                        td.empty().removeClass("form-search")
-                            .text(getMajorAsText(major))
-                            .append(createRemoveElement(tr));
-                        makeMajorTableRowEditable(tr);
-                        event.stopPropagation();
-                    },
-
-                    // Create an input-append container.
-                    container = $("<div></div>").addClass("input-append major")
-                        .append(rowCollegeOrSchool)
-                        .append(rowDegree)
-                        .append(rowDiscipline);
-
-                // Set up the typeahead elements.
-                setUpTypeahead(rowCollegeOrSchool, "terms/colleges-or-schools");
-                setUpTypeahead(rowDegree, "terms/degrees");
-                setUpTypeahead(rowDiscipline, "terms/disciplines");
-
-                // Clear what was there...
-                td.empty()
-                    // ...then add the new elements.
-                    .addClass("form-search")
-                    .append(container);
-
-                // Finally, the buttons.
-                addEditableRowIcons(
-                    container,
-                    function () {
-                        // Finalize the edit.  Note how this preserves the major's
-                        // id, which is exactly how we want it to work.
-                        major.collegeOrSchool = rowCollegeOrSchool.val();
-                        major.degree = rowDegree.val();
-                        major.discipline = rowDiscipline.val();
-                    },
-                    restoreMajorTableRow
-                );
-
-                // Finally, disengage this very handler.
-                tr.unbind("click");
-            });
-        },
-
-        /*
-         * Helper function for creating a table row displaying a major.
-         */
-        createMajorTableRow = function (major) {
-            var tr = $("<tr></tr>");
-
-            // Support in-place edits.
-            makeMajorTableRowEditable(tr);
-
-            return tr.append($("<td></td>")
-                    .text(getMajorAsText(major))
-                    .append(createRemoveElement(tr))
-                )
-
-                // Save the actual object as data on that row.
-                .data("major", major);
-        },
-
-        /*
          * Helper function that changes a minor table row from a read-only to an
          * editable one.  Much less involved than the one for majors.
          */
-        makeMinorTableRowEditable = function (tr) {
+        makeTypeTableRowEditable = function (tr) {
             tr.click(function () {
                 var td = tr.find("td"),
-                    minor = td.text(),
+                    type = td.text(),
 
                     // Create the editable element.
                     rowDiscipline = $("<input/>")
                         .attr({ type: "text" })
                         .addClass("input-xlarge search-query")
-                        .val(minor),
+                        .val(type),
 
                     // Get this row back to its pre-editable state.  We also stop propagation on
                     // the event that triggered the restore so that we don't cycle back to being
@@ -409,7 +315,7 @@ console.log(grantData);
                         td.empty().removeClass("form-search")
                             .text(minor)
                             .append(createRemoveElement(tr));
-                        makeMinorTableRowEditable(tr);
+                        makeTypeTableRowEditable(tr);
                         event.stopPropagation();
                     },
 
@@ -442,18 +348,18 @@ console.log(grantData);
         /*
          * Helper function for creating a table row displaying a minor.
          */
-        createMinorTableRow = function (string) {
+        createTypeTableRow = function (string) {
             var tr = $("<tr></tr>");
 
             // Support in-place edits.
-            makeMinorTableRowEditable(tr);
+            makeTypeTableRowEditable(tr);
 
             return tr.append($("<td></td>")
                     .text(string)
                     .append(createRemoveElement(tr)));
         };
 
-    // Majors and minors can be manually ordered---something that is doable more
+    // Grant types can be manually ordered---something that is doable more
     // easily than with Bootstrap.
     $("grant-types > tbody").sortable({
         // For the helper, we provide almost the same thing, but without the
@@ -479,7 +385,7 @@ console.log(grantData);
 
         if (grantType) {
             // Add a row for that types to the table.
-            $("#grant-types > tbody").append(createMinorTableRow(grantType));
+            $("#grant-types > tbody").append(createTypeTableRow(grantType));
             updateDependentElements();
 
             // Clear the add section.
