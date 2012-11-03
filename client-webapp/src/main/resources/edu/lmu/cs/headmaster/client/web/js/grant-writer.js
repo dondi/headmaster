@@ -7,7 +7,7 @@ $(function () {
         NO = "No",
 
         /*
-         * Checks the state of the attendees and student search result tables.
+         * Checks the state of the student search result tables.
          * An empty table is hidden and replaced with its accompanying empty
          * indicator. If it is not empty, it is displayed and the empty
          * indicator is hidden.
@@ -27,9 +27,9 @@ $(function () {
         },
 
         /*
-         * Creates a tr element representing an attending student.
+         * Creates a tr element representing a student.
          */
-        createAttendeeTableRow = function (student) {
+        createStudentTableRow = function (student) {
             var td = $("<td></td>").text(student.firstName + " " + student.lastName),
                 tr = $("<tr></tr>");
 
@@ -48,10 +48,10 @@ $(function () {
         },
 
         /*
-         * Checks whether the given student already has a row in the attendees
+         * Checks whether the given student already has a row in the students
          * table.
          */
-        isAttendee = function (student) {
+        isStudent = function (student) {
             // We don't use $.each because we might want to break out of the
             // loop.
             var rows = $("#grant-students > tbody > tr"), i, max;
@@ -65,6 +65,18 @@ $(function () {
 
             // If we get here, we did not find the student.
             return false;
+        },
+
+        /*
+         * Helper function for updating elements that depend on the value of
+         * another element.
+         */
+        updateDependentElements = function () {
+            var updateTableVisibility = function (table, empty) {
+                    Headmaster.toggleElements(table.find("tbody > tr").length, table, empty);
+                };
+
+            updateTableVisibility($("#grant-types"), $("#grant-types-empty"));
         };
 
     if (grantId) {
@@ -87,12 +99,17 @@ $(function () {
                 $("#grant-awarded-declined").removeAttr("checked");
                 $("#grant-awarded-" + toLower(data.awarded)).attr({ checked: "checked" });
 
-                // List the attendees.
+                // List the types.
+                Headmaster.loadArrayIntoTable(
+                    data.type.split(","), "student-minors", "student-minors-empty", createMinorTableRow
+                );
+
+                // List the students.
                 Headmaster.loadArrayIntoTable(
                     data.students,
                     "grant-students",
                     "grant-students-empty",
-                    createAttendeeTableRow
+                    createStudentTableRow
                 );
             }
         );
@@ -103,21 +120,18 @@ $(function () {
         $("#grant-students-empty").fadeIn();
     }
 
-    // Datepicker setup.
-//    $("#grant-submissiondate").datepicker();
-
     // Search field setup.
     Headmaster.setupSearchField(
         $("#search-field"), $("#search-progress"), $("#search-empty"), $("#search-results"),
-        Headmaster.serviceUri("grants"), "q",
-        function (grant) {
-            return isAttendee(grant) ? null :
+        Headmaster.serviceUri("students"), "q",
+        function (student) {
+            return isStudent(student) ? null :
                 $("<tr></tr>")
                     .append($("<td></td>").text(student.firstName + " " + student.lastName))
                     .click(function () {
-                        // Add the clicked student to the attendee table...
+                        // Add the clicked student to the students table...
                         $("#grant-students > tbody")
-                            .append(createAttendeeTableRow(student));
+                            .append(createStudentTableRow(student));
 
                         // ...then remove it from this one.
                         $(this).remove();
@@ -134,11 +148,12 @@ $(function () {
 
     $("#grant-save").click(function (grant) {
         // Grab the data from the web page.
-        var grantData = {
+        var grantSubmissionDate = $("#grant-submissiondate").val(),
+            grantData = {
             id: grantId,
             title: $("#grant-title").val(),
             description: $("#grant-description").val(),
-            submissionDate: new Date(),
+            submissionDate: grantSubmissionDate || new Date(),
             facultymentor: $("#grant-facultymentor").val(),
             amount: parseInt($("#grant-amount").val().replace(/[^0-9]/g,"")),
             notes: $("#grant-notes").val(),
@@ -156,18 +171,17 @@ $(function () {
         // Not using Headmaster's loadTableIntoArray because I didn't want to
         // bother learning how to work it.
         grantTypes = $("#grant-types > tbody > tr").map(function() {
-            return $(this).text();
+            return $(this).text().replace(/[,]/g,"");
         }).get().toString();
         grantTypes ? grantData.type = grantTypes : delete grantData.type;
 
-/*
-        // Gather attendee data.
+        // Gather student data.
         Headmaster.loadTableIntoArray(
             grantData, "students", $("#grant-students > tbody > tr"),
             function (tr) {
                 return $(tr).data("student");
             }
-        );*/
+        );
 
         // Ditch the id attribute if it is empty.
         if (!grantData.id) {
@@ -212,37 +226,6 @@ console.log(grantData);
         canEditGrantRecord = false,
 
         /*
-         * Helper function for updating elements that depend on the value of
-         * another element.
-         */
-        updateDependentElements = function () {
-            var inMajor = Headmaster.isChecked("student-thesis-inmajor-yes"),
-                thesisSubmitted = Headmaster.isChecked("student-thesis-submitted-yes"),
-
-                updateTableVisibility = function (table, empty) {
-                    Headmaster.toggleElements(table.find("tbody > tr").length, table, empty);
-                };
-
-            $("#student-thesis-course-container *")
-                .removeClass(inMajor ? "disabled" : "")
-                .addClass(inMajor ? "" : "disabled");
-            $("#student-thesis-course")
-                .removeAttr(!inMajor ? "" : "disabled")
-                .attr(inMajor ? {} : { disabled: "disabled" });
-
-            $("#student-thesis-submissiondate-container *")
-                .removeClass(thesisSubmitted ? "disabled" : "")
-                .addClass(!thesisSubmitted ? "" : "disabled");
-            $("#student-thesis-submissiondate")
-                .removeAttr(!thesisSubmitted ? "" : "disabled")
-                .attr(thesisSubmitted ? {} : { disabled: "disabled" });
-
-            // Show/hide table elements vs. their empty indicators.
-            updateTableVisibility($("#grant-types"), $("#grant-types-empty"));
-            updateTableVisibility($("#student-attendance"), $("#student-attendance-empty"));
-        },
-
-        /*
          * Helper function for creating a row removal element for the given
          * table row (tr).
          */
@@ -251,7 +234,6 @@ console.log(grantData);
                 .addClass("icon-remove-sign pull-right")
                 .click(function () {
                     tr.remove();
-                    updateDependentElements();
                 });
         },
 
@@ -303,7 +285,7 @@ console.log(grantData);
                     type = td.text(),
 
                     // Create the editable element.
-                    rowDiscipline = $("<input/>")
+                    rowType = $("<input/>")
                         .attr({ type: "text" })
                         .addClass("input-xlarge search-query")
                         .val(type),
@@ -311,7 +293,7 @@ console.log(grantData);
                     // Get this row back to its pre-editable state.  We also stop propagation on
                     // the event that triggered the restore so that we don't cycle back to being
                     // editable.
-                    restoreMinorTableRow = function (event) {
+                    restoreTypeTableRow = function (event) {
                         td.empty().removeClass("form-search")
                             .text(minor)
                             .append(createRemoveElement(tr));
@@ -320,10 +302,10 @@ console.log(grantData);
                     },
 
                     // Create an input-append container.
-                    container = $("<div></div>").addClass("input-append").append(rowDiscipline);
+                    container = $("<div></div>").addClass("input-append").append(rowType);
 
                 // Set up typeahead elements.
-                setUpTypeahead(rowDiscipline, "terms/disciplines");
+                setUpTypeahead(rowType, "terms/disciplines");
 
                 // Clear what was there...
                 td.empty()
@@ -335,9 +317,9 @@ console.log(grantData);
                 addEditableRowIcons(
                     container,
                     function () {
-                        minor = rowDiscipline.val();
+                        minor = rowType.val();
                     },
-                    restoreMinorTableRow
+                    restoreTypeTableRow
                 );
 
                 // Finally, disengage this very handler.
@@ -369,13 +351,7 @@ console.log(grantData);
         }
     });
 
-    // Set up event handling so that the updateDependentElements function gets
-    // called when radio buttons are clicked (because many elements depend on
-    // them).
-    $('input[type="radio"]').click(updateDependentElements);
-
     // Typeahead setup.
-    setUpTypeahead($("#student-majors-college-or-school"), "terms/colleges-or-schools");
     setUpTypeahead($("#grant-types-entry"), "terms/disciplines");
 
     // Button click handling.
