@@ -140,8 +140,9 @@ $(function () {
             description: $("#grant-description").val(),
             submissionDate: new Date(),
             facultymentor: $("#grant-facultymentor").val(),
-            amount: $("grant-amount").val(),
-            notes: $("grant-notes").val(),
+            amount: parseInt($("#grant-amount").val()),
+            notes: $("#grant-notes").val(),
+            presented: Headmaster.isChecked("grant-presented-yes"),
 /*
     private String type;
     private Boolean awarded;
@@ -149,9 +150,9 @@ $(function () {
     private Boolean presented;
 */
             // To be filled out below.
-            attendees: []
+            students: []
         };
-
+/*
         // Gather attendee data.
         Headmaster.loadTableIntoArray(
             grantData, "students", $("#grant-students > tbody > tr"),
@@ -159,7 +160,7 @@ $(function () {
                 return $(tr).data("student");
             }
         );
-
+*/
         // Ditch the id attribute if it is empty.
         if (!grantData.id) {
             delete grantData.id;
@@ -167,6 +168,9 @@ $(function () {
 
         // Convert the date into a string that the service will parse correctly.
         Headmaster.dateToDateString(grantData, "submissionDate");
+
+// TODO: Debug, remove console.log before push
+console.log(grantData);
 
         // Ajax call.
         $.ajax({
@@ -227,11 +231,8 @@ $(function () {
                 .attr(thesisSubmitted ? {} : { disabled: "disabled" });
 
             // Show/hide table elements vs. their empty indicators.
-            updateTableVisibility($("#student-majors"), $("#student-majors-empty"));
-            updateTableVisibility($("#student-minors"), $("#student-minors-empty"));
+            updateTableVisibility($("#grant-types"), $("#grant-types-empty"));
             updateTableVisibility($("#student-attendance"), $("#student-attendance-empty"));
-            updateTableVisibility($("#student-grades"), $("#student-grades-empty"));
-            updateTableVisibility($("#student-grants"), $("#student-grants-empty"));
         },
 
         /*
@@ -454,7 +455,7 @@ $(function () {
 
     // Majors and minors can be manually ordered---something that is doable more
     // easily than with Bootstrap.
-    $("#student-majors > tbody, #student-minors > tbody").sortable({
+    $("grant-types > tbody").sortable({
         // For the helper, we provide almost the same thing, but without the
         // remove element.
         helper: function (event, element) {
@@ -469,37 +470,21 @@ $(function () {
 
     // Typeahead setup.
     setUpTypeahead($("#student-majors-college-or-school"), "terms/colleges-or-schools");
-    setUpTypeahead($("#student-majors-degree"), "terms/degrees");
-    setUpTypeahead($("#student-majors-discipline"), "terms/disciplines");
-    setUpTypeahead($("#student-minors-discipline"), "terms/disciplines");
+    setUpTypeahead($("#grant-types-entry"), "terms/disciplines");
 
     // Button click handling.
-    $("#student-majors-add-button").click(function (event) {
-        // Create a new major from the fields then add it to the majors table.
-        var major = {
-            collegeOrSchool: $("#student-majors-college-or-school").val(),
-            degree: $("#student-majors-degree").val(),
-            discipline: $("#student-majors-discipline").val()
-        };
-
-        // Add a row for that major to the table.
-        $("#student-majors > tbody").append(createMajorTableRow(major));
-        updateDependentElements();
-
-        // Clear the add section.
-        $("#student-majors-container > div > input").val("");
-    });
-
-    $("#student-minors-add-button").click(function (event) {
+    $("#grant-types-add-button").click(function (event) {
         // Create a new minor (really just a string) then add it to the minors table.
-        var minor = $("#student-minors-discipline").val();
+        var grantType = $("#grant-types-entry").val();
 
-        // Add a row for that minor to the table.
-        $("#student-minors > tbody").append(createMinorTableRow(minor));
-        updateDependentElements();
+        if (grantType) {
+            // Add a row for that types to the table.
+            $("#grant-types > tbody").append(createMinorTableRow(grantType));
+            updateDependentElements();
 
-        // Clear the add section.
-        $("#student-minors-container > div > input").val("");
+            // Clear the add section.
+            $("#grant-types-container > div > input").val("");
+        }
     });
 
     // Set up other interactive components.

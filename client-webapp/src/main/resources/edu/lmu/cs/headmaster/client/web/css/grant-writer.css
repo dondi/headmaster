@@ -1,4 +1,4 @@
-@import url("student-view.css");
+@import url("grant-view.css");
 
 label.checkbox[for="student-active"] {
     margin-left: 0.5em;
@@ -29,13 +29,8 @@ table > tbody > tr > td.form-search {
 }
 
 /* Custom form/field sizes/styles in StudentWriterPage. */
-#student-majors-container, #student-minors-container {
+#types-container {
     text-align: center;
-}
-
-/* Customizations for our look and feel. */
-#student-majors-college-or-school {
-    width: 6em;
 }
 
 .input-append > .btn.btn-danger, .input-append.major > *:nth-child(2),
