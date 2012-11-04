@@ -252,7 +252,7 @@ $(function () {
         "q",
         function (student) {
             return isStudent(student) ? null :
-                $("<tr></tr>")
+                    $("<tr></tr>")
                     .append($("<td></td>").text(student.firstName + " " + student.lastName))
                     .click(function () {
                         // Add the clicked student to the students table...
@@ -276,30 +276,32 @@ $(function () {
         // Grab the data from the web page.
         var grantSubmissionDate = $("#grant-submissiondate").val(),
             grantData = {
-            id: grantId,
-            title: $("#grant-title").val(),
-            description: $("#grant-description").val(),
-            submissionDate: grantSubmissionDate || new Date(),
-            facultymentor: $("#grant-facultymentor").val(),
-            amount: parseInt($("#grant-amount").val().replace(/[^0-9]/g,"")),
-            notes: $("#grant-notes").val(),
-            presented: Headmaster.isChecked("grant-presented-yes"),
-            awarded: $("input:radio[name=grant-awarded]").val().toUpperCase(),
-            type: "",
-            students: []
-        },
+                id: grantId,
+                title: $("#grant-title").val(),
+                description: $("#grant-description").val(),
+                submissionDate: grantSubmissionDate || new Date(),
+                facultymentor: $("#grant-facultymentor").val(),
+                amount: parseInt($("#grant-amount").val().replace(/[^0-9]/g, ""), 10),
+                notes: $("#grant-notes").val(),
+                presented: Headmaster.isChecked("grant-presented-yes"),
+                awarded: $("input:radio[name=grant-awarded]").val().toUpperCase(),
+                type: "",
+                students: []
+            },
 
-        // Gather type data.
-        // Not using Headmaster's loadTableIntoArray because I didn't want to
-        // bother learning how to work it.
-        grantTypes = $("#grant-types > tbody > tr").map(function() {
-            return $(this).text().replace(/[,]/g,"");
-        }).get().toString();
+            // Gather type data.
+            // Not using Headmaster's loadTableIntoArray because I didn't want to
+            // bother learning how to work it.
+            grantTypes = $("#grant-types > tbody > tr").map(function () {
+                return $(this).text().replace(/[,]/g, "");
+            }).get().toString();
         grantTypes ? grantData.type = grantTypes : delete grantData.type;
 
         // Gather student data.
         Headmaster.loadTableIntoArray(
-            grantData, "students", $("#grant-students > tbody > tr"),
+            grantData,
+            "students",
+            $("#grant-students > tbody > tr"),
             function (tr) {
                 return $(tr).data("student");
             }
@@ -326,7 +328,7 @@ $(function () {
                 if (!grantId) {
                     $("form input, form textarea").val("");
                 } else {
-                    location = "../" + eventId;
+                    location = "../" + grantId;
                 }
 
                 // Dismiss the alert after a fixed delay (not needed for edits).
