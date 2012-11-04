@@ -41,7 +41,7 @@ public class Grant {
     private DateTime submissionDate;
     private String type;
     private Integer amount;
-    private Boolean awarded;
+    private String awarded;
     private String facultyMentor;
     private List<Student> students = new ArrayList<Student>();
     private Boolean presented;
@@ -103,11 +103,12 @@ public class Grant {
         this.amount = amount;
     }
 
-    public Boolean getAwarded() {
+    @Lob
+    public String getAwarded() {
         return awarded;
     }
 
-    public void setAwarded(Boolean awarded) {
+    public void setAwarded(String awarded) {
         this.awarded = awarded;
     }
 

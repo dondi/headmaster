@@ -19,7 +19,7 @@ public interface GrantDao {
      * skipping the first <code>skip</code> results and returning at most
      * <code>max</code> results.
      */
-    List<Grant> getGrants(String query, Boolean awarded, Boolean presented,
+    List<Grant> getGrants(String query, String awarded, Boolean presented,
             int skip, int max);
 
     /**
