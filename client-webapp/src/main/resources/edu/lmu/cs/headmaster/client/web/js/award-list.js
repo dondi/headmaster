@@ -24,8 +24,7 @@ var TABLE_FORMAT = "M/d/yyyy",
             },
 
             {
-                awarded: true,
-                presented: true,
+                awarded: "AWARDED",
             }
         );
     };
