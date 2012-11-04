@@ -77,150 +77,7 @@ $(function () {
                 };
 
             updateTableVisibility($("#grant-types"), $("#grant-types-empty"));
-        };
-
-    if (grantId) {
-        $.getJSON(
-            Headmaster.serviceUri("grants/" + eventId),
-            function (data, textStatus, jqXHR) {
-                $("#grant-submissiondate").val(data.submissiondate ?
-                        Date.parse(data.submissiondate).toString(DATE_FORMAT) : BLANK);
-                $("#grant-title").val(data.title || BLANK);
-                $("#grant-description").val(data.description || BLANK);
-                $("#grant-amount").val(data.amount || BLANK);
-                $("#grant-notes").val(data.notes || BLANK);
-                $("#grant-facultymentor").val(data.facultymentor || BLANK);
-                $("#grant-presented-" + (data.presented ? "yes" : "no"))
-                    .attr({ checked: "checked" });
-                $("#grant-presented-" + (data.presented ? "no" : "yes"))
-                    .removeAttr("checked");
-                $("#grant-awarded-pending").removeAttr("checked");
-                $("#grant-awarded-awarded").removeAttr("checked");
-                $("#grant-awarded-declined").removeAttr("checked");
-                $("#grant-awarded-" + toLower(data.awarded)).attr({ checked: "checked" });
-
-                // List the types.
-                Headmaster.loadArrayIntoTable(
-                    data.type.split(","), "student-minors", "student-minors-empty", createMinorTableRow
-                );
-
-                // List the students.
-                Headmaster.loadArrayIntoTable(
-                    data.students,
-                    "grant-students",
-                    "grant-students-empty",
-                    createStudentTableRow
-                );
-            }
-        );
-    } else {
-        // Otherwise, we start empty.
-        $("#grant-notes, #grant-amount, #grant-facultymentor, #grant-submissiondate, #grant-title, #grant-description").val(BLANK);
-        $("#grant-students").fadeOut();
-        $("#grant-students-empty").fadeIn();
-    }
-
-    // Search field setup.
-    Headmaster.setupSearchField(
-        $("#search-field"), $("#search-progress"), $("#search-empty"), $("#search-results"),
-        Headmaster.serviceUri("students"), "q",
-        function (student) {
-            return isStudent(student) ? null :
-                $("<tr></tr>")
-                    .append($("<td></td>").text(student.firstName + " " + student.lastName))
-                    .click(function () {
-                        // Add the clicked student to the students table...
-                        $("#grant-students > tbody")
-                            .append(createStudentTableRow(student));
-
-                        // ...then remove it from this one.
-                        $(this).remove();
-                        showOrHideStudentTables();
-                    });
-        }
-    );
-
-    // Button click handling.
-    $("#grant-cancel").click(function (grant) {
-        history.go(-1);
-        grant.preventDefault();
-    });
-
-    $("#grant-save").click(function (grant) {
-        // Grab the data from the web page.
-        var grantSubmissionDate = $("#grant-submissiondate").val(),
-            grantData = {
-            id: grantId,
-            title: $("#grant-title").val(),
-            description: $("#grant-description").val(),
-            submissionDate: grantSubmissionDate || new Date(),
-            facultymentor: $("#grant-facultymentor").val(),
-            amount: parseInt($("#grant-amount").val().replace(/[^0-9]/g,"")),
-            notes: $("#grant-notes").val(),
-            presented: Headmaster.isChecked("grant-presented-yes"),
-            type: "",
-/*
-    private Boolean awarded;
-*/
-            // To be filled out below.
-            students: []
-
         },
-
-        // Gather type data.
-        // Not using Headmaster's loadTableIntoArray because I didn't want to
-        // bother learning how to work it.
-        grantTypes = $("#grant-types > tbody > tr").map(function() {
-            return $(this).text().replace(/[,]/g,"");
-        }).get().toString();
-        grantTypes ? grantData.type = grantTypes : delete grantData.type;
-
-        // Gather student data.
-        Headmaster.loadTableIntoArray(
-            grantData, "students", $("#grant-students > tbody > tr"),
-            function (tr) {
-                return $(tr).data("student");
-            }
-        );
-
-        // Ditch the id attribute if it is empty.
-        if (!grantData.id) {
-            delete grantData.id;
-        }
-
-        // Convert the date into a string that the service will parse correctly.
-        Headmaster.dateToDateString(grantData, "submissionDate");
-
-// TODO: Debug, remove console.log before push
-console.log(grantData);
-
-        // Ajax call.
-        $.ajax({
-            type: grantData.id ? "PUT" : "POST",
-            url: Headmaster.serviceUri("grants" + (grantData.id ? "/" + grantData.id : "")),
-            data: JSON.stringify(grantData),
-            success: function () {
-                $("#grant-success").fadeIn();
-
-                // If there is no grantId, then we are creating grants, in which
-                // case we clear the form in case more grants are to be created.
-                if (!grantId) {
-                    $("form input, form textarea").val("");
-                } else {
-                    location = "../" + eventId;
-                }
-
-                // Dismiss the alert after a fixed delay (not needed for edits).
-                setTimeout(function () {
-                    $("#grant-success").fadeOut();
-                }, 5000);
-            },
-            contentType: "application/json",
-            dataType: "json"
-        });
-
-        grant.preventDefault();
-    });
 
         // Indicates whether the current user may edit the student record.
         canEditGrantRecord = false,
@@ -293,12 +150,12 @@ console.log(grantData);
                     // Get this row back to its pre-editable state.  We also stop propagation on
                     // the event that triggered the restore so that we don't cycle back to being
                     // editable.
-                    restoreTypeTableRow = function (event) {
+                    restoreTypeTableRow = function (grant) {
                         td.empty().removeClass("form-search")
-                            .text(minor)
+                            .text(type)
                             .append(createRemoveElement(tr));
                         makeTypeTableRowEditable(tr);
-                        event.stopPropagation();
+                        grant.stopPropagation();
                     },
 
                     // Create an input-append container.
@@ -309,7 +166,6 @@ console.log(grantData);
 
                 // Clear what was there...
                 td.empty()
-                    // ...then add the editable element.
                     .addClass("form-search")
                     .append(container);
 
@@ -317,7 +173,7 @@ console.log(grantData);
                 addEditableRowIcons(
                     container,
                     function () {
-                        minor = rowType.val();
+                        type = rowType.val();
                     },
                     restoreTypeTableRow
                 );
@@ -328,7 +184,7 @@ console.log(grantData);
         },
 
         /*
-         * Helper function for creating a table row displaying a minor.
+         * Helper function for creating a table row displaying a type.
          */
         createTypeTableRow = function (string) {
             var tr = $("<tr></tr>");
@@ -341,6 +197,150 @@ console.log(grantData);
                     .append(createRemoveElement(tr)));
         };
 
+
+    if (grantId) {
+        $.getJSON(
+            Headmaster.serviceUri("grants/" + grantId),
+            function (data, textStatus, jqXHR) {
+                $("#grant-submissiondate").val(data.submissiondate ?
+                        Date.parse(data.submissiondate).toString(DATE_FORMAT) : BLANK);
+                $("#grant-title").val(data.title || BLANK);
+                $("#grant-description").val(data.description || BLANK);
+                $("#grant-amount").val(data.amount || BLANK);
+                $("#grant-notes").val(data.notes || BLANK);
+                $("#grant-facultymentor").val(data.facultymentor || BLANK);
+                $("#grant-presented-" + (data.presented ? "yes" : "no"))
+                    .attr({ checked: "checked" });
+                $("#grant-presented-" + (data.presented ? "no" : "yes"))
+                    .removeAttr("checked");
+                $("#grant-awarded-pending").removeAttr("checked");
+                $("#grant-awarded-awarded").removeAttr("checked");
+                $("#grant-awarded-declined").removeAttr("checked");
+                $("#grant-awarded-" + (data.awarded).toLowerCase()).attr({ checked: "checked" });
+
+                // List the types.
+                Headmaster.loadArrayIntoTable(
+                    data.type.split(","),
+                    "grant-types",
+                    "grant-types-empty",
+                    createTypeTableRow
+                );
+
+                // List the students.
+                Headmaster.loadArrayIntoTable(
+                    data.students,
+                    "grant-students",
+                    "grant-students-empty",
+                    createStudentTableRow
+                );
+            }
+        );
+    } else {
+        // Otherwise, we start empty.
+        $("#grant-notes, #grant-amount, #grant-facultymentor, #grant-submissiondate, #grant-title, #grant-description").val(BLANK);
+        $("#grant-students").fadeOut();
+        $("#grant-students-empty").fadeIn();
+    }
+
+    // Search field setup.
+    Headmaster.setupSearchField(
+        $("#search-field"),
+        $("#search-progress"),
+        $("#search-empty"),
+        $("#search-results"),
+        Headmaster.serviceUri("students"),
+        "q",
+        function (student) {
+            return isStudent(student) ? null :
+                $("<tr></tr>")
+                    .append($("<td></td>").text(student.firstName + " " + student.lastName))
+                    .click(function () {
+                        // Add the clicked student to the students table...
+                        $("#grant-students > tbody")
+                            .append(createStudentTableRow(student));
+
+                        // ...then remove it from this one.
+                        $(this).remove();
+                        showOrHideStudentTables();
+                    });
+        }
+    );
+
+    // Button click handling.
+    $("#grant-cancel").click(function (grant) {
+        history.go(-1);
+        grant.preventDefault();
+    });
+
+    $("#grant-save").click(function (grant) {
+        // Grab the data from the web page.
+        var grantSubmissionDate = $("#grant-submissiondate").val(),
+            grantData = {
+            id: grantId,
+            title: $("#grant-title").val(),
+            description: $("#grant-description").val(),
+            submissionDate: grantSubmissionDate || new Date(),
+            facultymentor: $("#grant-facultymentor").val(),
+            amount: parseInt($("#grant-amount").val().replace(/[^0-9]/g,"")),
+            notes: $("#grant-notes").val(),
+            presented: Headmaster.isChecked("grant-presented-yes"),
+            awarded: $("input:radio[name=grant-awarded]").val().toUpperCase(),
+            type: "",
+            students: []
+        },
+
+        // Gather type data.
+        // Not using Headmaster's loadTableIntoArray because I didn't want to
+        // bother learning how to work it.
+        grantTypes = $("#grant-types > tbody > tr").map(function() {
+            return $(this).text().replace(/[,]/g,"");
+        }).get().toString();
+        grantTypes ? grantData.type = grantTypes : delete grantData.type;
+
+        // Gather student data.
+        Headmaster.loadTableIntoArray(
+            grantData, "students", $("#grant-students > tbody > tr"),
+            function (tr) {
+                return $(tr).data("student");
+            }
+        );
+
+        // Ditch the id attribute if it is empty.
+        if (!grantData.id) {
+            delete grantData.id;
+        }
+
+        // Convert the date into a string that the service will parse correctly.
+        Headmaster.dateToDateString(grantData, "submissionDate");
+
+        // Ajax call.
+        $.ajax({
+            type: grantData.id ? "PUT" : "POST",
+            url: Headmaster.serviceUri("grants" + (grantData.id ? "/" + grantData.id : "")),
+            data: JSON.stringify(grantData),
+            success: function () {
+                $("#grant-success").fadeIn();
+
+                // If there is no grantId, then we are creating grants, in which
+                // case we clear the form in case more grants are to be created.
+                if (!grantId) {
+                    $("form input, form textarea").val("");
+                } else {
+                    location = "../" + eventId;
+                }
+
+                // Dismiss the alert after a fixed delay (not needed for edits).
+                setTimeout(function () {
+                    $("#grant-success").fadeOut();
+                }, 5000);
+            },
+            contentType: "application/json",
+            dataType: "json"
+        });
+
+        grant.preventDefault();
+    });
+
     // Grant types can be manually ordered---something that is doable more
     // easily than with Bootstrap.
     $("grant-types > tbody").sortable({
@@ -352,6 +352,8 @@ console.log(grantData);
     });
 
     // Typeahead setup.
+    // TODO: @Dondi, I thought about making another resource endpoint, but couldn't
+    //       imagine what typical end points would be used, so I'm using disciplines
     setUpTypeahead($("#grant-types-entry"), "terms/disciplines");
 
     // Button click handling.
