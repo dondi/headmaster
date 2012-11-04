@@ -29,7 +29,9 @@ public interface GrantResource {
      */
     String GRANT_OVERSPECIFIED = "grant.overspecified";
     String GRANT_INCONSISTENT = "grant.inconsistent";
+    String GRANT_AWARDED_STATUS_INCORRECT = "grant.awarded.status.incorrect";
     String GRANT_NOT_FOUND = "grant.not.found";
+    String GRANT_QUERY_PARAMETERS_MISSING = "grant.query.parameters.missing";
 
     /**
      * Returns grants according to the search parameters
@@ -42,8 +44,8 @@ public interface GrantResource {
      */
     @GET
     List<Grant> getGrants(@QueryParam("q") String query,
-            @QueryParam("awarded") @DefaultValue("true") Boolean grantAwarded,
-            @QueryParam("presented") @DefaultValue("true") Boolean grantPresented,
+            @QueryParam("awarded") String awarded,
+            @QueryParam("presented") Boolean grantPresented,
             @QueryParam("skip") @DefaultValue("0") int skip,
             @QueryParam("max") @DefaultValue("100") int max);
 

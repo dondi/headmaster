@@ -14,11 +14,11 @@ public class GrantServiceImpl extends AbstractService implements GrantService {
     }
 
     @Override
-    public List<Grant> getGrants(String query, Boolean awarded, Boolean presented, int skip, int max) {
+    public List<Grant> getGrants(String query, String awarded, Boolean presented, int skip, int max) {
         getLogger().debug("getGrants");
         return grantDao.getGrants(query, awarded, presented, skip, max);
     }
-    
+
     @Override
     public Grant createGrant(Grant grant) {
         getLogger().debug("createGrant");
