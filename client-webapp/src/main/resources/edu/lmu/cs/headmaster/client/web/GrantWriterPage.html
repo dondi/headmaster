@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Headmaster: Student Entry UI</title>
+        <title>Headmaster: Grant Entry UI</title>
 
         <link rel="stylesheet"
                 href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/css/bootstrap.min.css"/>
@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="css/client.css"/>
         <wicket:head>
             <wicket:link>
-                <link rel="stylesheet" href="css/student-writer.css"/>
+                <link rel="stylesheet" href="css/grant-writer.css"/>
             </wicket:link>
         </wicket:head>
     </head>
@@ -27,796 +27,215 @@
             <div class="hide" id="grant-id" wicket:id="grant-id"></div>
 
             <div class="container">
-                <div class="alert alert-success hide fade in" id="student-success">
+                <div class="alert alert-success hide fade in" id="grant-success">
                     <h4 class="alert-heading">
-                        <wicket:message key="success.title">Student Written</wicket:message>
+                        <wicket:message key="success.title">Grant Written</wicket:message>
                     </h4>
-                    <wicket:message key="success.message">The student has been saved.</wicket:message>
+                    <wicket:message key="success.message">The grant has been saved.</wicket:message>
 
-                    <a class="hide" id="student-new-link" href="#">
-                        <wicket:message key="success.link">Click here to view the new student.</wicket:message>
+                    <a class="hide" id="grant-new-link" href="#">
+                        <wicket:message key="success.link">Click here to view the new grant.</wicket:message>
                     </a>
                 </div>
-                <div class="page-header well">
-                    <div class="form-inline">
-                        <label class="control-label" for="student-firstname">
-                            <wicket:message key="label.name.first">First Name</wicket:message>
-                        </label>
-                        <input type="text" class="input-xlarge span2"
-                                id="student-firstname"/>
-                        <label class="control-label" for="student-middlename">
-                            <wicket:message key="label.name.middle">Middle Initial</wicket:message>
-                        </label>
-                        <input type="text" class="input-xlarge span1"
-                                id="student-middlename"/>
-                        <label class="control-label" for="student-lastname">
-                            <wicket:message key="label.name.last">Last Name</wicket:message>
-                        </label>
-                        <input type="text" class="input-xlarge span3"
-                                id="student-lastname"/>
-                        <label class="control-label" for="student-gradyear">
-                            <wicket:message key="heading.gradyear.prefix">Class of</wicket:message>
-                        </label>
-                        <input type="number" step="1" class="input-xlarge span1"
-                                id="student-gradyear"/>
-                        <label class="checkbox" for="student-active">
-                            <input type="checkbox" id="student-active" checked="checked"/>
-                            <wicket:message key="label.active">Active</wicket:message>
-                        </label>
-                    </div>
+
+                <div class="page-header">
+                    <h1><wicket:message key="title">Grant Entry</wicket:message></h1>
                 </div>
 
-                <div class="row">
-                    <div class="span5 accordion" id="student-data-accordion">
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h3 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-contact-container"
-                                        data-parent="#student-data-accordion">
-                                    <wicket:message key="heading.contact">Contact</wicket:message>
-                                </h3>
+                <div class="row-fluid">
+                    <div class="span6 form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="grant-title">
+                                <wicket:message key="label.title">Title</wicket:message>
+                            </label>
+                            <div class="controls">
+                            <input type="text" class="input-xlarge"
+                                    id="grant-title"/>
                             </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="grant-facultymentor">
+                                <wicket:message key="label.faculty.mentor">Faculty Mentor</wicket:message>
+                            </label>
+                            <div class="controls">
+                            <input type="text" class="input-xlarge"
+                                    id="grant-facultymentor"/>
+                            </div>
+                        </div>
 
-                            <div class="accordion-body collapse in" id="student-contact-container">
-                                <div class="form-horizontal accordion-inner">
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.email1">Primary email</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="email" class="input-medium"
-                                                    id="student-email1"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.email2">Secondary email</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="email" class="input-medium"
-                                                    id="student-email2"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.schoolid">School ID</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-schoolid"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.campus-box">Campus Box</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-campus-box"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.address">Address</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-address"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.city">City</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-city"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.state">State</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-state"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.zip">Zip</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-zip"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.phone.main">Main Phone</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="tel" class="input-medium"
-                                                    id="student-phone-main"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.phone.cell">Cell Phone</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="tel" class="input-medium"
-                                                    id="student-phone-cell"/>
-                                        </div>
-                                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="grant-amount">
+                                <wicket:message key="label.amount">Amount</wicket:message>
+                            </label>
+                            <div class="controls">
+                            <input class="input-xlarge" type="number"
+                                    id="grant-amount"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="grant-description">
+                                <wicket:message key="prompt.description">Description</wicket:message>
+                            </label>
+                            <div class="controls">
+                                <textarea class="input-xlarge" id="grant-description" rows="5"></textarea>
+                            </div>
+                        </div>
+
+
+                        <!-- Section for adding/editing types.  Unfortunately,
+                                         placeholders cannot be externalized. -->
+                        <div class="control-group">
+                            <label class="control-label">
+                                <wicket:message key="label.types">Type(s)</wicket:message>
+                            </label>
+                            <div class="controls"
+                                    id="grant-types-container">
+                                <div class="input-append">
+                                    <input type="text" class="input-xlarge"
+                                            data-provide="typeahead"
+                                            placeholder="Type (No commas allowed)"
+                                            id="grant-types-entry"/>
+                                    <button class="btn btn-info"
+                                            id="grant-types-add-button">
+                                        <i class="icon-plus icon-white"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h3 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-status-container"
-                                        data-parent="#student-data-accordion">
-                                    <wicket:message key="heading.status">Status</wicket:message>
-                                </h3>
-                            </div>
-
-                            <div class="accordion-body collapse in" id="student-status-container">
-                                <div class="form-horizontal accordion-inner">
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.compact">
-                                                Compact Signed
-                                            </wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <label class="radio inline" for="student-compact-yes">
-                                                <input type="radio" name="compact"
-                                                        id="student-compact-yes"/>
-                                                <wicket:message key="label.radio.yes">
-                                                    Yes
-                                                </wicket:message>
-                                            </label>
-                                            <label class="radio inline" for="student-compact-no">
-                                                <input type="radio" name="compact"
-                                                        id="student-compact-no" checked/>
-                                                <wicket:message key="label.radio.no">
-                                                    No
-                                                </wicket:message>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.inllc">
-                                                In LLC
-                                            </wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <label class="radio inline" for="student-inllc-yes">
-                                                <input type="radio" name="in-llc"
-                                                        id="student-inllc-yes"/>
-                                                <wicket:message key="label.radio.yes">
-                                                    Yes
-                                                </wicket:message>
-                                            </label>
-                                            <label class="radio inline" for="student-inllc-no">
-                                                <input type="radio" name="in-llc"
-                                                        id="student-inllc-no" checked/>
-                                                <wicket:message key="label.radio.no">
-                                                    No
-                                                </wicket:message>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.transfer">
-                                                Transfer
-                                            </wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <label class="radio inline" for="student-transfer-yes">
-                                                <input type="radio" name="transfer"
-                                                        id="student-transfer-yes"/>
-                                                <wicket:message key="label.radio.yes">
-                                                    Yes
-                                                </wicket:message>
-                                            </label>
-                                            <label class="radio inline" for="student-transfer-no">
-                                                <input type="radio" name="transfer"
-                                                        id="student-transfer-no" checked/>
-                                                <wicket:message key="label.radio.no">
-                                                    No
-                                                </wicket:message>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.residencycode">
-                                                Residency Code
-                                            </wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-residencycode"/>
-                                            <span class="help-block">
-                                                <wicket:message key="instructions.residencycode">
-                                                    I, O, or C.
-                                                </wicket:message>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.studyabroad">
-                                                Has Studied Abroad
-                                            </wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <label class="radio inline" for="student-studyabroad-yes">
-                                                <input type="radio" name="studyabroad"
-                                                        id="student-studyabroad-yes"/>
-                                                <wicket:message key="label.radio.yes">
-                                                    Yes
-                                                </wicket:message>
-                                            </label>
-                                            <label class="radio inline" for="student-studyabroad-no">
-                                                <input type="radio" name="studyabroad"
-                                                        id="student-studyabroad-no" checked/>
-                                                <wicket:message key="label.radio.no">
-                                                    No
-                                                </wicket:message>
-                                            </label>
-                                        </div>
-                                    </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="alert alert-info hide message-empty"
+                                        id="grant-types-empty">
+                                    <wicket:message key="prompt.empty.types">(none)</wicket:message>
                                 </div>
+                                <table class="table table-striped table-condensed table-hover hide"
+                                        id="grant-types">
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
 
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h3 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-demographics-container"
-                                        data-parent="#student-data-accordion">
-                                    <wicket:message key="heading.demographics">Demographics</wicket:message>
-                                </h3>
-                            </div>
 
-                            <div class="accordion-body collapse in" id="student-demographics-container">
-                                <div class="form-horizontal accordion-inner">
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.sex">Sex</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <label class="radio inline" for="student-sex-female">
-                                                <input type="radio" name="sex"
-                                                        id="student-sex-female"/>
-                                                <wicket:message key="label.sex.female">
-                                                    Female
-                                                </wicket:message>
-                                            </label>
-                                            <label class="radio inline" for="student-sex-male">
-                                                <input type="radio" name="sex"
-                                                        id="student-sex-male" checked/>
-                                                <wicket:message key="label.sex.male">
-                                                    Male
-                                                </wicket:message>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.raceorethnicity">Race/Ethnicity</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-raceorethnicity"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Students -->
+                    </div>
+                    <div class="span6">
+                        <h2>
+                            <wicket:message key="heading.students">Students</wicket:message>
+                            <a class="btn btn-success pull-right" data-toggle="modal"
+                                    href="#student-search-modal" id="grant-add-student">
+                                <wicket:message key="button.add">Add</wicket:message>...
+                            </a>
+                        </h2>
+
+                        <p><wicket:message key="instructions.students">
+                            To protect pending changes, clicking on a student while on this page
+                            will open the student view in a new window or tab.
+                        </wicket:message></p>
+
+                        <div class="alert alert-info hide" id="grant-students-empty">
+                            <wicket:message key="prompt.empty.students">
+                                (no students)
+                            </wicket:message>
                         </div>
 
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h3 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-entry-container"
-                                        data-parent="#student-data-accordion">
-                                    <wicket:message key="heading.entry">Entry Information</wicket:message>
-                                </h3>
-                            </div>
+                        <table class="table table-striped hide" id="grant-students">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-                            <div class="accordion-body collapse in" id="student-entry-container">
-                                <div class="form-horizontal accordion-inner">
+            <div class="row">
+                <div class="span12 accordion" id="grants-accordion">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <h2 class="accordion-toggle"
+                                    data-toggle="collapse"
+                                    data-target="#misc-container"
+                                    data-parent="#grants-accordion">
+                                <wicket:message key="heading.misc">Miscellaneous</wicket:message>
+                            </h2>
+                        </div>
+
+                        <div class="accordion-body collapse in" id="misc-container">
+                            <div class="accordion-inner">
+                                <div class="form-horizontal">
                                     <div class="control-group">
                                         <label class="control-label">
-                                            <wicket:message key="label.entryyear">Entry Year</wicket:message>
+                                            <wicket:message key="label.awarded">
+                                                Awarded
+                                            </wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <input type="number" step="1" class="input-medium"
-                                                    id="student-entryyear"/>
+                                            <label class="radio inline" for="grant-awarded-pending">
+                                                <input type="radio" name="grant-awarded" id="grant-awarded-pending" value="PENDING" checked/>
+                                                <wicket:message key="label.radio.pending">
+                                                    Pending
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="grant-awarded-declined">
+                                                <input type="radio" name="grant-awarded"
+                                                        id="grant-awarded-declined" value="DECLINED"/>
+                                                <wicket:message key="label.radio.declined">
+                                                    Declined
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="grant-awarded-awarded">
+                                                <input type="radio" name="grant-awarded"
+                                                        id="grant-awarded-awarded" value="AWARDED"/>
+                                                <wicket:message key="label.radio.awarded">
+                                                    Awarded
+                                                </wicket:message>
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">
-                                            <wicket:message key="label.honorsentrydate">Honors Entry Date</wicket:message>
+                                            <wicket:message key="label.presented">
+                                                Presented
+                                            </wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <input type="text" class="input-medium"
+                                            <label class="radio inline" for="grant-presented-yes">
+                                                <input type="radio" name="grant-presented"
+                                                        id="grant-presented-yes"/>
+                                                <wicket:message key="label.radio.yes">
+                                                    Yes
+                                                </wicket:message>
+                                            </label>
+                                            <label class="radio inline" for="grant-presented-no">
+                                                <input type="radio" name="grant-presented"
+                                                        id="grant-presented-no" checked/>
+                                                <wicket:message key="label.radio.no">
+                                                    No
+                                                </wicket:message>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="control-group" id="grant-submissiondate-container">
+                                        <label class="control-label">
+                                            <wicket:message key="label.submissiondate">
+                                                Submission Date
+                                            </wicket:message>
+                                        </label>
+                                        <div class="controls">
+                                            <input type="text" class="input-xlarge"
                                                     data-date-format="m/d/yyyy"
                                                     placeholder="m/d/yyyy"
-                                                    id="student-honorsentrydate"/>
+                                                    id="grant-submissiondate"
+                                                    disabled="disabled"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">
-                                            <wicket:message key="label.hsgpa">High School GPA</wicket:message>
+                                            <wicket:message key="label.notes">
+                                                Notes
+                                            </wicket:message>
                                         </label>
                                         <div class="controls">
-                                            <input type="number" class="input-medium"
-                                                    id="student-hsgpa"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.act">ACT Score</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="number" class="input-medium"
-                                                    id="student-act"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.sat.verbal">SAT Verbal Score</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="number" class="input-medium"
-                                                    id="student-sat-verbal"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.sat.math">SAT Math Score</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="number" class="input-medium"
-                                                    id="student-sat-math"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.sat.writing">SAT Writing Score</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="number" class="input-medium"
-                                                    id="student-sat-writing"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.scholarship">Scholarship</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-medium"
-                                                    id="student-scholarship"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="span7 accordion" id="student-list-accordion">
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h2 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-academics-container"
-                                        data-parent="#student-data-accordion">
-                                    <wicket:message key="heading.academics">Academics</wicket:message>
-                                </h2>
-                            </div>
-
-                            <div class="accordion-body collapse in" id="student-academics-container">
-                                <div class="form-horizontal accordion-inner">
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.status">Academic Status</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-xlarge"
-                                                    id="student-status"/>
-                                        </div>
-                                    </div>
-                                    <!-- Section for adding/editing majors.  Unfortunately,
-                                         placeholders cannot be externalized. -->
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.majors">Major(s)</wicket:message>
-                                        </label>
-                                        <div class="controls well form-search"
-                                                id="student-majors-container">
-                                            <div class="input-append major">
-                                                <input type="text" class="input-small search-query"
-                                                        placeholder="College/School"
-                                                        id="student-majors-college-or-school"/>
-                                                <input type="text" class="span1"
-                                                        placeholder="Degree"
-                                                        id="student-majors-degree"/>
-                                                <input type="text" class="input-medium"
-                                                        placeholder="Discipline"
-                                                        id="student-majors-discipline"/>
-                                                <button class="btn btn-info"
-                                                        id="student-majors-add-button">
-                                                    <i class="icon-plus icon-white"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <div class="controls">
-                                            <div class="alert alert-info hide message-empty"
-                                                    id="student-majors-empty">
-                                                <wicket:message key="prompt.empty.majors">(none)</wicket:message>
-                                            </div>
-
-                                            <table class="table table-striped table-condensed table-hover hide"
-                                                    id="student-majors">
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <!-- Section for adding/editing minors.  Unfortunately,
-                                         placeholders cannot be externalized. -->
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.minors">Minor(s)</wicket:message>
-                                        </label>
-                                        <div class="controls well form-search"
-                                                id="student-minors-container">
-                                            <div class="input-append">
-                                                <input type="text" class="input-xlarge search-query"
-                                                        data-provide="typeahead"
-                                                        placeholder="Discipline"
-                                                        id="student-minors-discipline"/>
-                                                <button class="btn btn-info"
-                                                        id="student-minors-add-button">
-                                                    <i class="icon-plus icon-white"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <div class="controls">
-                                            <div class="alert alert-info hide message-empty"
-                                                    id="student-minors-empty">
-                                                <wicket:message key="prompt.empty.minors">(none)</wicket:message>
-                                            </div>
-
-                                            <table class="table table-striped table-condensed table-hover hide"
-                                                    id="student-minors">
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.advisor">Advisor</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="text" class="input-xlarge"
-                                                    id="student-advisor"/>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">
-                                            <wicket:message key="label.gpa">Cumulative GPA</wicket:message>
-                                        </label>
-                                        <div class="controls">
-                                            <input type="number" class="input-xlarge"
-                                                    id="student-gpa"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h2 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-notes-container"
-                                        data-parent="#student-data-accordion">
-                                    <wicket:message key="heading.notes">Notes</wicket:message>
-                                </h2>
-                            </div>
-
-                            <div class="accordion-body collapse in" id="student-notes-container">
-                                <div class="accordion-inner">
-                                    <textarea class="input-xlarge" rows="10"
-                                            id="student-notes"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h2 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-attendance-container"
-                                        data-parent="#student-list-accordion">
-                                    <wicket:message key="heading.attendance">Attendance</wicket:message>
-                                </h2>
-                            </div>
-
-                            <div class="accordion-body collapse in" id="student-attendance-container">
-                                <div class="accordion-inner">
-                                    <div class="help-block">
-                                        <wicket:message key="instructions.attendance">
-                                            To modify student attendance, please edit the relevant event.
-                                        </wicket:message>
-                                    </div>
-
-                                    <div class="progress progress-striped active" id="student-attendance-progress">
-                                        <div class="bar" style="width: 100%;"></div>
-                                    </div>
-
-                                    <div class="alert alert-info hide message-empty" id="student-attendance-empty">
-                                        <wicket:message key="prompt.empty.attendance">(no events)</wicket:message>
-                                    </div>
-
-                                    <table class="table table-striped table-hover hide"
-                                            id="student-attendance">
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h2 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-grades-container"
-                                        data-parent="#student-list-accordion">
-                                    <wicket:message key="heading.grades">Grades</wicket:message>
-                                </h2>
-                            </div>
-
-                            <div class="accordion-body collapse in" id="student-grades-container">
-                                <div class="accordion-inner">
-                                    <div class="alert alert-info hide message-empty" id="student-grades-empty">
-                                        <wicket:message key="prompt.empty.grades">(no grades)</wicket:message>
-                                    </div>
-
-                                    <table class="table table-striped table-hover hide"
-                                            id="student-grades">
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h2 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-grants-container"
-                                        data-parent="#student-list-accordion">
-                                    <wicket:message key="heading.grants">Grants</wicket:message>
-                                </h2>
-                            </div>
-
-                            <div class="accordion-body collapse in" id="student-grants-container">
-                                <div class="accordion-inner">
-                                    <div class="progress progress-striped active" id="student-grants-progress">
-                                        <div class="bar" style="width: 100%;"></div>
-                                    </div>
-
-                                    <div class="alert alert-info hide message-empty" id="student-grants-empty">
-                                        <wicket:message key="prompt.empty.grants">(no grants)</wicket:message>
-                                    </div>
-
-                                    <table class="table table-striped table-hover hide"
-                                            id="student-grants">
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <h2 class="accordion-toggle"
-                                        data-toggle="collapse"
-                                        data-target="#student-thesis-container"
-                                        data-parent="#student-list-accordion">
-                                    <wicket:message key="heading.thesis">Thesis</wicket:message>
-                                </h2>
-                            </div>
-
-                            <div class="accordion-body collapse in" id="student-thesis-container">
-                                <div class="accordion-inner">
-                                    <div class="form-horizontal">
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.thesis.title">
-                                                    Title
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <input type="text" class="input-xlarge"
-                                                        id="student-thesis-title"/>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.thesis.term">
-                                                    Term
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <label class="radio inline" for="student-thesis-term-fall">
-                                                    <input type="radio" name="thesis-term"
-                                                            id="student-thesis-term-fall"/>
-                                                    <wicket:message key="label.term.fall">
-                                                        Fall
-                                                    </wicket:message>
-                                                </label>
-                                                <label class="radio inline" for="student-thesis-term-spring">
-                                                    <input type="radio" name="thesis-term"
-                                                            id="student-thesis-term-spring"/>
-                                                    <wicket:message key="label.term.spring">
-                                                        Spring
-                                                    </wicket:message>
-                                                </label>
-                                                <label class="radio inline" for="student-thesis-term-unknown">
-                                                    <input type="radio" name="thesis-term"
-                                                            id="student-thesis-term-unknown" checked/>
-                                                    <wicket:message key="label.radio.unknown">
-                                                        Unknown
-                                                    </wicket:message>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.thesis.year">
-                                                    Year
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <input type="number" step="1" class="input-xlarge"
-                                                        id="student-thesis-year"/>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.thesis.advisor">
-                                                    Advisor
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <input type="text" class="input-xlarge"
-                                                        id="student-thesis-advisor"/>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.thesis.inmajor">
-                                                    Thesis in Major
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <label class="radio inline" for="student-thesis-inmajor-yes">
-                                                    <input type="radio" name="thesis-inmajor"
-                                                            id="student-thesis-inmajor-yes"/>
-                                                    <wicket:message key="label.radio.yes">
-                                                        Yes
-                                                    </wicket:message>
-                                                </label>
-                                                <label class="radio inline" for="student-thesis-inmajor-no">
-                                                    <input type="radio" name="thesis-inmajor"
-                                                            id="student-thesis-inmajor-no"/>
-                                                    <wicket:message key="label.radio.no">
-                                                        No
-                                                    </wicket:message>
-                                                </label>
-                                                <label class="radio inline" for="student-thesis-inmajor-unknown">
-                                                    <input type="radio" name="thesis-inmajor"
-                                                            id="student-thesis-inmajor-unknown" checked/>
-                                                    <wicket:message key="label.radio.unknown">
-                                                        Unknown
-                                                    </wicket:message>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="control-group" id="student-thesis-course-container">
-                                            <label class="control-label">
-                                                <wicket:message key="label.thesis.course">
-                                                    Course
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <input type="text" class="input-xlarge"
-                                                        id="student-thesis-course"/>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.thesis.submitted">
-                                                    Submitted
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <label class="radio inline" for="student-thesis-submitted-yes">
-                                                    <input type="radio" name="thesis-submitted"
-                                                            id="student-thesis-submitted-yes"/>
-                                                    <wicket:message key="label.radio.yes">
-                                                        Yes
-                                                    </wicket:message>
-                                                </label>
-                                                <label class="radio inline" for="student-thesis-submitted-no">
-                                                    <input type="radio" name="thesis-submitted"
-                                                            id="student-thesis-submitted-no" checked/>
-                                                    <wicket:message key="label.radio.no">
-                                                        No
-                                                    </wicket:message>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="control-group" id="student-thesis-submissiondate-container">
-                                            <label class="control-label">
-                                                <wicket:message key="label.thesis.submissiondate">
-                                                    Submission Date
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <input type="text" class="input-xlarge"
-                                                        data-date-format="m/d/yyyy"
-                                                        placeholder="m/d/yyyy"
-                                                        id="student-thesis-submissiondate"/>
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">
-                                                <wicket:message key="label.thesis.notes">
-                                                    Notes
-                                                </wicket:message>
-                                            </label>
-                                            <div class="controls">
-                                                <textarea class="input-xlarge" rows="5"
-                                                        id="student-thesis-notes"></textarea>
-                                            </div>
+                                            <textarea class="input-xlarge" rows="5"
+                                                    id="grant-notes"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -824,15 +243,58 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-actions">
-                    <div class="pull-right">
-                        <button class="btn" id="student-cancel">
-                            <wicket:message key="button.cancel">Cancel</wicket:message>
-                        </button>
-                        <button class="btn btn-primary" id="student-save">
-                            <wicket:message key="button.save">Save</wicket:message>
-                        </button>
+            </div>
+            <div class="form-actions">
+                <div class="pull-right">
+                    <button class="btn" id="grant-cancel">
+                        <wicket:message key="button.cancel">Cancel</wicket:message>
+                    </button>
+                    <button class="btn btn-primary" id="grant-save">
+                        <wicket:message key="button.save">Save</wicket:message>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Student search modal view. -->
+            <div class="modal hide fade" id="student-search-modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3><wicket:message key="heading.students.add">Add Students</wicket:message></h3>
+                </div>
+
+                <div class="modal-body">
+                    <span class="help-block">
+                        <wicket:message key="instructions.students.add">
+                            Enter a search query, then click on a search result to add that
+                            student to this event.
+                        </wicket:message>
+                    </span>
+                    <form class="well form-search">
+                        <label for="search-field">
+                            <wicket:message key="prompt.search">Search for</wicket:message>:
+                        </label>
+                        <input type="text" class="input-medium search-query" id="search-field">
+                    </form>
+
+                    <div class="progress progress-striped active hide" id="search-progress">
+                        <div class="bar" style="width: 100%;"></div>
                     </div>
+
+                    <div class="alert alert-info hide" id="search-empty">
+                        <wicket:message key="prompt.empty.students">
+                            (no matching students)
+                        </wicket:message>
+                    </div>
+
+                    <table class="table table-striped hide" id="search-results">
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">
+                        <wicket:message key="button.done">Done</wicket:message>
+                    </a>
                 </div>
             </div>
 
@@ -844,7 +306,7 @@
                  Bootstrap: easy drag-and-drop rearranging of elements. -->
             <script src="http://code.jquery.com/ui/1.8.23/jquery-ui.min.js"></script>
             <wicket:link>
-                <script src="js/student-writer.js"></script>
+                <script src="js/grant-writer.js"></script>
             </wicket:link>
         </wicket:extend>
 
