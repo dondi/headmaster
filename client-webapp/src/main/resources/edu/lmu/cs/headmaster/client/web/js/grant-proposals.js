@@ -1,5 +1,10 @@
 $(function () {
 var TABLE_FORMAT = "M/d/yyyy",
+
+function (uri, progressId, tableId, emptyId, createRow,
+                data, callback) {
+                    
+                    
     getGrants = function (tableId) {
         Headmaster.loadJsonArrayIntoTable(
             Headmaster.serviceUri("grants"),
