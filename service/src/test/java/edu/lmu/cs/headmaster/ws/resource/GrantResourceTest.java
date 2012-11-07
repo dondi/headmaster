@@ -48,7 +48,7 @@ public class GrantResourceTest extends ResourceTest {
         Assert.assertEquals(1, grants.size());
     }
 
-    @Test
+    @Test(expected=com.sun.jersey.api.client.UniformInterfaceException.class)
     public void testGetGrantsByNullQuery() {
         List<Grant> grants = wr.path("grants")
                 .get(new GenericType<List<Grant>>() { });
@@ -58,12 +58,15 @@ public class GrantResourceTest extends ResourceTest {
 
     @Test
     public void testGetGrantsByBooleanQuery() {
-        List<Grant> grants = wr.path("grants").queryParam("awarded", "false")
+        List<Grant> grants = wr.path("grants").queryParam("presented", "false")
                 .get(new GenericType<List<Grant>>() { });
 
-        Assert.assertEquals(0, grants.size());
+        Assert.assertEquals(2, grants.size());
+    }
 
-        grants = wr.path("grants").queryParam("presented", "false")
+    @Test
+    public void testGetGrantsByAwardedQuery() {
+        List<Grant> grants = wr.path("grants").queryParam("awarded", "AWARDED")
                 .get(new GenericType<List<Grant>>() { });
 
         Assert.assertEquals(1, grants.size());

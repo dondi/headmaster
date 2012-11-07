@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
 import edu.lmu.cs.headmaster.ws.service.GrantService;
+import edu.lmu.cs.headmaster.ws.types.GrantStatus;
 
 @Path("/grants")
 public class GrantResourceImpl extends AbstractResource implements GrantResource {
@@ -21,9 +22,11 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
     }
 
     @Override
-    public List<Grant> getGrants(String query, Boolean grantAwarded, Boolean grantPresented, int skip, int max) {
+    public List<Grant> getGrants(String query, GrantStatus grantAwarded, Boolean grantPresented, int skip, int max) {
         logServiceCall();
 
+        validate((query != null || grantAwarded != null || grantPresented != null), Response.Status.BAD_REQUEST,
+                GRANT_QUERY_PARAMETERS_MISSING);
         return grantService.getGrants(preprocessNullableQuery(query, skip, max, 0, 100), grantAwarded, grantPresented,
                 skip, max);
     }

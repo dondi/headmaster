@@ -1,0 +1,28 @@
+/* Dual purpose CSS, serving both StudentViewPage and StudentWriterPage. */
+.form-horizontal {
+    padding-top: 18px;
+}
+
+.form-inline label, .form-inline input {
+    margin-right: 0.5em;
+}
+
+tbody > tr > td {
+    cursor: pointer;
+}
+
+/* Some table width customization for events (first column displays event date). */
+#student-attendance {
+    table-layout: fixed;
+}
+
+#student-attendance td:first-child {
+    width: 25%;
+}
+/*
+#student-thesis-container .well {
+    text-align: center;
+}
+
+
+*.
