@@ -9,7 +9,6 @@ import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
 import edu.lmu.cs.headmaster.ws.service.GrantService;
 import edu.lmu.cs.headmaster.ws.types.GrantStatus;
-import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 @Path("/grants")
 public class GrantResourceImpl extends AbstractResource implements GrantResource {
@@ -23,20 +22,13 @@ public class GrantResourceImpl extends AbstractResource implements GrantResource
     }
 
     @Override
-    public List<Grant> getGrants(String query, String grantAwarded, Boolean grantPresented, int skip, int max) {
+    public List<Grant> getGrants(String query, GrantStatus grantAwarded, Boolean grantPresented, int skip, int max) {
         logServiceCall();
 
-        validate((query != null || grantAwarded != null || grantPresented != null), Response.Status.BAD_REQUEST, GRANT_QUERY_PARAMETERS_MISSING);
-        // TODO: Ask Dr. Dondi about this; this is kind of hoakey
-        if(grantAwarded != null) {
-            try {
-                GrantStatus awarded = GrantStatus.valueOf(grantAwarded);
-            } catch (Exception e) {
-                throw new ServiceException(Response.Status.BAD_REQUEST, GRANT_AWARDED_STATUS_INCORRECT);
-            }
-        }
-        return grantService.getGrants(preprocessNullableQuery(query, skip, max, 0, 100), grantAwarded,
-                grantPresented, skip, max);
+        validate((query != null || grantAwarded != null || grantPresented != null), Response.Status.BAD_REQUEST,
+                GRANT_QUERY_PARAMETERS_MISSING);
+        return grantService.getGrants(preprocessNullableQuery(query, skip, max, 0, 100), grantAwarded, grantPresented,
+                skip, max);
     }
 
     @Override

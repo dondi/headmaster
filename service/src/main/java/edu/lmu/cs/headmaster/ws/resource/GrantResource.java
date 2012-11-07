@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import edu.lmu.cs.headmaster.ws.domain.Grant;
+import edu.lmu.cs.headmaster.ws.types.GrantStatus;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
@@ -36,51 +37,53 @@ public interface GrantResource {
     /**
      * Returns grants according to the search parameters
      *
-     * @param query the query
-     * @param skip the number of initial results to skip
-     * @param max the maximum number of results to display
+     * @param query
+     *            the query
+     * @param skip
+     *            the number of initial results to skip
+     * @param max
+     *            the maximum number of results to display
      *
      * @return the (paginated) set of grants matching the query parameters
      */
     @GET
-    List<Grant> getGrants(@QueryParam("q") String query,
-            @QueryParam("awarded") String awarded,
-            @QueryParam("presented") Boolean grantPresented,
-            @QueryParam("skip") @DefaultValue("0") int skip,
+    List<Grant> getGrants(@QueryParam("q") String query, @QueryParam("awarded") GrantStatus awarded,
+            @QueryParam("presented") Boolean grantPresented, @QueryParam("skip") @DefaultValue("0") int skip,
             @QueryParam("max") @DefaultValue("100") int max);
 
     /**
      * Creates a grant for which the server will generate the id.
      *
-     * @param grant the grant object to create. The grant must have a null id.
+     * @param grant
+     *            the grant object to create. The grant must have a null id.
      * @return A response with HTTP 201 on success, or a response with HTTP 400 and message
-     * <code>grant.overspecified</code> if the grant's id is not null.
+     *         <code>grant.overspecified</code> if the grant's id is not null.
      */
     @POST
     Response createGrant(Grant grant);
 
     /**
-     * Supposed to save the representation of the grant with the given id.
-     * Inconsistent data should result in HTTP 400, while a successful PUT
-     * should return Response.noContent.
+     * Supposed to save the representation of the grant with the given id. Inconsistent data should result in HTTP 400,
+     * while a successful PUT should return Response.noContent.
      *
-     * @param id the id of the grant to save.
-     * @return A response with HTTP 204 no content on success, or a response
-     *         with HTTP 400 and message <code>grant.inconsistent</code> if
-     *         checked data does not have the save id as requested in the URL.
+     * @param id
+     *            the id of the grant to save.
+     * @return A response with HTTP 204 no content on success, or a response with HTTP 400 and message
+     *         <code>grant.inconsistent</code> if checked data does not have the save id as requested in the URL.
      */
     @PUT
     @Path("{id}")
-    @RolesAllowed({ "headmaster", "faculty", "staff" })
+    @RolesAllowed({"headmaster", "faculty", "staff"})
     Response createOrUpdateGrant(@PathParam("id") Long id, Grant grant);
 
     /**
      * Returns the grant with the given id.
      *
-     * @param id the id of the requested grant.
+     * @param id
+     *            the id of the requested grant.
      * @return the grant with the given id.
-     * @throws ServiceException if there is no grant with the given id, causing the framework
-     * to generate an HTTP 404.
+     * @throws ServiceException
+     *             if there is no grant with the given id, causing the framework to generate an HTTP 404.
      */
     @GET
     @Path("{id}")

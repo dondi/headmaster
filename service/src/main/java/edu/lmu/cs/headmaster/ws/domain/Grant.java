@@ -23,6 +23,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import edu.lmu.cs.headmaster.ws.types.GrantStatus;
 import edu.lmu.cs.headmaster.ws.util.DateTimeXmlAdapter;
 
 /**
@@ -41,7 +42,7 @@ public class Grant {
     private DateTime submissionDate;
     private String type;
     private Integer amount;
-    private String awarded;
+    private GrantStatus awarded;
     private String facultyMentor;
     private List<Student> students = new ArrayList<Student>();
     private Boolean presented;
@@ -103,12 +104,11 @@ public class Grant {
         this.amount = amount;
     }
 
-    @Lob
-    public String getAwarded() {
+    public GrantStatus getAwarded() {
         return awarded;
     }
 
-    public void setAwarded(String awarded) {
+    public void setAwarded(GrantStatus awarded) {
         this.awarded = awarded;
     }
 

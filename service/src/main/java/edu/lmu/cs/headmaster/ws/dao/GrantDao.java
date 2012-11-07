@@ -3,6 +3,7 @@ package edu.lmu.cs.headmaster.ws.dao;
 import java.util.List;
 
 import edu.lmu.cs.headmaster.ws.domain.Grant;
+import edu.lmu.cs.headmaster.ws.types.GrantStatus;
 
 /**
  * Simple dao for grant domain objects.
@@ -19,7 +20,7 @@ public interface GrantDao {
      * skipping the first <code>skip</code> results and returning at most
      * <code>max</code> results.
      */
-    List<Grant> getGrants(String query, String awarded, Boolean presented,
+    List<Grant> getGrants(String query, GrantStatus awarded, Boolean presented,
             int skip, int max);
 
     /**
