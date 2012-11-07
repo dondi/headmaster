@@ -6,9 +6,10 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import edu.lmu.cs.headmaster.ws.dao.util.QueryBuilder;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
+import edu.lmu.cs.headmaster.ws.types.GrantStatus;
 
 public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantDao {
-    
+
     @Override
     public Grant getGrantById(Long id) {
         return getHibernateTemplate().get(Grant.class, id);
@@ -16,7 +17,7 @@ public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantD
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Grant> getGrants(String query, Boolean awarded,
+    public List<Grant> getGrants(String query, GrantStatus awarded,
             Boolean presented, int skip, int max) {
         return createGrantQuery(query, awarded, presented)
                 .build(getSession())
@@ -40,14 +41,14 @@ public class GrantDaoHibernateImpl extends HibernateDaoSupport implements GrantD
      * Returns a base HQL query object (no pagination) for the given parameters
      * for grants.
      */
-    private QueryBuilder createGrantQuery(String query, Boolean awarded,
+    private QueryBuilder createGrantQuery(String query, GrantStatus awarded,
             Boolean presented) {
         // The desired return order is id.
         QueryBuilder builder = new QueryBuilder(
             "select g from Grant g",
             "order by id"
         );
-        
+
         if (query != null) {
             builder.clause("lower(g.facultyMentor) like lower(:query) or lower(g.title) like lower(:query)", "%" + query + "%");
         }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.lmu.cs.headmaster.ws.dao.GrantDao;
 import edu.lmu.cs.headmaster.ws.domain.Grant;
+import edu.lmu.cs.headmaster.ws.types.GrantStatus;
 
 public class GrantServiceImpl extends AbstractService implements GrantService {
 
@@ -14,11 +15,11 @@ public class GrantServiceImpl extends AbstractService implements GrantService {
     }
 
     @Override
-    public List<Grant> getGrants(String query, Boolean awarded, Boolean presented, int skip, int max) {
+    public List<Grant> getGrants(String query, GrantStatus awarded, Boolean presented, int skip, int max) {
         getLogger().debug("getGrants");
         return grantDao.getGrants(query, awarded, presented, skip, max);
     }
-    
+
     @Override
     public Grant createGrant(Grant grant) {
         getLogger().debug("createGrant");
