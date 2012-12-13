@@ -19,19 +19,16 @@ import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.domain.StudentRecord;
 import edu.lmu.cs.headmaster.ws.types.ClassYear;
-import edu.lmu.cs.headmaster.ws.util.ServiceException;
 import edu.lmu.cs.headmaster.ws.types.Term;
+import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
- * The JAX-RS interface for operating on student resources.
+ * The sole implementation of the student resource.
  */
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface StudentResource {
-    
-    /**
-     * Possible resource error messages.
-     */
+
     String STUDENT_OVERSPECIFIED = "student.overspecified";
     String STUDENT_INCONSISTENT = "student.inconsistent";
     String STUDENT_NOT_FOUND = "student.not.found";
@@ -45,7 +42,7 @@ public interface StudentResource {
      * @return the (paginated) set of students matching the query parameters
      */
     @GET
-    List<Student> getStudents(@QueryParam("q") String query,
+    public List<Student> getStudents(@QueryParam("q") String query,
             @QueryParam("active") @DefaultValue("true") Boolean active,
             @QueryParam("transfer") Boolean transferStudent,
             @QueryParam("class") ClassYear classYear,
@@ -59,8 +56,6 @@ public interface StudentResource {
             @QueryParam("gpaYear") Integer year,
             @QueryParam("skip") @DefaultValue("0") int skip,
             @QueryParam("max") @DefaultValue("100") int max);
-    
-
     /**
      * Creates a student for which the server will generate the id.
      *
@@ -69,7 +64,7 @@ public interface StudentResource {
      * <code>student.overspecified</code> if the student's id is not null.
      */
     @POST
-    Response createStudent(Student student);
+    public Response createStudent(Student student);
 
     /**
      * Supposed to save the representation of the student with the given id.
@@ -83,7 +78,7 @@ public interface StudentResource {
      */
     @PUT
     @Path("{id}")
-    Response createOrUpdateStudent(@PathParam("id") Long id, Student student);
+    public Response createOrUpdateStudent(@PathParam("id") Long id, Student student);
 
     /**
      * Returns the student with the given id.
@@ -95,7 +90,7 @@ public interface StudentResource {
      */
     @GET
     @Path("{id}")
-    Student getStudentById(@PathParam("id") Long id);
+    public Student getStudentById(@PathParam("id") Long id);
 
     /**
      * Returns the events attended by the student with the given id.
@@ -107,7 +102,7 @@ public interface StudentResource {
      */
     @GET
     @Path("{id}/attendance")
-    List<Event> getStudentAttendanceById(@PathParam("id") Long id);
+    public List<Event> getStudentAttendanceById(@PathParam("id") Long id);
 
     /**
      * Returns the student record for the student with the given id.
@@ -115,7 +110,7 @@ public interface StudentResource {
     @GET
     @Path("{id}/record")
     @RolesAllowed({ "headmaster", "faculty", "staff" })
-    StudentRecord getStudentRecordById(@PathParam("id") Long id);
+    public StudentRecord getStudentRecordById(@PathParam("id") Long id);
 
     /**
      * Updates the record for the student with the given id.
@@ -123,6 +118,6 @@ public interface StudentResource {
     @PUT
     @Path("{id}/record")
     @RolesAllowed({ "headmaster", "faculty", "staff" })
-    Response updateStudentRecord(@PathParam("id") Long id, StudentRecord studentRecord);
+    public Response updateStudentRecord(@PathParam("id") Long id, StudentRecord studentRecord);
 
 }

@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 
 import edu.lmu.cs.headmaster.ws.dao.util.QueryBuilder;
 import edu.lmu.cs.headmaster.ws.domain.Event;
