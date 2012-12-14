@@ -8,13 +8,14 @@ import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTime;
 
-import edu.lmu.cs.headmaster.ws.dao.StudentDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
 import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.domain.StudentRecord;
+import edu.lmu.cs.headmaster.ws.service.StudentService;
 import edu.lmu.cs.headmaster.ws.types.ClassYear;
 import edu.lmu.cs.headmaster.ws.types.Term;
+import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
  * The sole implementation of the student resource.
@@ -22,22 +23,30 @@ import edu.lmu.cs.headmaster.ws.types.Term;
 @Path("/students")
 public class StudentResourceImpl extends AbstractResource implements StudentResource {
 
-    private StudentDao studentDao;
-    
+    private StudentService studentService;
+
     /**
      * Creates a student resource with the injected dao.
      */
-    public StudentResourceImpl(UserDao userDao, StudentDao studentDao) {
+    public StudentResourceImpl(UserDao userDao, StudentService studentService) {
         super(userDao);
-        this.studentDao = studentDao;
+        this.studentService = studentService;
     }
-
+    
+    /**
+     * Returns students according to the search parameters
+     * 
+     * @param query the query
+     * @param skip the number of initial results to skip
+     * @param max the maximum number of results to display
+     * @return the (paginated) set of students matching the query parameters
+     */
     @Override
-    public List<Student> getStudents(String query, Boolean active,
+    public List<Student> getStudents(String query, Boolean active, 
             Boolean transferStudent, ClassYear classYear,
             Integer expectedGraduationYearFrom, Integer expectedGraduationYearTo,
             Double minCumulativeGpa, Double maxCumulativeGpa,
-            Double minTermGpa, Double maxTermGpa, 
+            Double minTermGpa, Double maxTermGpa,
             Term term, Integer year, int skip, int max) {
         logServiceCall();
 
@@ -93,7 +102,7 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
                     classYear.getExpectedGraduationYear(new DateTime());
         }
         
-        return studentDao.getStudents(
+        return studentService.getStudents(
             query != null ? preprocessQuery(query, skip, max, 0, 100) : null,
             active, transferStudent, expectedGraduationYearFrom, expectedGraduationYearTo,
             minCumulativeGpa, maxCumulativeGpa, minTermGpa, maxTermGpa, term, year,
@@ -101,6 +110,13 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         );
     }
 
+    /**
+     * Creates a student for which the server will generate the id.
+     *
+     * @param student the student object to create. The student must have a null id.
+     * @return A response with HTTP 201 on success, or a response with HTTP 400 and message
+     * <code>student.overspecified</code> if the student's id is not null.
+     */
     @Override
     public Response createStudent(Student student) {
         logServiceCall();
@@ -108,10 +124,20 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         validate(student.getId() == null, Response.Status.BAD_REQUEST, STUDENT_OVERSPECIFIED);
 
         // Dao problems will filter up as exceptions.
-        studentDao.createStudent(student);
+        studentService.createStudent(student);
         return Response.created(URI.create(Long.toString(student.getId()))).build();
     }
 
+    /**
+     * Supposed to save the representation of the student with the given id.
+     * Inconsistent data should result in HTTP 400, while a successful PUT
+     * should return Response.noContent.
+     * 
+     * @param id the id of the student to save.
+     * @return A response with HTTP 204 no content on success, or a response
+     *         with HTTP 400 and message <code>student.inconsistent</code> if
+     *         checked data does not have the save id as requested in the URL.
+     */
     @Override
     public Response createOrUpdateStudent(Long id, Student student) {
         logServiceCall();
@@ -119,48 +145,60 @@ public class StudentResourceImpl extends AbstractResource implements StudentReso
         // The student IDs should match.
         validate(id.equals(student.getId()), Response.Status.BAD_REQUEST, STUDENT_INCONSISTENT);
 
-        // The student record does not travel with the incoming student, so we set it here.
-        Student currentStudent = studentDao.getStudentById(id);
-        if (currentStudent != null) {
-            student.setRecord(currentStudent.getRecord());
-        }
-
         // Dao problems will filter up as exceptions.
-        studentDao.createOrUpdateStudent(student);
+        studentService.createOrUpdateStudent(id, student);
         return Response.noContent().build();
     }
 
+    /**
+     * Returns the student with the given id.
+     *
+     * @param id the id of the requested student.
+     * @return the student with the given id.
+     * @throws ServiceException if there is no student with the given id, causing the framework
+     * to generate an HTTP 404.
+     */
     @Override
     public Student getStudentById(Long id) {
         logServiceCall();
 
-        Student student = studentDao.getStudentById(id);
+        Student student = studentService.getStudentById(id);
         validate(student != null, Response.Status.NOT_FOUND, STUDENT_NOT_FOUND);
         return student;
     }
 
+    /**
+     * Returns the events attended by the student with the given id.
+     *
+     * @param id the id of the requested student.
+     * @return the events attended by the student with the given id.
+     * @throws ServiceException if there is no student with the given id, causing the framework
+     * to generate an HTTP 404.
+     */
     @Override
     public List<Event> getStudentAttendanceById(Long id) {
         logServiceCall();
 
-        List<Event> events = studentDao.getStudentAttendanceById(id);
+        List<Event> events = studentService.getStudentAttendanceById(id);
         validate(events != null, Response.Status.NOT_FOUND, STUDENT_NOT_FOUND);
         return events;
     }
 
+    /**
+     * Returns the student record for the student with the given id.
+     */
     @Override
     public StudentRecord getStudentRecordById(Long id) {
         return getStudentById(id).getRecord();
     }
 
+    /**
+     * Updates the record for the student with the given id.
+     */
     @Override
     public Response updateStudentRecord(Long id, StudentRecord studentRecord) {
-        // Retrieve the full student, assign this record, then save.
-        Student student = getStudentById(id);
-        student.setRecord(studentRecord);
-
         // Dao problems will filter up as exceptions.
-        studentDao.createOrUpdateStudent(student);
+        studentService.updateStudentRecord(id, studentRecord);
         return Response.noContent().build();
     }
 

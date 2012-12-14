@@ -48,7 +48,7 @@
     <bean id="studentResource"
         class="edu.lmu.cs.headmaster.ws.resource.StudentResourceImpl">
         <constructor-arg ref="userDao"/>
-        <constructor-arg ref="studentDao"/>
+        <constructor-arg ref="studentService"/>
     </bean>
 
     <bean id="eventResource"
@@ -56,7 +56,7 @@
         <constructor-arg ref="userDao"/>
         <constructor-arg ref="eventDao"/>
     </bean>
-    
+
     <bean id="grantResource"
         class="edu.lmu.cs.headmaster.ws.resource.GrantResourceImpl">
         <constructor-arg ref="userDao"/>
@@ -78,7 +78,7 @@
         class="edu.lmu.cs.headmaster.ws.dao.UserDaoHibernateImpl"
         autowire="byName"
     />
-    
+
     <bean id="grantDaoImpl"
         class="edu.lmu.cs.headmaster.ws.dao.GrantDaoHibernateImpl"
         autowire="byName"
@@ -93,6 +93,11 @@
         class="edu.lmu.cs.headmaster.ws.dao.EventDaoHibernateImpl"
         autowire="byName"
     />
+
+    <bean id="studentService"
+        class="edu.lmu.cs.headmaster.ws.service.StudentServiceImpl">
+        <constructor-arg ref="studentDao"/>
+    </bean>
 
     <bean id="userDao" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="proxyInterfaces">

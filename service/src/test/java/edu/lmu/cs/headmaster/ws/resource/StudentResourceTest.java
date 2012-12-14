@@ -31,6 +31,11 @@ public class StudentResourceTest extends ResourceTest {
             clientResponse.getEntity(String.class)
         );
     }
+    
+    @Test
+    public void testGetStudentsWithBadQuery() {
+    
+    }
 
     @Test
     public void testGetStudentsClassYearMutualExclusion() {
@@ -79,7 +84,14 @@ public class StudentResourceTest extends ResourceTest {
     @Test
     public void testGetStudentById() {
         // Grab a test fixture student.
-        Student student = wr.path("students/1000000").get(Student.class);
+        String rawResponse = wr.path("students/1000000")
+            .header("Accept", "application/json")
+            .get(String.class);
+        Student student = wr.path("students/1000000")
+//                .header("Accept", "application/json")
+                .get(ClientResponse.class)
+                .getEntity(Student.class);
+//                .get(Student.class);
         Assert.assertEquals(Long.valueOf(1000000L), student.getId());
         Assert.assertEquals("Berners-Lee", student.getLastName());
         Assert.assertEquals("Tim", student.getFirstName());

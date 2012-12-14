@@ -80,7 +80,7 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @XmlAttribute
+//    @XmlAttribute
     public Long getId() {
         return id;
     }
