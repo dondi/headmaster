@@ -19,8 +19,8 @@ import edu.lmu.cs.headmaster.ws.domain.Event;
 import edu.lmu.cs.headmaster.ws.domain.Student;
 import edu.lmu.cs.headmaster.ws.domain.StudentRecord;
 import edu.lmu.cs.headmaster.ws.types.ClassYear;
-import edu.lmu.cs.headmaster.ws.util.ServiceException;
 import edu.lmu.cs.headmaster.ws.types.Term;
+import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
  * The JAX-RS interface for operating on student resources.
@@ -59,7 +59,6 @@ public interface StudentResource {
             @QueryParam("gpaYear") Integer year,
             @QueryParam("skip") @DefaultValue("0") int skip,
             @QueryParam("max") @DefaultValue("100") int max);
-    
 
     /**
      * Creates a student for which the server will generate the id.
