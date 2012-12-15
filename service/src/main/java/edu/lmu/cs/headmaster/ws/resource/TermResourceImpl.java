@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.ws.rs.Path;
 
-import edu.lmu.cs.headmaster.ws.dao.StudentDao;
 import edu.lmu.cs.headmaster.ws.dao.UserDao;
+import edu.lmu.cs.headmaster.ws.service.TermService;
 
 /**
  * The sole implementation of the term resource.
@@ -13,38 +13,39 @@ import edu.lmu.cs.headmaster.ws.dao.UserDao;
 @Path("/terms")
 public class TermResourceImpl extends AbstractResource implements TermResource {
 
-    private StudentDao studentDao;
+    private TermService termService;
 
-    protected TermResourceImpl(UserDao userDao, StudentDao studentDao) {
+    // TODO userDao must become userService when that is available.
+    protected TermResourceImpl(UserDao userDao, TermService termService) {
         super(userDao);
-        this.studentDao = studentDao;
+        this.termService = termService;
     }
 
     @Override
     public List<String> getMatchingCollegesOrSchools(String query, int skip, int max) {
         logServiceCall();
 
-        return studentDao.getMatchingCollegesOrSchools(
-            preprocessQuery(query, skip, max, 0, 50), skip, max
-        );
+        return termService.getMatchingCollegesOrSchools(
+                preprocessQuery(query, skip, max, 0, 50), skip, max
+            );
     }
 
     @Override
     public List<String> getMatchingDegrees(String query, int skip, int max) {
         logServiceCall();
 
-        return studentDao.getMatchingDegrees(
-            preprocessQuery(query, skip, max, 0, 50), skip, max
-        );
+        return termService.getMatchingDegrees(
+                preprocessQuery(query, skip, max, 0, 50), skip, max
+            );
     }
 
     @Override
     public List<String> getMatchingDisciplines(String query, int skip, int max) {
         logServiceCall();
 
-        return studentDao.getMatchingDisciplines(
-            preprocessQuery(query, skip, max, 0, 50), skip, max
-        );
+        return termService.getMatchingDisciplines(
+                preprocessQuery(query, skip, max, 0, 50), skip, max
+            );
     }
 
 }
