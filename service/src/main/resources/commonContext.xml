@@ -66,12 +66,17 @@
     <bean id="termResource"
         class="edu.lmu.cs.headmaster.ws.resource.TermResourceImpl">
         <constructor-arg ref="userDao"/>
-        <constructor-arg ref="studentDao"/>
+        <constructor-arg ref="termService"/>
     </bean>
 
     <bean id="grantService"
         class="edu.lmu.cs.headmaster.ws.service.GrantServiceImpl">
         <constructor-arg ref="grantDao"/>
+    </bean>
+    
+    <bean id="termService"
+        class="edu.lmu.cs.headmaster.ws.service.TermServiceImpl">
+        <constructor-arg ref="studentDao"/>
     </bean>
 
     <bean id="userDaoImpl"
