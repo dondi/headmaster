@@ -12,20 +12,20 @@ public class EventTest {
         
         Event event = new Event();
         
-        final Long ID = 9000L;
+        Long id = 9000L;
         DateTime dateTime = new DateTime(0);
-        final String TITLE = "Testing Event";
-        final String DESCRIPTION = "An event created for testing.";
+        String title = "Testing Event";
+        String description = "An event created for testing.";
         
-        event.setId(ID);
+        event.setId(id);
         event.setDateTime(dateTime);
-        event.setTitle(TITLE);
-        event.setDescription(DESCRIPTION);
+        event.setTitle(title);
+        event.setDescription(description);
         
-        assertEquals(event.getId(), ID);
+        assertEquals(event.getId(), id);
         assertEquals(event.getDateTime(), dateTime);
-        assertEquals(event.getTitle(), TITLE);
-        assertEquals(event.getDescription(), DESCRIPTION);
+        assertEquals(event.getTitle(), title);
+        assertEquals(event.getDescription(), description);
         
     }
     
