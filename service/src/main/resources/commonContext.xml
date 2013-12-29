@@ -16,9 +16,13 @@
         <property name="hibernateProperties" ref="hibernateProperties" />
         <property name="annotatedClasses">
             <list>
+                <value>edu.lmu.cs.headmaster.ws.domain.Assignment</value>
+                <value>edu.lmu.cs.headmaster.ws.domain.Course</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.Event</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.GPA</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.Grant</value>
+                <value>edu.lmu.cs.headmaster.ws.domain.LearningObjective</value>
+                <value>edu.lmu.cs.headmaster.ws.domain.LearningOutcome</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.Major</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.Student</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.StudentRecord</value>
