@@ -26,10 +26,10 @@ import edu.lmu.cs.headmaster.ws.util.DateTimeXmlAdapter;
  */
 @Entity
 @XmlRootElement
-public class Submission {
+public class SubmissionFeedback {
 
     private Long id;
-    private DateTime submissionDate;
+    private DateTime feedbackDate;
     private Student student;
     private Assignment assignment;
     private List<Proficiency> proficiencies = new ArrayList<Proficiency>();
@@ -47,12 +47,12 @@ public class Submission {
 
     @Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
     @XmlJavaTypeAdapter(value=DateTimeXmlAdapter.class)
-    public DateTime getSubmissionDate() {
-        return submissionDate;
+    public DateTime getFeedbackDate() {
+        return feedbackDate;
     }
 
-    public void setSubmissionDate(DateTime submissionDate) {
-        this.submissionDate = submissionDate;
+    public void setFeedbackDate(DateTime feedbackDate) {
+        this.feedbackDate = feedbackDate;
     }
 
     @ManyToOne
@@ -73,7 +73,7 @@ public class Submission {
         this.assignment = assignment;
     }
 
-    @OneToMany(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "submissionFeedback", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     public List<Proficiency> getProficiencies() {
         return proficiencies;

@@ -27,7 +27,7 @@
                 <value>edu.lmu.cs.headmaster.ws.domain.Proficiency</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.Student</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.StudentRecord</value>
-                <value>edu.lmu.cs.headmaster.ws.domain.Submission</value>
+                <value>edu.lmu.cs.headmaster.ws.domain.SubmissionFeedback</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.User</value>
                 <value>edu.lmu.cs.headmaster.ws.domain.UserRole</value>
             </list>
