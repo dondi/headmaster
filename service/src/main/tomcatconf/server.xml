@@ -94,11 +94,11 @@
                userCredCol="challenge"
                userRoleTable="userrole"
                roleNameCol="rolename"
-    	       digest="sha-512"
     	/>
       </Realm>
 
-      <Host name="localhost"  appBase="webapps"
+      <!-- Note change in appBase: this points to target instead of target/tomcat/webapps. -->
+      <Host name="localhost"  appBase=".."
             unpackWARs="true" autoDeploy="true">
 
         <!-- Access log processes all example.
