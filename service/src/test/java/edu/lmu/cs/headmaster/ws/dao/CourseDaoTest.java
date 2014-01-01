@@ -88,4 +88,5 @@ public class CourseDaoTest extends ApplicationContextTest {
         Assert.assertEquals(course1.getTitle(), course2.getTitle());
         Assert.assertEquals(course1.getYear(), course2.getYear());
     }
+
 }

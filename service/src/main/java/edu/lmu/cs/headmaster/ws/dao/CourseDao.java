@@ -30,4 +30,5 @@ public interface CourseDao {
      * Updates or saves the given course, which should have a non-null id.
      */
     void createOrUpdateCourse(Course course);
+
 }
