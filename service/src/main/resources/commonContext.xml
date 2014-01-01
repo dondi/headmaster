@@ -80,9 +80,19 @@
         <constructor-arg ref="grantDao"/>
     </bean>
     
+    <bean id="studentService"
+        class="edu.lmu.cs.headmaster.ws.service.StudentServiceImpl">
+        <constructor-arg ref="studentDao"/>
+    </bean>
+
     <bean id="termService"
         class="edu.lmu.cs.headmaster.ws.service.TermServiceImpl">
         <constructor-arg ref="studentDao"/>
+    </bean>
+
+    <bean id="courseService"
+        class="edu.lmu.cs.headmaster.ws.service.CourseServiceImpl">
+        <constructor-arg ref="courseDao"/>
     </bean>
 
     <bean id="userDaoImpl"
@@ -104,11 +114,6 @@
         class="edu.lmu.cs.headmaster.ws.dao.EventDaoHibernateImpl"
         autowire="byName"
     />
-
-    <bean id="studentService"
-        class="edu.lmu.cs.headmaster.ws.service.StudentServiceImpl">
-        <constructor-arg ref="studentDao"/>
-    </bean>
 
     <bean id="courseDaoImpl"
         class="edu.lmu.cs.headmaster.ws.dao.CourseDaoHibernateImpl"
