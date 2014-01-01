@@ -61,3 +61,4 @@ insert into researchgrant_student(grant_id, student_id, students_order) values(1
 insert into course(id, number, section, subject, term, title, year) values(1000000, '370', '01', 'CMSI', 0, 'Interaction Design', 2024);
 insert into course(id, number, section, subject, term, title, year) values(1000001, '370', '02', 'CMSI', 0, 'Interaction Design', 2024);
 insert into course(id, number, section, subject, term, title, year) values(1000002, '371', '01', 'CMSI', 1, 'Computer Graphics', 2023);
+insert into course(id, number, section, subject, term, title, year) values(1000003, '250', '01', 'MUSC', 1, 'Sight Singing', 2023);

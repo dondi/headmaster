@@ -40,10 +40,11 @@ public class CourseDaoHibernateImpl extends HibernateDaoSupport implements Cours
      * for grants.
      */
     private QueryBuilder createCourseQuery(String query) {
-        // The desired return order is subject, number, section.
+        // The desired return order is year, term, subject, number, section
+        // (i.e., chronological, then by subject/number/section).
         QueryBuilder builder = new QueryBuilder(
             "select c from Course c",
-            "order by subject, number, section"
+            "order by year, term, subject, number, section"
         );
 
         if (query != null) {

@@ -1,5 +1,7 @@
 package edu.lmu.cs.headmaster.ws.dao;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -23,6 +25,18 @@ public class CourseDaoTest extends ApplicationContextTest {
         Assert.assertEquals(Long.valueOf(1000002L), courseDao.getCourseById(1000002L).getId());
         Assert.assertEquals(Long.valueOf(1000000L), courseDao.getCourseById(1000000L).getId());
         Assert.assertEquals(Long.valueOf(1000001L), courseDao.getCourseById(1000001L).getId());
+    }
+
+    @Test
+    public void testGetAllCourses() {
+        List<Course> fixtureCourses = courseDao.getCourses(null, 0, 100);
+        Assert.assertEquals(4, fixtureCourses.size());
+        
+        // This mainly tests the expected sort order.
+        Assert.assertEquals(Long.valueOf(1000002L), fixtureCourses.get(0).getId());
+        Assert.assertEquals(Long.valueOf(1000003L), fixtureCourses.get(1).getId());
+        Assert.assertEquals(Long.valueOf(1000000L), fixtureCourses.get(2).getId());
+        Assert.assertEquals(Long.valueOf(1000001L), fixtureCourses.get(3).getId());
     }
 
     @Test
