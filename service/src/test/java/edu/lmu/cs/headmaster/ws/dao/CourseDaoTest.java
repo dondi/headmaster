@@ -20,9 +20,9 @@ public class CourseDaoTest extends ApplicationContextTest {
 
     @Test
     public void testGetCourseById() {
-        Assert.assertEquals(Long.valueOf(1000002L), courseDao.getCourseById(1000002L));
-        Assert.assertEquals(Long.valueOf(1000000L), courseDao.getCourseById(1000000L));
-        Assert.assertEquals(Long.valueOf(1000001L), courseDao.getCourseById(1000001L));
+        Assert.assertEquals(Long.valueOf(1000002L), courseDao.getCourseById(1000002L).getId());
+        Assert.assertEquals(Long.valueOf(1000000L), courseDao.getCourseById(1000000L).getId());
+        Assert.assertEquals(Long.valueOf(1000001L), courseDao.getCourseById(1000001L).getId());
     }
 
     @Test
