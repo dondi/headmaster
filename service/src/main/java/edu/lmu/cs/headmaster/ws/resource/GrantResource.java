@@ -20,7 +20,7 @@ import edu.lmu.cs.headmaster.ws.types.GrantStatus;
 import edu.lmu.cs.headmaster.ws.util.ServiceException;
 
 /**
- * The JAX-RS interface for operating on student resources.
+ * The JAX-RS interface for operating on grant resources.
  */
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -88,4 +88,5 @@ public interface GrantResource {
     @GET
     @Path("{id}")
     Grant getGrantById(@PathParam("id") Long id);
+
 }
