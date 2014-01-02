@@ -75,6 +75,12 @@
         <constructor-arg ref="termService"/>
     </bean>
 
+    <bean id="courseResource"
+        class="edu.lmu.cs.headmaster.ws.resource.CourseResourceImpl">
+        <constructor-arg ref="userDao"/>
+        <constructor-arg ref="courseService"/>
+    </bean>
+
     <bean id="grantService"
         class="edu.lmu.cs.headmaster.ws.service.GrantServiceImpl">
         <constructor-arg ref="grantDao"/>
