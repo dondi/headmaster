@@ -50,7 +50,7 @@ public class CourseDaoHibernateImpl extends HibernateDaoSupport implements Cours
         if (query != null) {
             builder.clause("lower(c.subject) like lower(:query) or lower(c.title) like lower(:query) or " +
                 "lower(c.number) like lower(:query) or lower(c.section) like lower(:query) or " +
-                "lower(c.subject + ' ' + c.number) like lower(:query)", "%" + query + "%");
+                "lower(c.subject || ' ' || c.number) like lower(:query)", "%" + query + "%");
         }
 
         // All done.
