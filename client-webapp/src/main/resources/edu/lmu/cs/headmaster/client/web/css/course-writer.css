@@ -1,0 +1,20 @@
+@import url("course-view.css");
+
+/* These are for draggable objects. */
+.ui-sortable-helper {
+    background-color: whitesmoke;
+    border: 1px solid lightgray;
+    border-radius: 2px;
+    box-shadow: 0 0 8px lightgray;
+    cursor: default;
+}
+
+.ui-sortable-helper > td {
+    border-style: none;
+}
+
+/* Now an editable row. */
+table > tbody > tr > td.form-search {
+    padding: 1.5ex 0;
+    text-align: center;
+}

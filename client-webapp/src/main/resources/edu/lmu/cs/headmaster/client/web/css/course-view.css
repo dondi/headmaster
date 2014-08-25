@@ -1,0 +1,12 @@
+/* Dual purpose CSS, serving both CourseViewPage and CourseWriterPage. */
+.form-horizontal {
+    padding-top: 18px;
+}
+
+.form-inline label, .form-inline input, .form-inline select {
+    margin-right: 0.5em;
+}
+
+tbody > tr > td {
+    cursor: pointer;
+}
