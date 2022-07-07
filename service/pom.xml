@@ -328,7 +328,7 @@
   </reporting>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>3.1.2.RELEASE</spring.version>
+    <spring.version>3.2.4.RELEASE</spring.version>
     <jersey.version>1.13</jersey.version>
     <netbeans.hint.deploy.server>Tomcat70</netbeans.hint.deploy.server>
   </properties>
