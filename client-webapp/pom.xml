@@ -234,7 +234,7 @@
   </reporting>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>3.0.5.RELEASE</spring.version>
+    <spring.version>3.2.18.RELEASE</spring.version>
     <wicket.version>1.4.17</wicket.version>
     <jetty.version>6.1.26</jetty.version>
   </properties>
